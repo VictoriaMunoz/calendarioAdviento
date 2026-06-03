@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de conquista internacional // Día 03</title>
+    <style>
+        /* ==========================================================================
+           1. ESTILOS GENERALES Y TEMATIZACIÓN TERMINAL BASH
+           ========================================================================== */
+        body {
+            background-color: #0d0d0d;
+            color: #c084fc;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .terminal-container {
+            width: 95%;
+            max-width: 700px;
+            background-color: #1a1a1a;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+            border: 1px solid #2a2a2a;
+            overflow: hidden;
+        }
+
+        .terminal-header {
+            background-color: #333;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #222;
+        }
+
+        .dot { height: 12px; width: 12px; border-radius: 50%; margin-right: 6px; }
+        .red    { background-color: #ff5f56; }
+        .yellow { background-color: #ffbd2e; }
+        .green  { background-color: #27c93f; }
+
+        .terminal-title { color: #aaa; font-size: 12px; margin-left: 10px; }
+
+        .terminal-body {
+            padding: 25px;
+            height: 440px;
+            overflow-y: auto;
+        }
+
+        .highlight { color: #fff; font-weight: bold; }
+
+        .success-highlight {
+            color: #27c93f !important;
+            font-weight: bold;
+            text-shadow: 0 0 8px #27c93f;
+        }
+
+        /* ── Acciones Interactivas de los Protocolos ── */
+        .command {
+            color: #a855f7;
+            cursor: pointer;
+            margin: 12px 0;
+            transition: 0.3s ease;
+        }
+        .command:hover {
+            color: #fff;
+            text-shadow: 0 0 10px #a855f7;
+        }
+
+        /* Enlace de regreso estilizado como comando Bash */
+        .command-back {
+            color: #64748b;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 14px;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+        .command-back:hover {
+            color: #ff80ab;
+            text-shadow: 0 0 10px #ff80ab;
+        }
+
+        #access-key {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 16px;
+            outline: none;
+            width: 200px;
+        }
+
+        #cursor {
+            display: inline-block;
+            animation: blink 1s infinite;
+        }
+
+        .welcome-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .main-system-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ffffff;
+            text-shadow: 0 0 12px #a855f7;
+            margin: 0;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        /* ── Animación por caracteres para la máquina de escribir ── */
+        #typed-output {
+            line-height: 1.5;
+            font-size: 14px;
+            color: #c084fc;
+            text-align: left;
+            white-space: pre-wrap;
+        }
+
+        #typed-output span.char {
+            opacity: 0;
+        }
+
+        #typed-output span.char.visible {
+            opacity: 1;
+        }
+
+        /* Revelado de las palabras clave ocultas en dorado brillante */
+        #typed-output b {
+            color: #fbbf24 !important;
+            font-weight: 900 !important;
+            text-shadow: 0 0 12px #fbbf24, 0 0 4px rgba(255,248,224,0.5) !important;
+        }
+
+        .msg-header {
+            color: #a855f7;
+            font-weight: bold;
+            line-height: 1.2;
+            margin-bottom: 5px;
+            display: inline-block;
+        }
+
+        #secret-scan {
+            margin-top: 20px;
+            font-size: 13px;
+            color: #666;
+            border-top: 1px solid #2a2a2a;
+            padding-top: 12px;
+            line-height: 1.8;
+        }
+
+        .scan-line {
+            color: #555;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .scan-line.ok {
+            color: #27c93f;
+            font-weight: bold;
+        }
+
+        /* Contenedor del mensaje secreto revelado */
+        .secret-reveal {
+            margin-top: 15px;
+            padding: 12px 16px;
+            border: 1px solid rgba(251, 191, 36, 0.25);
+            border-radius: 4px;
+            background: rgba(251, 191, 36, 0.03);
+        }
+
+        .secret-reveal .secret-label {
+            color: #888;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            display: block;
+        }
+
+        .secret-reveal .secret-words {
+            color: #fbbf24;
+            font-weight: bold;
+            font-size: 16px;
+            text-shadow: 0 0 14px #fbbf24;
+            letter-spacing: 2px;
+            display: block;
+            margin-top: 6px;
+            animation: pulseGold 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseGold {
+            0%, 100% { text-shadow: 0 0 14px #fbbf24, 0 0 6px rgba(255,255,255,0.4); }
+            50%       { text-shadow: 0 0 24px #fbbf24, 0 0 12px rgba(255,217,112,0.5); }
+        }
+
+        .footer-msg {
+            color: #444;
+            font-size: 12px;
+            margin-top: 14px;
+        }
+
+        @keyframes blink { 50% { opacity: 0; } }
+        #login-ascii, #ascii-art { color: #a855f7; font-size: 11px; line-height: 1.2; margin: 0; }
+    </style>
+</head>
+<body>
+
+    <div class="terminal-container">
+        <div class="terminal-header">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+            <span class="terminal-title">bash — /home/ame/refugio</span>
+        </div>
+        
+        <div class="terminal-body" id="terminal-body">
+            
+            <div id="login-screen">
+                <pre id="login-ascii" style="color: #a855f7; font-family: monospace; font-size: 10px; line-height: 1.1; margin-bottom: 15px;"></pre>
+                <div id="login-output"></div>
+                <div id="input-line" style="display: none;">
+                    <span class="highlight">guest@refugio:~$</span> 
+                    <input type="text" id="access-key" autofocus autocomplete="off">
+                </div>
+            </div>
+
+            <div id="main-interface" style="display: none;">
+                <div class="welcome-container">
+                    <pre id="ascii-art">
+  /\_/\  
+ ( o.o )  
+  > ^ <   
+                    </pre>
+                    <h1 class="main-system-title">Sistema de conquista internacional &lt;3</h1>
+                </div>
+                <div id="output">
+                    <p>> Conexión establecida... <span class="success-highlight">EXITOSO</span></p>
+                    <p>> Usuario: <span class="success-highlight">Ame</span></p>
+                    <br>
+                    <p>Selecciona un protocolo para ejecutar:</p>
+                    <p class="command" onclick="runCommand('pesado')">[1] ./dia_pesado.sh  --> Si la oficina estuvo densa</p>
+                    <p class="command" onclick="runCommand('sonreir')">[2] ./sacar_sonrisa.sh --> Si te hace falta una alegría</p>
+                    <p class="command" onclick="runCommand('extrañar')">[3] ./abrazo_virtual.sh --> Si quieres sentirme cerca</p>
+                    <a href="index.html" class="command-back">[0] &lt;-- Volver al menú principal</a>
+                </div>
+                <div id="typed-output"></div>
+                <div id="secret-scan" style="display:none;"></div>
+                <div id="cursor">_</div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Mensajes principales con etiquetas HTML integradas para las letras doradas
+        const mensajes = {
+            pesado: "<div class='msg-header'>=========================================<br>  PROTOCOLO: DESCONEXIÓN Y CALMA <br>=========================================</div><br><br>Sé muy bien lo mucho que te esfuerzas día a día y la dedicación tan increíble que le pones a cada una de las tareas que fabriquas o manejas. <b>Aquí</b> tu manera de afrontar los retos en la oficina es admirable, pero a veces las rutinas se vuelven sumamente densas y el cansancio físico y mental empieza a pegar con mucha fuerza. Sé que el ritmo puede ser abrumador, pero justo hoy quería pasar por aquí para recordarte que <b>estoy</b> convencida de que está bien pausar, respirar profundo y soltar el control por un momento. No tienes que cargar con el peso del mundo sobre tus hombros; <b>siempre</b> mantén en mente que eres una mujer sumamente inteligente y tesa, y absolutamente nada de lo que ocurra en un día caótico va a cambiar lo valiosa que eres. Cuando por fin cierres la pantalla hoy, quiero que dejes el estrés ahí adentro. Recuerda que cuentas <b>contigo</b> misma para brillar, pero que también aquí estoy yo, celebrando cada uno de tus procesos, admirándote en silencio y completamente dispuesta a escucharte o a acompañarte en completo silencio, como tú lo prefieras. Desconéctate tranquila, descansa tu mente y recuerda que te mereces toda la paz del mundo, preciosa.",
+            
+            sonreir: "<div class='msg-header'>=========================================<br>  PROTOCOLO: SINCRONÍA Y COMPLICIDAD <br>=========================================</div><br><br>Si terminaste en este comando es porque seguramente al día le está haciendo falta un poquito de luz, y tienes que saber que mi misión favorita siempre va a ser recordarte lo bonito que es compartir la vida. <b>Tu</b> forma de ser es increíble, tienes una chispa única y una <b>felicidad</b> que contagia a cualquiera. Me pasa seguido que me quedo pensando en nuestras charlas, en las bobadas que solo nosotras entendemos, en los chistes internos y en cómo un día cualquiera <b>me</b> parece el mejor momento de la semana con solo ponernos a conversar un rato. Me <b>hace</b> inmensamente feliz saber que, aunque los kilómetros nos separen físicamente en el mapa, compartimos una sintonía tan linda y real. Hemos construido un espacio muy sano en donde nos sentimos <b>bien</b> y podemos hablar de todo con total transparencia, y eso es algo que valoro más de lo que te imaginas. Espero de todo corazón que leer esto te robe esa sonrisa gigante que tanto me gusta ver y que te recuerde que tu bienestar le da un color hermoso a mi realidad. ¡Te adoro un montón, Ame!",
+            
+            extrañar: "<div class='msg-header'>=========================================<br>  PROTOCOLO: ABRAZO A LA DISTANCIA <br>=========================================</div><br><br>Si te dio por presionar este protocolo, quiero pedirte que cierres los ojos un segundo y sientas este lazo tan fuerte que nos une. <b>Eres</b> una persona hermosa en todos los sentidos posibles, tanto por dentro como por fuera, de esas que esparcen <b>magia</b> por donde caminan por la forma tan bonita en que transformas todo a tu alrededor. La distancia puede parecer un obstáculo muy grande, pero se vuelve un número completamente tonto cuando alguien influye <b>en</b> tu día de la manera tan limpia, bonita y honesta en que lo hacemos nosotras. No pasa un solo día en el que no agradezca el haber coincidido contigo en el camino; tu presencia le da un toque hermoso a <b>mi</b> realidad y me encanta escucharte, conocer cada día más de ti, compartir nuestros gustos y saber que estás al otro lado de la pantalla siendo un refugio seguro. No dudes jamás de lo mucho que te llevo conmigo en mis pensamientos. Este rinconcito que acompaña tu <b>vida</b> lo creé con mis propias manos para que nunca tengas espacio a dudar de lo importante que eres para mí, preciosa. Estoy aquí para ti hoy, mañana y siempre."
+        };
+
+        const mensajesSecretos = {
+            pesado:   "Aquí estoy siempre contigo",
+            sonreir:  "Tu felicidad me hace bien",
+            extrañar: "Eres magia en mi vida"
+        };
+
+        const scanLines = [
+            { text: "> Analizando transmisión...",        delay: 0,    ok: false },
+            { text: "> Detectando patrones ocultos...",    delay: 600,  ok: false },
+            { text: "> Palabras clave encontradas: OK",    delay: 1200, ok: true  },
+            { text: "> Decodificando mensaje secreto...",  delay: 1800, ok: false },
+            { text: "> MENSAJE DESCIFRADO:",               delay: 2500, ok: true  },
+        ];
+
+        const loginOutput    = document.getElementById('login-output');
+        const inputLine     = document.getElementById('input-line');
+        const accessKeyInput = document.getElementById('access-key');
+        const loginAscii     = document.getElementById('login-ascii');
+
+        // Arte ASCII de Kuromi cargado al iniciar la transmisión
+        const kuromiArt = `
+ ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⣀⣀⣀⢠⠋⠉⠉⠒⠲⢤⣀⣠⡀⠀
+⠀⠀⠀⠀⠀⠀⣀⣀⣀⢀⡠⠖⠋⠉⠀⠀⠀⠀⠉⠉⠢⣄⠀⠀⠀⢀⠼⠤⠇⠀
+⠀⠀⠀⣀⠔⠊⠁⠀⢨⠏⠀⠀⠀⣠⣶⣶⣦⠀⠀⠀⠀⠀⠱⣄⡴⠃⠀⠀⠀⠀
+⢸⣉⠿⣁⠀⠀⠀⢀⡇⠀⠀⠀⠀⢿⣽⣿⣼⡠⠤⢄⣀⠀⠀⢱⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠑⢦⡀⢸⠀⠀⠀⡠⠒⠒⠚⠛⠉⠀⢠⣀⡌⠳⡀⡌⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠉⠉⣆⠀⢰⠁⣀⣀⠀⠀⣀⠀⠈⡽⣧⢀⡷⠁⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⡤⢄⠀⠈⠢⣸⣄⢽⣞⡂⠀⠈⠁⣀⡜⠁⣩⡷⠿⠆⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⢯⣁⡸⠀⠀⠀⡬⣽⣿⡀⠙⣆⡸⠛⠠⢧⠀⡿⠯⠆⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⣀⡀⠀⠀⡤⠤⣵⠁⢸⣻⡤⠏⠀⠀⠀⠀⢹⠀⠀⠀⡊⠱⣀⠀⠀⠀
+⠀⠀⢀⠜⠀⢘⠀⠀⠱⠲⢜⣢⣤⣧⠀⠀⠀⠀⠀⢴⠇⠀⠀⠀⠧⠠⠜⠀⠀⠀
+⠀⠀⠘⠤⠤⠚⠀⠀⠀⠀⠀⠀⢸⠁⠁⠀⣀⠎⠀⠻⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠣⣀⣀⡴⠤⠄⠴⠁⠀
+`;
+
+        const introText = "> Inyectando protocolos de seguridad...\n> Localizando servidor en México...\n> Acceso restringido.\n\n> PISTA: \"Yo las canciones y tú la...\"\n> Ingrese llave de acceso:";
+
+        let isTyping = false;
+
+        window.onload = () => {
+            loginAscii.textContent = kuromiArt;
+            typeEffect(introText, loginOutput, () => {
+                inputLine.style.display = 'block';
+                accessKeyInput.focus();
+            });
+        };
+
+        accessKeyInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                validarAcceso(this.value.toLowerCase().trim());
+            }
+        });
+
+        function validarAcceso(key) {
+            if (key === 'magia') { 
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('main-interface').style.display = 'block';
+            } else {
+                alert("Acceso denegado. Revisa la letra de la canción e intenta de nuevo.");
+                accessKeyInput.value = "";
+            }
+        }
+
+        function typeEffect(text, container, callback) {
+            let i = 0;
+            const timer = setInterval(() => {
+                if (i < text.length) {
+                    container.innerHTML += text.charAt(i) === '\n' ? '<br>' : text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(timer);
+                    if (callback) callback();
+                }
+            }, 45);
+        }
+
+        function runCommand(tipo) {
+            if (isTyping) return;
+            
+            const mainOutput       = document.getElementById('output');
+            const typedDiv         = document.getElementById('typed-output');
+            const secretScanDiv    = document.getElementById('secret-scan');
+            const welcomeContainer = document.querySelector('.welcome-container');
+            const rawText          = mensajes[tipo];
+            
+            mainOutput.style.display    = 'none';
+            secretScanDiv.style.display = 'none';
+            secretScanDiv.innerHTML     = '';
+            if (welcomeContainer) welcomeContainer.style.display = 'none';
+            typedDiv.innerHTML = "";
+            isTyping = true;
+
+            // Convertir el texto HTML en una estructura de nodos con letras envueltas en spans
+            let parsedHTML = "";
+            let j = 0;
+            while (j < rawText.length) {
+                if (rawText.charAt(j) === '<') {
+                    let close = rawText.indexOf('>', j);
+                    parsedHTML += rawText.slice(j, close + 1);
+                    j = close + 1;
+                } else {
+                    parsedHTML += `<span class="char">${rawText.charAt(j)}</span>`;
+                    j++;
+                }
+            }
+            
+            // Insertar de golpe todo el esqueleto HTML estructurado
+            typedDiv.innerHTML = parsedHTML;
+            
+            // Seleccionar secuencialmente cada uno de los caracteres ocultos
+            const chars = typedDiv.querySelectorAll('.char');
+            let charIndex = 0;
+            
+            function revealChar() {
+                if (charIndex < chars.length) {
+                    chars[charIndex].classList.add('visible');
+                    charIndex++;
+                    setTimeout(revealChar, 35); // Velocidad perfecta para leer cómodamente
+                } else {
+                    isTyping = false;
+                    mostrarEscaneo(tipo);
+                }
+            }
+            revealChar();
+        }
+
+        function mostrarEscaneo(tipo) {
+            const secretScanDiv = document.getElementById('secret-scan');
+            const terminalBody  = document.getElementById('terminal-body');
+            
+            secretScanDiv.style.display = 'block';
+            secretScanDiv.innerHTML     = '';
+
+            scanLines.forEach(({ text, delay, ok }) => {
+                setTimeout(() => {
+                    const line = document.createElement('div');
+                    line.className = ok ? 'scan-line ok' : 'scan-line';
+                    line.textContent = text;
+                    secretScanDiv.appendChild(line);
+                    terminalBody.scrollTop = terminalBody.scrollHeight;
+                }, delay);
+            });
+
+            const totalDelay = scanLines[scanLines.length - 1].delay + 700;
+
+            setTimeout(() => {
+                const secreto = mensajesSecretos[tipo];
+                const revealDiv = document.createElement('div');
+                revealDiv.className = 'secret-reveal';
+                revealDiv.innerHTML = `
+                    <span class="secret-label">✦ Mensaje oculto detectado ✦</span>
+                    <span class="secret-words">${secreto}</span>
+                `;
+                secretScanDiv.appendChild(revealDiv);
+
+                const footer = document.createElement('p');
+                footer.className = 'footer-msg';
+                footer.textContent = '[ SISTEMA ] Ejecución terminada. Usa la opción de abajo si deseas regresar al calendario general.';
+                secretScanDiv.appendChild(footer);
+
+                // Añadimos el enlace de retorno dinámicamente al finalizar la secuencia
+                const backLinkContainer = document.createElement('div');
+                backLinkContainer.style.marginTop = '15px';
+                backLinkContainer.innerHTML = `<a href="index.html" class="command-back">[0] &lt;-- Volver al menú principal</a>`;
+                secretScanDiv.appendChild(backLinkContainer);
+
+                terminalBody.scrollTop = terminalBody.scrollHeight;
+            }, totalDelay);
+        }
+    </script>
+</body>
+</html>
