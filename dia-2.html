@@ -3,32 +3,91 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🌿 Playlist Especial · Ame 🌿</title>
+<title>🌿 Frecuencia Mutua · Ame 🌿</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&family=Lato:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&family=Lato:wght@400;700;900&display=swap');
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ── Mantenemos la estética exacta del contenedor base del día 7 ── */
+/* ==========================================================================
+   1. ESTILOS BASE Y CONTENEDOR PRINCIPAL
+   ========================================================================== */
 .page { 
-  background: #0d1117; 
+  background: #e0f2fe; /* Color de respaldo (Azul bebé claro) */
+  background-image: linear-gradient(180deg, #bae6fd 0%, #e0f2fe 100%); /* Degradado alegre de cielo */
   min-height: 100vh; 
   font-family: 'Lato', sans-serif; 
   display: flex; 
   flex-direction: column; 
   border-radius: 12px; 
   overflow: hidden; 
+  position: relative; /* Necesario para posicionar las nubes de fondo */
 }
 
-/* ── Encabezado idéntico al estilo del proyecto ── */
-.hero { padding: 2.5rem 2rem 1.5rem; text-align: center; border-bottom: 1px solid #1e2a22; }
-.hero-day { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #5DCAA5; font-weight: 300; margin-bottom: 0.5rem; }
-.hero-title { font-family: 'Playfair Display', serif; font-size: 24px; color: #e8f5f0; font-weight: 400; font-style: italic; line-height: 1.4; }
-.hero-sub { font-size: 12px; color: #3a5a4a; margin-top: 0.5rem; letter-spacing: 0.04em; }
+/* ==========================================================================
+   2. ANIMACIÓN DE NUBES FLOTANTES (INTERACTIVO/VISUAL)
+   ========================================================================== */
+.cloud-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none; /* Evita que las nubes bloqueen los clics en la tarjeta o botones */
+  z-index: 1;
+  overflow: hidden;
+}
 
-/* ── Contenedor central alineado con la chat-area ── */
+/* Estructura base de una nube usando pseudo-elementos (before y after) para las curvas */
+.cloud {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 999px;
+  animation: floatCloud var(--speed) linear infinite; /* Animación continua horizontal */
+  opacity: var(--op);
+}
+.cloud::before, .cloud::after {
+  content: '';
+  position: absolute;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+}
+
+/* Configuración particular de cada una de las 3 nubes (Tamaños, posiciones y velocidades) */
+.c1 { width: 150px; height: 50px; top: 15%; --speed: 25s; --op: 0.85; left: -160px; }
+.c1::before { width: 70px; height: 70px; top: -30px; left: 20px; }
+.c1::after { width: 50px; height: 50px; top: -20px; left: 75px; }
+
+.c2 { width: 100px; height: 35px; top: 45%; --speed: 18s; --op: 0.6; left: -110px; animation-delay: -5s; }
+.c2::before { width: 45px; height: 45px; top: -20px; left: 15px; }
+.c2::after { width: 35px; height: 35px; top: -15px; left: 45px; }
+
+.c3 { width: 180px; height: 60px; top: 70%; --speed: 32s; --op: 0.75; left: -190px; animation-delay: -12s; }
+.c3::before { width: 85px; height: 85px; top: -40px; left: 25px; }
+.c3::after { width: 60px; height: 60px; top: -25px; left: 90px; }
+
+/* Línea de tiempo para el desplazamiento de izquierda a derecha de la pantalla */
+@keyframes floatCloud {
+  0% { transform: translateX(-10px); }
+  100% { transform: translateX(calc(100vw + 200px)); }
+}
+
+/* ==========================================================================
+   3. SECCIÓN HERO (ENCABEZADO DE LA PÁGINA)
+   ========================================================================== */
+.hero { 
+  padding: 2.5rem 2rem 1.5rem; 
+  text-align: center; 
+  border-bottom: 1px solid #bae6fd; 
+  position: relative; 
+  z-index: 2; /* Mantiene el encabezado por encima de las nubes */
+}
+.hero-day { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #0284c7; font-weight: 700; margin-bottom: 0.5rem; }
+.hero-title { font-family: 'Playfair Display', serif; font-size: 26px; color: #0369a1; font-weight: 700; font-style: italic; line-height: 1.4; }
+.hero-sub { font-size: 13px; color: #0284c7; margin-top: 0.5rem; letter-spacing: 0.04em; font-weight: 700; }
+
+/* ==========================================================================
+   4. ÁREA CENTRAL Y TARJETA DE REPRODUCCIÓN (CREMA ALEGRE)
+   ========================================================================== */
 .content-area { 
   flex: 1; 
-  padding: 3rem 1.5rem; 
+  padding: 2rem 1.5rem; 
   max-width: 520px; 
   width: 100%; 
   margin: 0 auto; 
@@ -36,138 +95,158 @@
   flex-direction: column; 
   align-items: center;
   justify-content: center;
-  gap: 2rem; 
+  gap: 1.5rem; 
+  position: relative;
+  z-index: 2;
 }
 
-/* ── Tarjeta de reproducción musical con el estilo de tus burbujas ── */
 .music-card {
-  background: #1a2a22;
+  background: #fdf8f0; /* Color crema suave */
   border-radius: 24px;
-  padding: 2rem;
+  padding: 2.2rem 2rem;
   width: 100%;
   text-align: center;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-  border: 1px solid #1e3328;
-  animation: fadeIn 0.8s ease forwards;
+  box-shadow: 0 10px 25px rgba(2, 132, 199, 0.15);
+  border: 3px solid #0369a1; /* Borde azul delineado estilo cómic/retro */
+  animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; /* Efecto rebote al cargar */
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.9) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
-/* Icono/Vinilo decorativo abstracto en sintonía con tu paleta */
-.disc-avatar {
-  width: 100px;
-  height: 100px;
-  background: radial-gradient(circle, #5DCAA5 20%, #1D9E75 60%, #0d1117 100%);
-  border-radius: 50%;
-  margin: 0 auto 1.5rem;
+/* ── Ecualizador de Ondas Musicales Animadas ── */
+.freq-bars {
   display: flex;
-  align-items: center;
   justify-content: center;
-  font-size: 2rem;
-  box-shadow: 0 0 15px rgba(29, 158, 117, 0.4);
-  animation: rotateDisc 8s linear infinite;
-}
-
-@keyframes rotateDisc {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-.track-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 20px;
-  color: #e8f5f0;
-  margin-bottom: 0.4rem;
-  font-style: italic;
-}
-
-.track-artist {
-  font-size: 13px;
-  color: #5DCAA5;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-weight: 400;
+  align-items: flex-end;
+  gap: 6px;
+  height: 60px;
   margin-bottom: 1.5rem;
 }
+.bar {
+  width: 8px;
+  height: 15px;
+  background-color: #1D9E75; /* Verde Esmeralda */
+  border-radius: 999px;
+  animation: bounceBar 1s ease-in-out infinite alternate;
+}
+/* Variación de tiempos de retraso y colores alegres para cada barra del ecualizador */
+.bar:nth-child(2) { animation-delay: 0.15s; background-color: #5DCAA5; }
+.bar:nth-child(3) { animation-delay: 0.4s; background-color: #f4a8c0; height: 25px; }
+.bar:nth-child(4) { animation-delay: 0.25s; background-color: #e07898; }
+.bar:nth-child(5) { animation-delay: 0.5s; background-color: #1D9E75; }
 
-/* Mensaje estilo dedicatoria */
-.card-text {
-  font-size: 15px;
-  line-height: 1.6;
-  color: #c8ead8;
-  font-weight: 300;
-  margin-bottom: 2rem;
-  text-align: justify;
+@keyframes bounceBar {
+  0% { height: 10px; }
+  100% { height: 55px; }
 }
 
-/* ── Controles inferiores idénticos a tu botón principal ── */
-.controls { padding: 1.5rem; max-width: 520px; width: 100%; margin: 0 auto; border-top: 1px solid #1e2a22; }
+.track-title { font-family: 'Playfair Display', serif; font-size: 24px; color: #0369a1; margin-bottom: 0.3rem; font-style: italic; font-weight: 700; }
+.track-artist { font-size: 12px; color: #e07898; text-transform: uppercase; letter-spacing: 0.15em; font-weight: 700; margin-bottom: 1.5rem; }
+.card-text { font-size: 15px; line-height: 1.6; color: #2d2d3a; font-weight: 400; margin-bottom: 1rem; text-align: justify; }
 
-/* Botón con el verde esmeralda brillante exacto de tus capturas */
+/* ==========================================================================
+   5. CONTROLES Y BOTÓN INTERACTIVO PRINCIPAL
+   ========================================================================== */
+.controls { 
+  padding: 1.5rem; 
+  max-width: 520px; 
+  width: 100%; 
+  margin: 0 auto; 
+  border-top: 1px solid #bae6fd; 
+  position: relative; 
+  z-index: 2; 
+}
+
+/* Botón interactivo principal (Verde Esmeralda con sombra sólida) */
 .btn-playlist { 
   display: block;
   width: 100%; 
   padding: 14px; 
   border-radius: 14px; 
-  border: 1px solid transparent; 
+  border: 3px solid #0369a1; 
   background: #1D9E75; 
   color: #e8f5f0; 
   font-size: 15px; 
   font-family: 'Lato', sans-serif; 
-  font-weight: 400; 
+  font-weight: 700; 
   cursor: pointer; 
-  transition: all 0.2s; 
+  transition: all 0.2s ease; 
   letter-spacing: 0.03em;
   text-decoration: none;
   text-align: center;
+  box-shadow: 0 4px 0 #0369a1; /* Sombra sólida que le da el relieve 3D */
 }
-.btn-playlist:hover { background: transparent; border-color: #1D9E75; color: #1D9E75; }
-.btn-playlist:active { transform: scale(0.98); }
+/* Efecto hover: se eleva un poco y la sombra se agranda */
+.btn-playlist:hover { 
+  background: #5DCAA5; 
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 #0369a1;
+}
+/* Efecto active (al hacer clic): se hunde simulando un botón físico real */
+.btn-playlist:active { 
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #0369a1;
+}
 
 .btn-back {
   display: block;
   text-align: center;
-  margin-top: 12px;
-  font-size: 12px;
-  color: #3a5a4a;
+  margin-top: 15px;
+  font-size: 13px;
+  color: #0284c7;
   text-decoration: none;
   letter-spacing: 0.04em;
+  font-weight: 700;
   transition: color 0.2s;
 }
-.btn-back:hover { color: #5DCAA5; }
+.btn-back:hover { color: #e07898; text-decoration: underline; }
 </style>
 </head>
 <body>
 
-<div class="page">
-  <div class="hero">
-    <p class="hero-day">día 2</p>
-    <h1 class="hero-title">Una melodía pensada<br>para ti</h1>
-    <p class="hero-sub">playlist seleccionada con el corazón</p>
+  <div class="cloud-bg">
+    <div class="cloud c1"></div>
+    <div class="cloud c2"></div>
+    <div class="cloud c3"></div>
   </div>
 
-  <div class="content-area">
-    <div class="music-card">
-      <div class="disc-avatar">🎵</div>
-      <h2 class="track-title">Rincón Musical Distante</h2>
-      <p class="track-artist">Nuestras Canciones</p>
-      <p class="card-text">
-        Hay canciones que tienen el súper poder de borrar por completo cualquier distancia geográfica. Me guardo este rincón musical para que, cada vez que le des al play, sientas que estoy ahí compartiendo un pedacito de mi mundo contigo.
-      </p>
+  <div class="page">
+    <div class="hero">
+      <p class="hero-day">día 2</p>
+      <h1 class="hero-title">Nuestra sintonía<br>en el aire</h1>
+      <p class="hero-sub">playlist hecha con todo mi amor</p>
+    </div>
+
+    <div class="content-area">
+      <div class="music-card">
+        
+        <div class="freq-bars">
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+        </div>
+        
+        <h2 class="track-title">Frecuencia Mutua</h2>
+        <p class="track-artist">Ame & Victoria</p>
+        <p class="card-text">
+          Hay una conexión mágica que no entiende de kilómetros ni de mapas. Esta playlist es nuestro punto de encuentro; el espacio donde las distancias se disuelven por completo y sintonizamos exactamente en la misma onda de alegría. Cada canción lleva un pedacito de lo lindo que es tenerte cerca a través de la música.
+        </p>
+      </div>
+    </div>
+
+    <div class="controls">
+      <a href="https://youtu.be/DYwQy_9JPtQ?si=x2CbJL96fGU6SHIw" target="_blank" class="btn-playlist">
+        conectarse a la frecuencia →
+      </a>
+      
+      <a href="index.html" class="btn-back">← volver al calendario</a>
     </div>
   </div>
-
-  <div class="controls">
-    <!-- REEMPLAZA AQUÍ el enlace entre las comillas con tu URL real de la playlist de YouTube -->
-    <a href="https://youtube.com/playlist?list=TU_ID_DE_PLAYLIST_AQUÍ" target="_blank" class="btn-playlist">
-      escuchar playlist en youtube →
-    </a>
-    <a href="index.html" class="btn-back">← volver al calendario</a>
-  </div>
-</div>
 
 </body>
 </html>
