@@ -17,6 +17,7 @@
             align-items: center;
             height: 100vh;
             margin: 0;
+            overflow: hidden;
         }
 
         .terminal-container {
@@ -27,6 +28,7 @@
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
             border: 1px solid #2a2a2a;
             overflow: hidden;
+            position: relative;
         }
 
         .terminal-header {
@@ -58,7 +60,6 @@
             text-shadow: 0 0 8px #27c93f;
         }
 
-        /* ── Acciones Interactivas de los Protocolos ── */
         .command {
             color: #a855f7;
             cursor: pointer;
@@ -70,7 +71,6 @@
             text-shadow: 0 0 10px #a855f7;
         }
 
-        /* Enlace de regreso estilizado como comando Bash */
         .command-back {
             color: #64748b;
             text-decoration: none;
@@ -115,7 +115,6 @@
             font-family: 'Courier New', Courier, monospace;
         }
 
-        /* ── Animación por caracteres para la máquina de escribir ── */
         #typed-output {
             line-height: 1.5;
             font-size: 14px;
@@ -132,7 +131,6 @@
             opacity: 1;
         }
 
-        /* Revelado de las palabras clave ocultas en dorado brillante */
         #typed-output b {
             color: #fbbf24 !important;
             font-weight: 900 !important;
@@ -166,7 +164,6 @@
             font-weight: bold;
         }
 
-        /* Contenedor del mensaje secreto revelado */
         .secret-reveal {
             margin-top: 15px;
             padding: 12px 16px;
@@ -207,6 +204,70 @@
 
         @keyframes blink { 50% { opacity: 0; } }
         #login-ascii, #ascii-art { color: #a855f7; font-size: 11px; line-height: 1.2; margin: 0; }
+
+        /* ==========================================================================
+           2. NUEVO MODAL DE ERROR PERSONALIZADO (CERO ALERTAS DE NAVEGADOR)
+           ========================================================================== */
+        .custom-alert-bg {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .custom-alert-bg.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .custom-alert {
+            background: #141414;
+            border: 2px solid #ff5f56;
+            border-radius: 8px;
+            padding: 25px;
+            max-width: 380px;
+            width: 85%;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(255, 95, 86, 0.2);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        .custom-alert-bg.show .custom-alert {
+            transform: scale(1);
+        }
+        .alert-icon {
+            color: #ff5f56;
+            font-size: 24px;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+        .alert-text {
+            color: #fff;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .alert-btn {
+            background: transparent;
+            color: #ff5f56;
+            border: 1px solid #ff5f56;
+            padding: 8px 20px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+        .alert-btn:hover {
+            background: #ff5f56;
+            color: #141414;
+            box-shadow: 0 0 10px rgba(255, 95, 86, 0.4);
+        }
     </style>
 </head>
 <body>
@@ -255,16 +316,24 @@
             </div>
 
         </div>
+
+        <div class="custom-alert-bg" id="alert-bg">
+            <div class="custom-alert">
+                <div class="alert-icon">⚠️ ACCESO DENEGADO</div>
+                <div class="alert-text">La firma digital no coincide.<br>Revisa la letra de la canción e intenta de nuevo.</div>
+                <button class="alert-btn" onclick="closeAlert()">REINTENTAR</button>
+            </div>
+        </div>
+
     </div>
 
     <script>
-        // Mensajes principales con etiquetas HTML integradas para las letras doradas
         const mensajes = {
-            pesado: "<div class='msg-header'>=========================================<br>  PROTOCOLO: DESCONEXIÓN Y CALMA <br>=========================================</div><br><br>Sé muy bien lo mucho que te esfuerzas día a día y la dedicación tan increíble que le pones a cada una de las tareas que fabriquas o manejas. <b>Aquí</b> tu manera de afrontar los retos en la oficina es admirable, pero a veces las rutinas se vuelven sumamente densas y el cansancio físico y mental empieza a pegar con mucha fuerza. Sé que el ritmo puede ser abrumador, pero justo hoy quería pasar por aquí para recordarte que <b>estoy</b> convencida de que está bien pausar, respirar profundo y soltar el control por un momento. No tienes que cargar con el peso del mundo sobre tus hombros; <b>siempre</b> mantén en mente que eres una mujer sumamente inteligente y tesa, y absolutamente nada de lo que ocurra en un día caótico va a cambiar lo valiosa que eres. Cuando por fin cierres la pantalla hoy, quiero que dejes el estrés ahí adentro. Recuerda que cuentas <b>contigo</b> misma para brillar, pero que también aquí estoy yo, celebrando cada uno de tus procesos, admirándote en silencio y completamente dispuesta a escucharte o a acompañarte en completo silencio, como tú lo prefieras. Desconéctate tranquila, descansa tu mente y recuerda que te mereces toda la paz del mundo, preciosa.",
+            pesado: "<div class='msg-header'>=========================================<br>  PROTOCOLO: DESCONEXIÓN Y CALMA <br>=========================================</div><br><br>Sé muy bien lo mucho que te esfuerzas día a día y la dedicación tan increíble que le pones a cada una de las tareas que fábricas o manejas. <b>Aquí</b> tu manera de afrontar los retos en la oficina es admirable, pero a veces las rutinas se vuelven sumamente densas y el cansancio físico y mental empieza a pegar con mucha fuerza. Sé que el ritmo puede ser abrumador, pero justo hoy quería pasar por aquí para recordarte que <b>estoy</b> convencida de que está bien pausar, respirar profundo y soltar el control por un momento. No tienes que cargar con el peso del mundo sobre tus hombros; <b>siempre</b> mantén en mente que eres una mujer sumamente inteligente y tesa, y absolutamente nada de lo que ocurra en un día caótico va a cambiar lo valiosa que eres. Cuando por fin cierres la pantalla hoy, quiero que dejes el estrés ahí adentro. Recuerda que cuentas <b>contigo</b> misma para brillar, pero que también aquí estoy yo, celebrando cada uno de tus procesos, admirándote en silencio y completamente dispuesta a escucharte o a acompañarte en completo silencio, como tú lo prefieras. Desconéctate tranquila, descansa tu mente y recuerda que te mereces toda la paz del mundo, preciosa.",
             
             sonreir: "<div class='msg-header'>=========================================<br>  PROTOCOLO: SINCRONÍA Y COMPLICIDAD <br>=========================================</div><br><br>Si terminaste en este comando es porque seguramente al día le está haciendo falta un poquito de luz, y tienes que saber que mi misión favorita siempre va a ser recordarte lo bonito que es compartir la vida. <b>Tu</b> forma de ser es increíble, tienes una chispa única y una <b>felicidad</b> que contagia a cualquiera. Me pasa seguido que me quedo pensando en nuestras charlas, en las bobadas que solo nosotras entendemos, en los chistes internos y en cómo un día cualquiera <b>me</b> parece el mejor momento de la semana con solo ponernos a conversar un rato. Me <b>hace</b> inmensamente feliz saber que, aunque los kilómetros nos separen físicamente en el mapa, compartimos una sintonía tan linda y real. Hemos construido un espacio muy sano en donde nos sentimos <b>bien</b> y podemos hablar de todo con total transparencia, y eso es algo que valoro más de lo que te imaginas. Espero de todo corazón que leer esto te robe esa sonrisa gigante que tanto me gusta ver y que te recuerde que tu bienestar le da un color hermoso a mi realidad. ¡Te adoro un montón, Ame!",
             
-            extrañar: "<div class='msg-header'>=========================================<br>  PROTOCOLO: ABRAZO A LA DISTANCIA <br>=========================================</div><br><br>Si te dio por presionar este protocolo, quiero pedirte que cierres los ojos un segundo y sientas este lazo tan fuerte que nos une. <b>Eres</b> una persona hermosa en todos los sentidos posibles, tanto por dentro como por fuera, de esas que esparcen <b>magia</b> por donde caminan por la forma tan bonita en que transformas todo a tu alrededor. La distancia puede parecer un obstáculo muy grande, pero se vuelve un número completamente tonto cuando alguien influye <b>en</b> tu día de la manera tan limpia, bonita y honesta en que lo hacemos nosotras. No pasa un solo día en el que no agradezca el haber coincidido contigo en el camino; tu presencia le da un toque hermoso a <b>mi</b> realidad y me encanta escucharte, conocer cada día más de ti, compartir nuestros gustos y saber que estás al otro lado de la pantalla siendo un refugio seguro. No dudes jamás de lo mucho que te llevo conmigo en mis pensamientos. Este rinconcito que acompaña tu <b>vida</b> lo creé con mis propias manos para que nunca tengas espacio a dudar de lo importante que eres para mí, preciosa. Estoy aquí para ti hoy, mañana y siempre."
+            extrañar: "<div class='msg-header'>=========================================<br>  PROTOCOLO: ABRAZO A LA DISTANCIA <br>=========================================</div><br><br>Si te dio por presionar este protocolo, quiero pedirte que cierres los ojos un segundo y sientas este lazo tan fuerte que nos une. <b>Eres</b> una persona hermosa en todos los sentidos posibles, tanto por dentro como por fuera, de esas que esparcen <b>magia</b> por donde caminan por la forma tan bonita en que transformas todo a tu alrededor. La distancia puede parecer un obstacle muy grande, pero se vuelve un número completamente tonto cuando alguien influye <b>en</b> tu día de la manera tan limpia, bonita y honesta en que lo hacemos nosotras. No pasa un solo día en el que no agradezca el haber coincidido contigo en el camino; tu presencia le da un toque hermoso a <b>mi</b> realidad y me encanta escucharte, conocer cada día más de ti, compartir nuestros gustos y saber que estás al otro lado de la pantalla siendo un refugio seguro. No dudes jamás de lo mucho que te llevo conmigo en mis pensamientos. Este rinconcito que acompaña tu <b>vida</b> lo creé con mis propias manos para que nunca tengas espacio a dudar de lo importante que eres para mí, preciosa. Estoy aquí para ti hoy, mañana y siempre."
         };
 
         const mensajesSecretos = {
@@ -285,8 +354,8 @@
         const inputLine     = document.getElementById('input-line');
         const accessKeyInput = document.getElementById('access-key');
         const loginAscii     = document.getElementById('login-ascii');
+        const alertBg        = document.getElementById('alert-bg');
 
-        // Arte ASCII de Kuromi cargado al iniciar la transmisión
         const kuromiArt = `
  ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⣀⣀⣀⢠⠋⠉⠉⠒⠲⢤⣀⣠⡀⠀
 ⠀⠀⠀⠀⠀⠀⣀⣀⣀⢀⡠⠖⠋⠉⠀⠀⠀⠀⠉⠉⠢⣄⠀⠀⠀⢀⠼⠤⠇⠀
@@ -320,14 +389,21 @@
             }
         });
 
+        /* ── CORREGIDO: Reemplazo de alert() por Modal Customizado sin URLs ── */
         function validarAcceso(key) {
             if (key === 'magia') { 
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('main-interface').style.display = 'block';
             } else {
-                alert("Acceso denegado. Revisa la letra de la canción e intenta de nuevo.");
-                accessKeyInput.value = "";
+                // Abre el contenedor modal interno
+                alertBg.classList.add('show');
             }
+        }
+
+        function closeAlert() {
+            alertBg.classList.remove('show');
+            accessKeyInput.value = "";
+            accessKeyInput.focus();
         }
 
         function typeEffect(text, container, callback) {
@@ -359,7 +435,6 @@
             typedDiv.innerHTML = "";
             isTyping = true;
 
-            // Convertir el texto HTML en una estructura de nodos con letras envueltas en spans
             let parsedHTML = "";
             let j = 0;
             while (j < rawText.length) {
@@ -373,10 +448,8 @@
                 }
             }
             
-            // Insertar de golpe todo el esqueleto HTML estructurado
             typedDiv.innerHTML = parsedHTML;
             
-            // Seleccionar secuencialmente cada uno de los caracteres ocultos
             const chars = typedDiv.querySelectorAll('.char');
             let charIndex = 0;
             
@@ -384,7 +457,7 @@
                 if (charIndex < chars.length) {
                     chars[charIndex].classList.add('visible');
                     charIndex++;
-                    setTimeout(revealChar, 35); // Velocidad perfecta para leer cómodamente
+                    setTimeout(revealChar, 35);
                 } else {
                     isTyping = false;
                     mostrarEscaneo(tipo);
@@ -427,7 +500,6 @@
                 footer.textContent = '[ SISTEMA ] Ejecución terminada. Usa la opción de abajo si deseas regresar al calendario general.';
                 secretScanDiv.appendChild(footer);
 
-                // Añadimos el enlace de retorno dinámicamente al finalizar la secuencia
                 const backLinkContainer = document.createElement('div');
                 backLinkContainer.style.marginTop = '15px';
                 backLinkContainer.innerHTML = `<a href="index.html" class="command-back">[0] &lt;-- Volver al menú principal</a>`;
