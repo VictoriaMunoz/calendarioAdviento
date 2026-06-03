@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>🌿 Calendario de Adviento · Ame 🌿</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800;900&family=Bubblegum+Sans&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --green:     #4a7c59;
+  --green-l:   #7dbc8f;
+  --green-d:   #2e4f38;
+  --green-pale:#d6edd9;
+  --cream:     #fdf8f0;
+  --kuromi:    #2d2d3a;
+  --kuromi-l:  #6b6b8a;
+  --pink:      #f4a8c0;
+  --pink-d:    #e07898;
+  --lavender:  #c5b8e8;
+  --night:     #1a1a2a;
+  --sand:      #f0e6c8;
+  --moss:      #8fbc8f;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+body {
+  min-height:100vh;
+  background: var(--cream);
+  background-image:
+    radial-gradient(ellipse 70% 50% at 20% 10%, rgba(125,188,143,.18) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(197,184,232,.2)  0%, transparent 55%),
+    radial-gradient(ellipse 50% 60% at 60% 30%, rgba(214,237,217,.25) 0%, transparent 50%);
+  font-family:'Nunito',sans-serif;
+  overflow-x:hidden;
+  position:relative;
+  padding-bottom:4rem;
+}
+
+/* ── Fondo decorativo: hojas y bichos ──────────────────── */
+.bg-deco {
+  position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;
+}
+.leaf {
+  position:absolute;font-size:var(--s,2rem);
+  opacity:var(--o,.15);
+  animation:sway var(--d,6s) ease-in-out infinite alternate;
+  transform-origin:bottom center;
+}
+@keyframes sway {
+  0%  {transform:rotate(var(--r1,-8deg)) scale(1)}
+  100%{transform:rotate(var(--r2,8deg))  scale(1.04)}
+}
+.bug {
+  position:absolute;font-size:var(--s,1.5rem);
+  opacity:var(--o,.13);
+  animation:crawl var(--d,8s) ease-in-out infinite alternate;
+}
+@keyframes crawl {
+  0%  {transform:translate(0,0) rotate(0deg)}
+  100%{transform:translate(var(--tx,10px),var(--ty,-8px)) rotate(var(--tr,15deg))}
+}
+
+/* ── HEADER ─────────────────────────────────────────────── */
+.hdr {
+  text-align:center;
+  padding:3rem 1rem 1.5rem;
+  position:relative;z-index:2;
+}
+.hdr-tag {
+  display:inline-block;
+  background:var(--green);
+  color:#fff;
+  font-family:'Fredoka One',cursive;
+  font-size:.75rem;letter-spacing:2.5px;text-transform:uppercase;
+  padding:.3rem 1.2rem;border-radius:999px;
+  border:2.5px solid var(--night);
+  box-shadow:3px 3px 0 var(--night);
+  margin-bottom:.9rem;
+}
+.hdr-title {
+  font-family:'Fredoka One',cursive;
+  font-size:clamp(2rem,6vw,3.2rem);
+  color:var(--green-d);
+  text-shadow:3px 3px 0 rgba(0,0,0,.08);
+  line-height:1.1;
+}
+.hdr-title span { color:var(--pink-d); }
+.hdr-sub {
+  margin-top:.6rem;
+  font-size:.9rem;color:var(--kuromi-l);
+  font-weight:700;
+  background:rgba(255,255,255,.7);
+  display:inline-block;padding:.3rem 1.1rem;border-radius:20px;
+  border:2px solid var(--green-pale);
+}
+.hdr-deco {
+  margin-top:.8rem;font-size:1.5rem;letter-spacing:6px;opacity:.6;
+}
+
+/* ── GRID DE CAJITAS ─────────────────────────────────────── */
+.grid-wrap {
+  max-width:900px;
+  margin:1rem auto 0;
+  padding:0 1rem;
+  position:relative;z-index:2;
+}
+
+.grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(130px,1fr));
+  gap:1rem;
+}
+
+/* ── CAJITA ─────────────────────────────────────────────── */
+.box {
+  aspect-ratio:1;
+  border-radius:20px;
+  border:3px solid var(--night);
+  box-shadow:4px 4px 0 var(--night);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:.3rem;
+  cursor:pointer;
+  transition:transform .18s ease, box-shadow .18s ease;
+  position:relative;overflow:hidden;
+  text-decoration:none;
+  background:var(--green-pale);
+}
+.box::before {
+  content:'';
+  position:absolute;inset:0;
+  background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.5),transparent 65%);
+  pointer-events:none;
+}
+
+/* Variantes de color por cajita */
+.box:nth-child(3n)   { background:#e8f5e9 }
+.box:nth-child(3n+1) { background:#f3e8ff }
+.box:nth-child(3n+2) { background:#e8f0fe }
+.box:nth-child(5n)   { background:#fff8e1 }
+.box:nth-child(7n)   { background:#fce4ec }
+
+.box:not(.locked):hover {
+  transform:translateY(-5px) scale(1.04);
+  box-shadow:6px 8px 0 var(--night);
+}
+.box:not(.locked):active {
+  transform:translateY(-2px) scale(1.01);
+}
+
+.box-day {
+  font-family:'Fredoka One',cursive;
+  font-size:1.6rem;color:var(--green-d);
+  line-height:1;
+  position:relative;z-index:1;
+}
+.box-emoji {
+  font-size:1.4rem;position:relative;z-index:1;
+  transition:transform .3s ease;
+}
+.box:not(.locked):hover .box-emoji { transform:scale(1.25) rotate(-8deg); }
+
+.box-label {
+  font-size:.62rem;font-weight:800;
+  letter-spacing:1px;text-transform:uppercase;
+  color:var(--green);position:relative;z-index:1;
+}
+
+/* ── ESTADO: BLOQUEADO ───────────────────────────────────── */
+.box.locked {
+  cursor:default;
+  opacity:.5;
+  filter:grayscale(.4);
+}
+.box.locked .box-day { color:var(--kuromi-l); }
+.box.locked .lock-icon {
+  font-size:1rem;position:relative;z-index:1;
+}
+
+/* ── ESTADO: HOY ─────────────────────────────────────────── */
+.box.today {
+  background: linear-gradient(135deg,#d4f0d4,#e8d4f5);
+  border-color:var(--green);
+  box-shadow:4px 4px 0 var(--green-d);
+  animation:glowBox 2.5s ease-in-out infinite alternate;
+}
+@keyframes glowBox {
+  0%  {box-shadow:4px 4px 0 var(--green-d),0 0 0 rgba(74,124,89,0)}
+  100%{box-shadow:4px 4px 0 var(--green-d),0 0 18px rgba(74,124,89,.35)}
+}
+.today-badge {
+  position:absolute;top:-1px;right:-1px;
+  background:var(--pink-d);color:#fff;
+  font-family:'Fredoka One',cursive;
+  font-size:.55rem;letter-spacing:1px;
+  padding:.2rem .5rem;border-radius:0 17px 0 10px;
+  border-left:2px solid var(--night);border-bottom:2px solid var(--night);
+}
+
+/* ── ESTADO: ABIERTO (pasado) ────────────────────────────── */
+.box.open {
+  background:linear-gradient(135deg,#c8e6c9,#dcedc8);
+}
+.box.open .box-day { color:var(--green-d); }
+
+/* ── NOTA INFORMATIVA ────────────────────────────────────── */
+.note {
+  max-width:900px;margin:.8rem auto 0;padding:0 1rem;
+  text-align:center;position:relative;z-index:2;
+}
+.note p {
+  font-size:.78rem;color:var(--kuromi-l);font-weight:700;
+  background:rgba(255,255,255,.6);
+  display:inline-block;padding:.3rem 1rem;border-radius:12px;
+  border:1.5px solid var(--green-pale);
+}
+
+/* ── FOOTER ─────────────────────────────────────────────── */
+.ftr {
+  text-align:center;margin-top:2.5rem;
+  position:relative;z-index:2;
+  font-family:'Fredoka One',cursive;
+  font-size:.85rem;color:var(--green-d);opacity:.6;
+}
+
+/* MODAL "aún no" ─────────────────────────────────────────── */
+.modal-bg {
+  position:fixed;inset:0;z-index:100;
+  background:rgba(0,0,0,.4);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .25s;
+}
+.modal-bg.show { opacity:1;pointer-events:all; }
+.modal {
+  background:#fff;border-radius:24px;
+  border:3px solid var(--night);
+  box-shadow:6px 6px 0 var(--night);
+  padding:2rem 1.8rem;text-align:center;
+  max-width:320px;width:90%;
+  transform:scale(.85);transition:transform .25s;
+}
+.modal-bg.show .modal { transform:scale(1); }
+.modal-emoji { font-size:3rem;margin-bottom:.5rem; }
+.modal-title {
+  font-family:'Fredoka One',cursive;font-size:1.3rem;
+  color:var(--green-d);margin-bottom:.5rem;
+}
+.modal-msg { font-size:.85rem;color:var(--kuromi-l);line-height:1.6;margin-bottom:1.2rem; }
+.modal-btn {
+  background:var(--green);color:#fff;border:none;
+  font-family:'Fredoka One',cursive;font-size:.95rem;
+  padding:.5rem 1.5rem;border-radius:999px;
+  border:2.5px solid var(--night);box-shadow:3px 3px 0 var(--night);
+  cursor:pointer;transition:transform .15s;
+}
+.modal-btn:hover { transform:translateY(-2px); }
+</style>
+</head>
+<body>
+
+<div class="bg-deco">
+  <div class="leaf" style="top:5%;left:3%;--s:3.5rem;--o:.12;--d:7s;--r1:-10deg;--r2:6deg">🌿</div>
+  <div class="leaf" style="top:15%;right:4%;--s:2.5rem;--o:.1;--d:9s;--r1:5deg;--r2:-12deg">🍃</div>
+  <div class="leaf" style="bottom:25%;left:1%;--s:4rem;--o:.11;--d:6s;--r1:-6deg;--r2:10deg">🌿</div>
+  <div class="leaf" style="bottom:10%;right:2%;--s:3rem;--o:.1;--d:8s;--r1:8deg;--r2:-5deg">🍃</div>
+  <div class="leaf" style="top:50%;left:5%;--s:2rem;--o:.09;--d:11s;--r1:-15deg;--r2:5deg">🌱</div>
+  <div class="leaf" style="top:70%;right:6%;--s:2rem;--o:.09;--d:10s;--r1:5deg;--r2:-10deg">🌱</div>
+  <div class="bug"  style="top:8%;left:20%;--s:2rem;--o:.1;--d:10s;--tx:15px;--ty:-10px;--tr:20deg">🐛</div>
+  <div class="bug"  style="top:35%;right:8%;--s:1.8rem;--o:.1;--d:12s;--tx:-12px;--ty:8px;--tr:-15deg">🐝</div>
+  <div class="bug"  style="bottom:30%;left:10%;--s:1.6rem;--o:.09;--d:9s;--tx:10px;--ty:-6px;--tr:10deg">🦋</div>
+  <div class="bug"  style="bottom:15%;right:15%;--s:1.5rem;--o:.09;--d:14s;--tx:-8px;--ty:10px;--tr:-20deg">🐞</div>
+  <div class="bug"  style="top:60%;left:18%;--s:1.4rem;--o:.08;--d:11s;--tx:12px;--ty:-8px;--tr:25deg">🐌</div>
+  <div class="leaf" style="top:80%;right:20%;--s:2.5rem;--o:.08;--d:13s;--r1:-5deg;--r2:9deg">🌸</div>
+  <div class="leaf" style="top:25%;left:12%;--s:2rem;--o:.08;--d:15s;--r1:3deg;--r2:-8deg">🌸</div>
+</div>
+
+<header class="hdr">
+  <div class="hdr-tag">🌿 calendario de adviento 🌿</div>
+  <h1 class="hdr-title">Para ti, <span>preciosa</span> 🖤</h1>
+  <p class="hdr-sub">24 días · 24 sorpresas hechas con todo mi amor</p>
+  <div class="hdr-deco">🌿 🐛 🌸 🐝 🍃</div>
+</header>
+
+<div class="grid-wrap">
+  <div class="grid" id="grid"></div>
+</div>
+
+<div class="note">
+  <p>🔒 Las cajitas se abren el día que corresponden · ¡No hagas trampa! 🌿</p>
+</div>
+
+<footer class="ftr">hecho con 💚 para ti · diciembre 2026</footer>
+
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <div class="modal-emoji">🐛</div>
+    <div class="modal-title">¡Todavía no, preciosa!</div>
+    <div class="modal-msg">Esta cajita se abre el <strong id="modal-date"></strong>.<br>Las buenas cosas valen la pena esperar 🌿</div>
+    <button class="modal-btn" onclick="closeModal()">Está bien 🌸</button>
+  </div>
+</div>
+
+<script>
+// ── CONFIGURACIÓN AUTOMÁTICA ──────────────────────────────────────────
+const START_YEAR  = 2026;
+const START_MONTH = 11; // 11 = Diciembre en JavaScript (0-indexed)
+const START_DAY   = 1;
+
+// Emojis estéticos para el recorrido
+const EMOJIS = [
+  '🌿','🐛','🌸','🍃','🐝','🦋','🌱','🐞',
+  '🌺','🍀','🐌','🌻','🌿','🐛','🌸','🍃',
+  '🐝','🦋','🌱','🐞','🌺','🍀','🐌','🌟'
+];
+
+// ── LÓGICA DE FECHAS NATURALEZA DINÁMICA ───────────────────────────────────────
+const today     = new Date();
+const todayDay  = today.getDate();
+const todayMonth= today.getMonth();
+const todayYear = today.getFullYear();
+
+function isUnlocked(day) {
+  const boxDate  = new Date(START_YEAR, START_MONTH, START_DAY + day - 1);
+  const todayObj = new Date(todayYear, todayMonth, todayDay);
+  return boxDate <= todayObj;
+}
+
+function isToday(day) {
+  const boxDate = new Date(START_YEAR, START_MONTH, START_DAY + day - 1);
+  return (
+    boxDate.getDate()     === todayDay   &&
+    boxDate.getMonth()    === todayMonth &&
+    boxDate.getFullYear() === todayYear
+  );
+}
+
+function boxDateLabel(day) {
+  const d = new Date(START_YEAR, START_MONTH, START_DAY + day - 1);
+  return d.toLocaleDateString('es-MX', { day:'numeric', month:'long' });
+}
+
+// ── CONSTRUIR GRID AUTOMÁTICO ─────────────────────────────────────────
+const grid = document.getElementById('grid');
+
+for (let d = 1; d <= 24; d++) {
+  const unlocked = isUnlocked(d);
+  const today_   = isToday(d);
+  const emoji    = EMOJIS[d - 1] || '🌿';
+
+  const a = document.createElement('a');
+  a.className = 'box' + (unlocked ? (today_ ? ' today open' : ' open') : ' locked');
+
+  if (unlocked) {
+    // Apunta dinámicamente al archivo sin ceros molestos a la izquierda
+    a.href = `dia-${d}.html`;
+  } else {
+    a.href = '#';
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      openModal(d);
+    });
+  }
+
+  a.innerHTML = `
+    ${today_ ? '<div class="today-badge">¡HOY! 🌸</div>' : ''}
+    <div class="box-day">${d}</div>
+    ${unlocked
+      ? `<div class="box-emoji">${emoji}</div>`
+      : `<div class="lock-icon">🔒</div>`
+    }
+    <div class="box-label">${unlocked ? 'día ' + d : ''}</div>
+  `;
+
+  grid.appendChild(a);
+}
+
+// ── MANEJO DEL MODAL INFORMATIVO ──────────────────────────────────────────────────
+function openModal(day) {
+  document.getElementById('modal-date').textContent = boxDateLabel(day);
+  document.getElementById('modal').classList.add('show');
+}
+function closeModal() {
+  document.getElementById('modal').classList.remove('show');
+}
+document.getElementById('modal').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeModal();
+});
+</script>
+</body>
+</html>
