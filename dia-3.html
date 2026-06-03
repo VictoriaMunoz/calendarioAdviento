@@ -71,17 +71,21 @@
             text-shadow: 0 0 10px #a855f7;
         }
 
-        .command-back {
+        /* Enlaces/Botones de navegación de la terminal */
+        .command-nav {
             color: #64748b;
             text-decoration: none;
             display: inline-block;
-            margin-top: 14px;
+            margin-top: 12px;
             cursor: pointer;
             transition: 0.3s ease;
         }
-        .command-back:hover {
+        .command-nav.primary {
             color: #ff80ab;
-            text-shadow: 0 0 10px #ff80ab;
+        }
+        .command-nav:hover {
+            color: #fff;
+            text-shadow: 0 0 10px currentColor;
         }
 
         #access-key {
@@ -205,9 +209,6 @@
         @keyframes blink { 50% { opacity: 0; } }
         #login-ascii, #ascii-art { color: #a855f7; font-size: 11px; line-height: 1.2; margin: 0; }
 
-        /* ==========================================================================
-           2. NUEVO MODAL DE ERROR PERSONALIZADO (CERO ALERTAS DE NAVEGADOR)
-           ========================================================================== */
         .custom-alert-bg {
             position: absolute;
             inset: 0;
@@ -282,6 +283,7 @@
         
         <div class="terminal-body" id="terminal-body">
             
+            <!-- Pantalla de Login -->
             <div id="login-screen">
                 <pre id="login-ascii" style="color: #a855f7; font-family: monospace; font-size: 10px; line-height: 1.1; margin-bottom: 15px;"></pre>
                 <div id="login-output"></div>
@@ -291,6 +293,7 @@
                 </div>
             </div>
 
+            <!-- Interfaz Principal -->
             <div id="main-interface" style="display: none;">
                 <div class="welcome-container">
                     <pre id="ascii-art">
@@ -308,7 +311,7 @@
                     <p class="command" onclick="runCommand('pesado')">[1] ./dia_pesado.sh  --> Si la oficina estuvo densa</p>
                     <p class="command" onclick="runCommand('sonreir')">[2] ./sacar_sonrisa.sh --> Si te hace falta una alegría</p>
                     <p class="command" onclick="runCommand('extrañar')">[3] ./abrazo_virtual.sh --> Si quieres sentirme cerca</p>
-                    <a href="index.html" class="command-back">[0] &lt;-- Volver al menú principal</a>
+                    <span class="command-nav primary" onclick="location.href='index.html'">[9] salir_al_calendario.sh</span>
                 </div>
                 <div id="typed-output"></div>
                 <div id="secret-scan" style="display:none;"></div>
@@ -317,6 +320,7 @@
 
         </div>
 
+        <!-- Alerta integrada personalizada sin URL -->
         <div class="custom-alert-bg" id="alert-bg">
             <div class="custom-alert">
                 <div class="alert-icon">⚠️ ACCESO DENEGADO</div>
@@ -333,7 +337,7 @@
             
             sonreir: "<div class='msg-header'>=========================================<br>  PROTOCOLO: SINCRONÍA Y COMPLICIDAD <br>=========================================</div><br><br>Si terminaste en este comando es porque seguramente al día le está haciendo falta un poquito de luz, y tienes que saber que mi misión favorita siempre va a ser recordarte lo bonito que es compartir la vida. <b>Tu</b> forma de ser es increíble, tienes una chispa única y una <b>felicidad</b> que contagia a cualquiera. Me pasa seguido que me quedo pensando en nuestras charlas, en las bobadas que solo nosotras entendemos, en los chistes internos y en cómo un día cualquiera <b>me</b> parece el mejor momento de la semana con solo ponernos a conversar un rato. Me <b>hace</b> inmensamente feliz saber que, aunque los kilómetros nos separen físicamente en el mapa, compartimos una sintonía tan linda y real. Hemos construido un espacio muy sano en donde nos sentimos <b>bien</b> y podemos hablar de todo con total transparencia, y eso es algo que valoro más de lo que te imaginas. Espero de todo corazón que leer esto te robe esa sonrisa gigante que tanto me gusta ver y que te recuerde que tu bienestar le da un color hermoso a mi realidad. ¡Te adoro un montón, Ame!",
             
-            extrañar: "<div class='msg-header'>=========================================<br>  PROTOCOLO: ABRAZO A LA DISTANCIA <br>=========================================</div><br><br>Si te dio por presionar este protocolo, quiero pedirte que cierres los ojos un segundo y sientas este lazo tan fuerte que nos une. <b>Eres</b> una persona hermosa en todos los sentidos posibles, tanto por dentro como por fuera, de esas que esparcen <b>magia</b> por donde caminan por la forma tan bonita en que transformas todo a tu alrededor. La distancia puede parecer un obstacle muy grande, pero se vuelve un número completamente tonto cuando alguien influye <b>en</b> tu día de la manera tan limpia, bonita y honesta en que lo hacemos nosotras. No pasa un solo día en el que no agradezca el haber coincidido contigo en el camino; tu presencia le da un toque hermoso a <b>mi</b> realidad y me encanta escucharte, conocer cada día más de ti, compartir nuestros gustos y saber que estás al otro lado de la pantalla siendo un refugio seguro. No dudes jamás de lo mucho que te llevo conmigo en mis pensamientos. Este rinconcito que acompaña tu <b>vida</b> lo creé con mis propias manos para que nunca tengas espacio a dudar de lo importante que eres para mí, preciosa. Estoy aquí para ti hoy, mañana y siempre."
+            extrañar: "<div class='msg-header'>=========================================<br>  PROTOCOLO: ABRAZO A LA DISTANCIA <br>=========================================</div><br><br>Si te dio por presionar este protocolo, quiero pedirte que cierres los ojos un segundo y sientas este lazo tan fuerte que nos une. <b>Eres</b> una persona hermosa en todos los sentidos posibles, tanto por dentro como por fuera, de esas que esparcen <b>magia</b> por donde caminan por la forma tan bonita en que transformas todo a tu alrededor. La distancia puede parecer un obstáculo muy grande, pero se vuelve un número completamente tonto cuando alguien influye <b>en</b> tu día de la manera tan limpia, bonita y honesta en que lo hacemos nosotras. No pasa un solo día en el que no agradezca el haber coincidido contigo en el camino; tu presencia le da un toque hermoso a <b>mi</b> realidad y me encanta escucharte, conocer cada día más de ti, compartir nuestros gustos y saber que estás al otro lado de la pantalla siendo un refugio seguro. No dudes jamás de lo mucho que te llevo conmigo en mis pensamientos. Este rinconcito que acompaña tu <b>vida</b> lo creé con mis propias manos para que nunca tengas espacio a dudar de lo importante que eres para mí, preciosa. Estoy aquí para ti hoy, mañana y siempre."
         };
 
         const mensajesSecretos = {
@@ -389,13 +393,11 @@
             }
         });
 
-        /* ── CORREGIDO: Reemplazo de alert() por Modal Customizado sin URLs ── */
         function validarAcceso(key) {
             if (key === 'magia') { 
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('main-interface').style.display = 'block';
             } else {
-                // Abre el contenedor modal interno
                 alertBg.classList.add('show');
             }
         }
@@ -417,6 +419,15 @@
                     if (callback) callback();
                 }
             }, 45);
+        }
+
+        function resetTerminalMenu() {
+            document.getElementById('output').style.display = 'block';
+            document.getElementById('typed-output').innerHTML = "";
+            document.getElementById('secret-scan').style.display = 'none';
+            document.getElementById('secret-scan').innerHTML = "";
+            const welcomeContainer = document.querySelector('.welcome-container');
+            if (welcomeContainer) welcomeContainer.style.display = 'flex';
         }
 
         function runCommand(tipo) {
@@ -497,13 +508,21 @@
 
                 const footer = document.createElement('p');
                 footer.className = 'footer-msg';
-                footer.textContent = '[ SISTEMA ] Ejecución terminada. Usa la opción de abajo si deseas regresar al calendario general.';
+                footer.textContent = '[ SISTEMA ] Ejecución terminada. Elige una de las siguientes secuencias de comando:';
                 secretScanDiv.appendChild(footer);
 
-                const backLinkContainer = document.createElement('div');
-                backLinkContainer.style.marginTop = '15px';
-                backLinkContainer.innerHTML = `<a href="index.html" class="command-back">[0] &lt;-- Volver al menú principal</a>`;
-                secretScanDiv.appendChild(backLinkContainer);
+                /* ── CORREGIDO: Menú Dinámico con los 2 botones solicitados al finalizar ── */
+                const navContainer = document.createElement('div');
+                navContainer.style.marginTop = '15px';
+                navContainer.style.display = 'flex';
+                navContainer.style.flexDirection = 'column';
+                navContainer.style.gap = '8px';
+                
+                navContainer.innerHTML = `
+                    <span class="command-nav" onclick="resetTerminalMenu()">[0] volver_al_menu_de_comandos.sh</span>
+                    <span class="command-nav primary" onclick="location.href='index.html'">[9] salir_al_calendario.sh</span>
+                `;
+                secretScanDiv.appendChild(navContainer);
 
                 terminalBody.scrollTop = terminalBody.scrollHeight;
             }, totalDelay);
