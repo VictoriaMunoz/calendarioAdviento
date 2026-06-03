@@ -78,7 +78,9 @@
       background-color: #1a1221;
       border-top: 1px solid #2a1b35;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px; /* Espacio uniforme entre el botón y el enlace */
     }
     #generate-btn {
       background-color: #120d16;
@@ -99,6 +101,24 @@
       color: #120d16;
       transform: scale(1.05);
     }
+    
+    /* ── NUEVO ESTILO: Botón de retorno al menú principal ── */
+    .btn-back {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 11px;
+      color: #b388ff;
+      text-decoration: none;
+      letter-spacing: 1px;
+      font-weight: 400;
+      transition: color 0.2s, opacity 0.2s;
+      opacity: 0.7;
+    }
+    .btn-back:hover {
+      color: #ff80ab;
+      opacity: 1;
+      text-decoration: underline;
+    }
+    
     .fade-in {
       animation: fadeInEffect 0.5s ease forwards;
     }
@@ -121,6 +141,8 @@
     </div>
     <div class="card-footer">
       <button id="generate-btn">GENERAR RECORDATORIO 💜</button>
+      <!-- Enlace directo para regresar a la raíz principal del repositorio en GitHub Pages -->
+      <a href="index.html" class="btn-back">← VOLVER AL CALENDARIO</a>
     </div>
   </div>
 </div>
@@ -174,7 +196,7 @@ const afirmacionesOriginales = [
   "No cambiaría por nada del mundo las horas que pasamos compartiendo ideas; aprender a tu lado es una de las experiencias más enriquecedoras que tengo.",
   "Tu calidez atraviesa cualquier pantalla; eres capaz de hacerme sentir plenamente acompañada y querida a pesar de toda la distancia que nos separa.",
   "Tienes una mente brillante y una lógica admirable. Nunca dejes que un día complicado de oficina empañe la certeza de lo tesa que eres.",
-  "Haces que mi mundo sea un lugar muchísimo más bonito desde el momento en que entraste en él; tu amistad es un regalo inestimable.",
+  "Haces que mi mundo sea un lugar muchísimo más bonito desde el momento in que entraste en él; tu amistad es un regalo inestimable.",
   "Adoro la tranquilidad que me da saber que cuento contigo; tu lealtad y tu compañerismo como amix son pilares hermosos en mi día a día.",
   "Me fascina ver cómo te apasionas por tus metas y la dedicación que le pones a cada aprendizaje; eres una fuente constante de inspiración para mí.",
   "No necesitas demostrarle nada a nadie; tu trabajo, tu ética y tu calidad como mujer hablan por sí solos con una elocuencia absoluta.",
@@ -207,7 +229,7 @@ const afirmacionesOriginales = [
   "Agradezco tu honestidad, tu transparencia y esa forma tan limpia que tienes de expresar lo que sientes y lo que piensas.",
   "Tener a una mujer tan brillante e inteligente como tú profesando su amistad conmigo es una de las mayores fortunas que tengo.",
   "Hay canciones que ahora tienen tu nombre grabado por completo, porque es imposible escucharlas sin acordarme de ti y sonreír.",
-  "Admiro la forma en que enfrentas los retos del trabajo y de la vida. Tienes una capacidad de resolución que me inspira muchísimo.",
+  "Admiro la forma en que enfrentas los retos del trabajo del de la vida. Tienes una capacidad de resolución que me inspira muchísimo.",
   "Gracias por enseñarme que las conexiones más reales se alimentan de respeto mutuo, conversaciones profundas y un afecto sincero.",
   "Tu presencia le da un balance perfecto a mis días. Agradezco inmensamente la tranquilidad y la alegría que traes a mi rutina.",
   "Eres una persona con una luz única y un criterio impecable. Gracias por compartir tu sabiduría y tus opiniones conmigo, amix.",
@@ -224,7 +246,7 @@ const afirmacionesOriginales = [
   "Agradezco el respeto profundo con el que tratas mis ideas y el cariño con el que sostienes cada una de nuestras conversaciones.",
   "Gracias por ser esa constante hermosa en mi mapa, por recordarme que no estoy sola y por quererme de una forma tan libre y sana.",
   "Admiro profundamente tu fuerza interior y la calma con la que asumes cada responsabilidad. Eres un ejemplo absoluto de mujer.",
-  "Gracias por recordarme el valor de las cosas sencillas, como una buena plática al final del día o una risa espontánea.",
+  "Gracias por de recordarme el valor de las cosas sencillas, como una buena plática al final del día o una risa espontánea.",
   "Tu existencia hace que mi universo sea muchísimo más feliz, interesante y ordenado. Gracias por compartir tu tiempo conmigo, amix.",
   "Este espacio solo existe para recordarte, de manera infinita, lo agradecida que estoy de tenerte en mi vida y lo mucho que te adoro.",
   "Qué tranquilidad da saber que, sin importar lo enredado que esté el día, siempre puedo llegar a escribirte y todo se calma.",
