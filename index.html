@@ -8,17 +8,32 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
+
+/* ============================================================
+   RESET GLOBAL
+   Elimina márgenes y paddings por defecto de todos los elementos
+   ============================================================ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* ============================================================
+   BODY — Fondo general de la página
+   · background: color base (puedes cambiarlo aquí)
+   · padding-bottom: espacio al final para que no quede pegado
+   ============================================================ */
 body {
   min-height: 100vh;
-  background: #f7f9f5;
+  background: #edf4ef;
   font-family: 'Lato', sans-serif;
   overflow-x: hidden;
   position: relative;
   padding-bottom: 4rem;
 }
 
+/* ============================================================
+   GRADIENTES DE FONDO DECORATIVOS
+   Burbujas de color suave que dan profundidad al fondo.
+   Puedes ajustar los colores rgba() o los porcentajes de posición.
+   ============================================================ */
 body::before {
   content: '';
   position: fixed;
@@ -31,7 +46,13 @@ body::before {
   z-index: 0;
 }
 
-/* ── PARTÍCULAS ── */
+/* ============================================================
+   PARTÍCULAS AL HACER CLICK
+   Hojitas y flores que salen al tocar la pantalla.
+   · flyUp: animación de vuelo hacia arriba y desvanecimiento
+   · Las variables --tx, --ty, --rot, --dur, --fs se asignan
+     desde JavaScript para que cada partícula sea única
+   ============================================================ */
 .particle {
   position: fixed;
   pointer-events: none;
@@ -41,11 +62,18 @@ body::before {
   user-select: none;
 }
 @keyframes flyUp {
-  0%   { transform: translate(0, 0) rotate(0deg) scale(1);   opacity: 1; }
+  0%   { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
   60%  { opacity: 1; }
   100% { transform: translate(var(--tx, 0px), var(--ty, -120px)) rotate(var(--rot, 180deg)) scale(0.4); opacity: 0; }
 }
 
+/* ============================================================
+   HOJAS DECORATIVAS DE FONDO
+   Emojis fijos en los bordes de la pantalla que se mecen.
+   · --s: tamaño · --o: opacidad · --d: duración animación
+   · --r1, --r2: ángulos de balanceo
+   Se definen en el HTML con style="..."
+   ============================================================ */
 .deco-leaf {
   position: fixed;
   font-size: var(--s, 2rem);
@@ -60,6 +88,15 @@ body::before {
   100% { transform: rotate(var(--r2, 6deg)); }
 }
 
+/* ============================================================
+   HEADER / HERO
+   Título principal de la página.
+   · hero-eyebrow: etiqueta pequeña arriba del título
+   · hero-title: título grande "Para ti, preciosa"
+   · hero-sub: subtítulo pequeño debajo
+   · hero-orquidea: flor SVG decorativa
+   · hero-divider: línea divisora con ✿
+   ============================================================ */
 .hero {
   position: relative;
   z-index: 2;
@@ -72,7 +109,7 @@ body::before {
   font-size: 11px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #1D9E75;
+  color: #1D9E75;         /* ← color del texto de la etiqueta */
   font-weight: 700;
   margin-bottom: 1rem;
   border: 1.5px solid #9FE1CB;
@@ -83,17 +120,20 @@ body::before {
 
 .hero-title {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(2rem, 6vw, 3.4rem);
-  color: #085041;
+  font-size: clamp(2rem, 6vw, 3.4rem); /* responsive: mínimo 2rem, máximo 3.4rem */
+  color: #085041;         /* ← color del título principal */
   font-weight: 400;
   line-height: 1.2;
   margin-bottom: 0.4rem;
 }
-.hero-title em { font-style: italic; color: #1D9E75; }
+.hero-title em {
+  font-style: italic;
+  color: #1D9E75;         /* ← color de "preciosa" en cursiva */
+}
 
 .hero-sub {
   font-size: 13px;
-  color: #5DCAA5;
+  color: #5DCAA5;         /* ← color del subtítulo */
   font-weight: 400;
   letter-spacing: 0.06em;
   margin-top: 0.5rem;
@@ -128,6 +168,13 @@ body::before {
   background: linear-gradient(to left, transparent, #9FE1CB);
 }
 
+/* ============================================================
+   GRID — Contenedor del calendario
+   · max-width: ancho máximo del grid
+   · minmax(138px, 1fr): cada cajita mínimo 138px, máximo igual
+     Si quieres cajitas más grandes, sube el 138px
+   · gap: espacio entre cajitas
+   ============================================================ */
 .grid-wrap {
   max-width: 920px;
   margin: 2rem auto 0;
@@ -142,10 +189,16 @@ body::before {
   gap: 14px;
 }
 
+/* ============================================================
+   CAJITA BASE
+   · aspect-ratio: 1 = cuadrada perfecta
+   · border-radius: redondez de las esquinas
+   · box-shadow: sombra suave
+   ============================================================ */
 .box {
   aspect-ratio: 1;
   border-radius: 22px;
-  border: 1.5px solid #d4ede2;
+  border: 2px solid #b8ddd0;
   background: #ffffff;
   display: flex;
   flex-direction: column;
@@ -157,21 +210,32 @@ body::before {
   position: relative;
   overflow: hidden;
   transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
-  box-shadow: 0 2px 12px rgba(29,158,117,0.06);
+  box-shadow: 0 3px 14px rgba(29,158,117,0.12);
 }
+
+/* Brillo interno decorativo */
 .box::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 30% 25%, rgba(255,255,255,0.8), transparent 65%);
+  background: radial-gradient(circle at 30% 25%, rgba(255,255,255,0.6), transparent 65%);
   pointer-events: none;
 }
 
-.box:nth-child(4n)   { background: #f0faf5; border-color: #c8e8d8; }
-.box:nth-child(4n+1) { background: #faf0f8; border-color: #e8c8e0; }
-.box:nth-child(4n+2) { background: #f5f0ff; border-color: #d8c8f0; }
-.box:nth-child(4n+3) { background: #fffaf0; border-color: #f0e0c0; }
+/* ── VARIANTES DE COLOR POR CAJITA ──
+   Cada 4 cajitas rota entre estos 4 colores.
+   Para cambiar los colores, edita background y border-color aquí.
+   4n   = cajitas 4, 8, 12, 16, 20, 24  → verde menta
+   4n+1 = cajitas 1, 5, 9, 13, 17, 21   → lavanda rosado
+   4n+2 = cajitas 2, 6, 10, 14, 18, 22  → lavanda azul
+   4n+3 = cajitas 3, 7, 11, 15, 19, 23  → amarillo suave
+   ============================================================ */
+.box:nth-child(4n)   { background: #e2f5eb; border-color: #8ed4b4; }
+.box:nth-child(4n+1) { background: #f3e6f8; border-color: #d4a8e0; }
+.box:nth-child(4n+2) { background: #eae7ff; border-color: #b8aee8; }
+.box:nth-child(4n+3) { background: #fff3d6; border-color: #e8c878; }
 
+/* Efecto hover en cajitas desbloqueadas */
 .box:not(.locked):hover {
   transform: translateY(-6px) scale(1.03);
   box-shadow: 0 16px 36px rgba(29,158,117,0.15), 0 0 0 1.5px #5DCAA5;
@@ -179,19 +243,21 @@ body::before {
   z-index: 3;
 }
 
+/* Número del día dentro de la cajita */
 .box-day {
   font-family: 'Playfair Display', serif;
-  font-size: 2.2rem;
+  font-size: 2.2rem;    /* ← tamaño del número */
   font-weight: 400;
-  color: #b8ddd0;
+  color: #5DCAA5;       /* ← color del número en reposo */
   line-height: 1;
   position: relative;
   z-index: 1;
   transition: color 0.2s;
 }
 .box:not(.locked):hover .box-day,
-.box.open .box-day { color: #1D9E75; }
+.box.open .box-day { color: #085041; } /* ← color al hover o abierta */
 
+/* Emoji debajo del número */
 .box-emoji {
   font-size: 1.4rem;
   position: relative;
@@ -200,6 +266,7 @@ body::before {
 }
 .box:not(.locked):hover .box-emoji { transform: scale(1.3) rotate(-8deg); }
 
+/* Texto "DÍA X" debajo del emoji */
 .box-label {
   font-size: 10px;
   font-weight: 700;
@@ -212,15 +279,23 @@ body::before {
 }
 .box:not(.locked):hover .box-label { color: #1D9E75; }
 
+/* ── CAJITA BLOQUEADA ──
+   Días que aún no se pueden abrir.
+   · opacity: qué tan transparente se ve (0 = invisible, 1 = sólido)
+   ============================================================ */
 .box.locked {
   cursor: default;
-  opacity: 0.45;
-  background: #f7f9f7;
-  border-color: #e8f0eb;
+  opacity: 0.65;
+  background: #eef5f1;
+  border-color: #bcd8cc;
 }
+.box.locked .box-day { color: #9FE1CB; }
 .box.locked:hover { transform: none; box-shadow: none; }
-.lock-icon { font-size: 1rem; position: relative; z-index: 1; opacity: 0.4; }
+.lock-icon { font-size: 1rem; position: relative; z-index: 1; opacity: 0.5; }
 
+/* ── CAJITA DE HOY ──
+   Resaltada con brillo animado.
+   ============================================================ */
 .box.today {
   background: linear-gradient(135deg, #e8f8f2, #f5eeff);
   border-color: #1D9E75;
@@ -233,6 +308,7 @@ body::before {
 }
 .box.today .box-day { color: #1D9E75; }
 
+/* Badge "HOY ✿" en esquina superior derecha */
 .today-badge {
   position: absolute;
   top: 0; right: 0;
@@ -247,6 +323,7 @@ body::before {
   z-index: 2;
 }
 
+/* Nota informativa debajo del grid */
 .note {
   text-align: center;
   margin-top: 1.5rem;
@@ -255,6 +332,7 @@ body::before {
 }
 .note p { font-size: 12px; color: #9FE1CB; font-weight: 400; letter-spacing: 0.04em; }
 
+/* Footer */
 .footer {
   text-align: center;
   padding: 0 0 3rem;
@@ -266,7 +344,12 @@ body::before {
   color: #9FE1CB;
 }
 
-/* ── MODAL ── */
+/* ============================================================
+   MODAL — Ventana emergente para cajitas bloqueadas
+   · modal-bg: fondo oscuro semitransparente con blur
+   · modal: tarjeta blanca centrada
+   · .show: clase que activa la visibilidad (agrega JS)
+   ============================================================ */
 .modal-bg {
   position: fixed;
   inset: 0;
@@ -296,26 +379,21 @@ body::before {
 }
 .modal-bg.show .modal { transform: scale(1) translateY(0); }
 
-.modal-flower {
-  display: block;
-  margin: 0 auto 1rem;
-  width: 54px;
-  height: 54px;
-}
+.modal-flower { display: block; margin: 0 auto 1rem; width: 54px; height: 54px; }
 
 .modal-title {
   font-family: 'Playfair Display', serif;
   font-size: 1.25rem;
-  color: #085041;
+  color: #085041;       /* ← color del título del modal */
   font-weight: 400;
   margin-bottom: 0.6rem;
 }
 
 .modal-msg {
   font-size: 14px;
-  color: #5DCAA5;
+  color: #5DCAA5;       /* ← color del mensaje del modal */
   line-height: 1.75;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   font-weight: 300;
   font-family: 'Playfair Display', serif;
   font-style: italic;
@@ -327,7 +405,6 @@ body::before {
   letter-spacing: 0.08em;
   margin-bottom: 1.5rem;
   font-family: 'Lato', sans-serif;
-  font-style: normal;
 }
 
 .modal-btn {
@@ -344,10 +421,16 @@ body::before {
   transition: all 0.2s;
 }
 .modal-btn:hover { background: transparent; color: #1D9E75; }
+
 </style>
 </head>
 <body>
 
+<!-- ============================================================
+     HOJAS DECORATIVAS DE FONDO
+     Para agregar más: copia una línea y cambia top/left/right/bottom
+     y las variables --s (tamaño), --o (opacidad), --d (velocidad)
+     ============================================================ -->
 <div class="deco-leaf" style="top:6%;left:2%;--s:3rem;--o:0.1;--d:9s;--r1:-8deg;--r2:6deg">🌿</div>
 <div class="deco-leaf" style="top:18%;right:3%;--s:2.5rem;--o:0.09;--d:11s;--r1:5deg;--r2:-10deg">🍃</div>
 <div class="deco-leaf" style="bottom:28%;left:1%;--s:3.5rem;--o:0.09;--d:8s;--r1:-5deg;--r2:8deg">🌿</div>
@@ -355,11 +438,17 @@ body::before {
 <div class="deco-leaf" style="top:52%;right:1%;--s:2rem;--o:0.08;--d:13s;--r1:-3deg;--r2:9deg">🌸</div>
 <div class="deco-leaf" style="top:38%;left:0%;--s:2rem;--o:0.08;--d:12s;--r1:4deg;--r2:-7deg">🌸</div>
 
+<!-- ============================================================
+     HEADER
+     Para cambiar el título principal, edita el h1.
+     Para cambiar el subtítulo, edita el <p class="hero-sub">
+     ============================================================ -->
 <header class="hero">
   <div class="hero-eyebrow">🌿 calendario de adviento · 2026 🌿</div>
   <h1 class="hero-title">Para ti,<br><em>preciosa</em> 🖤</h1>
   <p class="hero-sub">24 días · 24 sorpresas hechas con todo mi amor</p>
 
+  <!-- Orquídea SVG decorativa — no necesitas tocar esto -->
   <svg class="hero-orquidea" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
     <path d="M50 72 Q48 82 46 92" stroke="#5DCAA5" stroke-width="2" fill="none" stroke-linecap="round"/>
     <path d="M48 82 Q36 78 32 70 Q40 72 48 82Z" fill="#5DCAA5" opacity="0.7"/>
@@ -383,6 +472,7 @@ body::before {
   <div class="hero-divider">✿ ✿ ✿</div>
 </header>
 
+<!-- Grid de cajitas — se genera automáticamente en el JS -->
 <div class="grid-wrap">
   <div class="grid" id="grid"></div>
   <div class="note">
@@ -392,6 +482,10 @@ body::before {
 
 <footer class="footer">hecho con todo mi amor · para ti · 2026</footer>
 
+<!-- ============================================================
+     MODAL — Ventana emergente para días bloqueados
+     El contenido (título, mensaje, fecha) se llena desde JS
+     ============================================================ -->
 <div class="modal-bg" id="modal">
   <div class="modal">
     <svg class="modal-flower" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -417,56 +511,103 @@ body::before {
 </div>
 
 <script>
+
+// ============================================================
+// CONFIGURACIÓN PRINCIPAL
+// ============================================================
+
+// ⚠️ MODO PRUEBA vs MODO REAL
+// Para probar todos los días sin esperar:
+//   → Cambia TEST_MODE = true
+//   → Todos los días aparecerán desbloqueados
+// Para el calendario real (un día por día):
+//   → Cambia TEST_MODE = false
+const TEST_MODE = false;
+
+// Fecha de inicio del calendario (día 1)
+// START_MONTH: 0=enero, 1=feb, 2=mar, 3=abr, 4=may, 5=jun, 6=jul, 7=ago, 8=sep, 9=oct, 10=nov, 11=dic
 const START_YEAR  = 2026;
-const START_MONTH = 5;
+const START_MONTH = 5;    // ← Junio
 const START_DAY   = 1;
 
+// ============================================================
+// EMOJIS DE CADA CAJITA
+// Orden: día 1 al 24. Puedes cambiar cualquier emoji aquí.
+// ============================================================
 const EMOJIS = [
   '🌿','🐛','🌸','🍃','🐝','🦋','🌱','🐞',
   '🌺','🍀','🐌','🌻','🌿','🐛','🌸','🍃',
   '🐝','🦋','🌱','🐞','🌺','🍀','🐌','🌟'
 ];
 
+// ============================================================
+// MENSAJES DE CAJITAS BLOQUEADAS
+// Un objeto por día (24 en total).
+// · title: título grande del modal
+// · msg: frase en cursiva debajo
+// Para editar: busca el día que quieras y cambia el texto.
+// ============================================================
 const LOCKED_MESSAGES = [
-  { title: "Todavía no, preciosa",      msg: "Las cosas buenas se esperan." },
-  { title: "Aún no",                    msg: "Pero ya casi. Aguanta." },
-  { title: "Este día no ha llegado",    msg: "Pero cuando llegue, vale la pena." },
-  { title: "¿Ya?",                      msg: "No. Vuelve cuando sea el día." },
-  { title: "Paciencia, mi amor",        msg: "Esto lo hice pensando en ti." },
-  { title: "Todavía no se abre",        msg: "Pero sé que ya quieres." },
-  { title: "Este regalo te espera",     msg: "Tú espéralo también." },
-  { title: "No hagas trampa",           msg: "Ya sé que intentaste." },
-  { title: "Aún no es tu día",          msg: "Pero cuando lo sea, esto va a hacerte sonreír." },
-  { title: "Espera",                    msg: "Lo bueno no llega antes de tiempo." },
-  { title: "¿De verdad ya?",            msg: "Aguanta un poquito más." },
-  { title: "Este día aún no es tuyo",   msg: "Pronto." },
-  { title: "No, no y no",               msg: "Pero con mucho amor." },
-  { title: "Todavía no, preciosa",      msg: "Confía en mí." },
-  { title: "Este no",                   msg: "El de hoy sí. Ve a abrirlo." },
+  { title: "Todavía no, preciosa",           msg: "Las cosas buenas se esperan." },
+  { title: "Aún no",                         msg: "Pero ya casi. Aguanta." },
+  { title: "Este día no ha llegado",          msg: "Pero cuando llegue, vale la pena." },
+  { title: "¿Ya?",                           msg: "No. Vuelve cuando sea el día." },
+  { title: "Paciencia, mi amor",             msg: "Esto lo hice pensando en ti." },
+  { title: "Todavía no se abre",             msg: "Pero sé que ya quieres." },
+  { title: "Este regalo te espera",          msg: "Tú espéralo también." },
+  { title: "No hagas trampa",                msg: "Ya sé que intentaste." },
+  { title: "Aún no es tu día",               msg: "Pero cuando lo sea, esto va a hacerte sonreír." },
+  { title: "Espera",                         msg: "Lo bueno no llega antes de tiempo." },
+  { title: "¿De verdad ya?",                 msg: "Aguanta un poquito más." },
+  { title: "Este día aún no es tuyo",        msg: "Pronto." },
+  { title: "No, no y no",                    msg: "Pero con mucho amor." },
+  { title: "Todavía no, preciosa",           msg: "Confía en mí." },
+  { title: "Este no",                        msg: "El de hoy sí. Ve a abrirlo." },
   { title: "Hay cosas que merecen su momento", msg: "Este es una de ellas." },
-  { title: "Aún no",                    msg: "Pero ya falta poco y lo sabes." },
-  { title: "Paciencia",                 msg: "Esto lo hice con todo el amor del mundo." },
-  { title: "Todavía no se desbloquea",  msg: "Pero me gusta que lo hayas intentado." },
-  { title: "Casi casi",                 msg: "Pero todavía no." },
-  { title: "Tres días",                 msg: "Solo tres. Aguanta." },
-  { title: "Dos días más, preciosa",    msg: "Ya casi." },
-  { title: "Mañana",                    msg: "Solo falta mañana." },
-  { title: "Este es el último",         msg: "Ábrelo con calma." },
+  { title: "Aún no",                         msg: "Pero ya falta poco y lo sabes." },
+  { title: "Paciencia",                      msg: "Esto lo hice con todo el amor del mundo." },
+  { title: "Todavía no se desbloquea",       msg: "Pero me gusta que lo hayas intentado." },
+  { title: "Casi casi",                      msg: "Pero todavía no." },
+  { title: "Tres días",                      msg: "Solo tres. Aguanta." },
+  { title: "Dos días más, preciosa",         msg: "Ya casi." },
+  { title: "Mañana",                         msg: "Solo falta mañana." },
+  { title: "Este es el último",              msg: "Ábrelo con calma." },
 ];
 
-const today = new Date();
+// ============================================================
+// LÓGICA DE FECHAS
+// Compara la fecha de cada cajita con la fecha de hoy.
+// En TEST_MODE, todas las cajitas aparecen desbloqueadas.
+// ============================================================
+const today      = new Date();
 const localToday = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
 
 function getBoxTime(day) {
+  // Retorna el timestamp de medianoche del día correspondiente
   return new Date(START_YEAR, START_MONTH, START_DAY + day - 1).getTime();
 }
-function isUnlocked(day) { return getBoxTime(day) <= localToday; }
-function isToday(day)    { return getBoxTime(day) === localToday; }
+
+function isUnlocked(day) {
+  if (TEST_MODE) return true; // En modo prueba, todo abierto
+  return getBoxTime(day) <= localToday;
+}
+
+function isToday(day) {
+  if (TEST_MODE) return day === 1; // En modo prueba, solo el día 1 tiene badge "HOY"
+  return getBoxTime(day) === localToday;
+}
+
 function boxDateLabel(day) {
+  // Devuelve la fecha en formato "1 de junio"
   const d = new Date(START_YEAR, START_MONTH, START_DAY + day - 1);
   return d.toLocaleDateString('es-MX', { day: 'numeric', month: 'long' });
 }
 
+// ============================================================
+// GENERACIÓN DEL GRID
+// Crea cada cajita dinámicamente y la agrega al HTML.
+// Los enlaces apuntan a dia-1.html, dia-2.html, etc.
+// ============================================================
 const grid = document.getElementById('grid');
 
 for (let d = 1; d <= 24; d++) {
@@ -478,7 +619,7 @@ for (let d = 1; d <= 24; d++) {
   a.className = 'box' + (unlocked ? (todayBox ? ' today open' : ' open') : ' locked');
 
   if (unlocked) {
-    a.href = `dia-${d}.html`;
+    a.href = `dia-${d}.html`; // ← nombre del archivo de cada día
   } else {
     a.href = '#';
     a.addEventListener('click', e => { e.preventDefault(); openModal(d); });
@@ -496,13 +637,19 @@ for (let d = 1; d <= 24; d++) {
   grid.appendChild(a);
 }
 
-// ── PARTÍCULAS AL CLICK ──
+// ============================================================
+// PARTÍCULAS AL HACER CLICK
+// Al tocar cualquier parte, salen hojitas desde ese punto.
+// · count: cuántas partículas por click (default 8)
+// · PARTICLES: emojis que pueden salir
+// ============================================================
 const PARTICLES = ['🌿','🍃','🌸','🌺','✿','🌱','🍀','🌼'];
 
 function spawnParticles(x, y, count = 8) {
   for (let i = 0; i < count; i++) {
-    const el = document.createElement('span');
+    const el    = document.createElement('span');
     el.className = 'particle';
+
     const angle = (360 / count) * i + Math.random() * 20;
     const dist  = 60 + Math.random() * 80;
     const tx    = Math.cos(angle * Math.PI / 180) * dist;
@@ -510,14 +657,16 @@ function spawnParticles(x, y, count = 8) {
     const dur   = 0.9 + Math.random() * 0.6;
     const fs    = 0.9 + Math.random() * 0.8;
     const rot   = -180 + Math.random() * 360;
-    el.textContent = PARTICLES[Math.floor(Math.random() * PARTICLES.length)];
+
+    el.textContent  = PARTICLES[Math.floor(Math.random() * PARTICLES.length)];
     el.style.cssText = `
       left: ${x}px; top: ${y}px;
       --tx: ${tx}px; --ty: ${ty}px;
       --dur: ${dur}s; --fs: ${fs}rem; --rot: ${rot}deg;
     `;
+
     document.body.appendChild(el);
-    el.addEventListener('animationend', () => el.remove());
+    el.addEventListener('animationend', () => el.remove()); // se limpia solo
   }
 }
 
@@ -525,19 +674,29 @@ document.addEventListener('click', e => {
   spawnParticles(e.clientX, e.clientY, 8);
 });
 
+// ============================================================
+// MODAL — Abrir y cerrar
+// openModal(day): muestra el modal con el mensaje del día
+// closeModal(): lo cierra
+// También se cierra al hacer click fuera del modal
+// ============================================================
 function openModal(day) {
   const msg = LOCKED_MESSAGES[day - 1];
   document.getElementById('modal-title').textContent = msg.title;
-  document.getElementById('modal-msg').textContent = msg.msg;
-  document.getElementById('modal-date').textContent = 'se abre el ' + boxDateLabel(day);
+  document.getElementById('modal-msg').textContent   = msg.msg;
+  document.getElementById('modal-date').textContent  = 'se abre el ' + boxDateLabel(day);
   document.getElementById('modal').classList.add('show');
 }
+
 function closeModal() {
   document.getElementById('modal').classList.remove('show');
 }
+
+// Click fuera del modal lo cierra
 document.getElementById('modal').addEventListener('click', e => {
   if (e.target === e.currentTarget) closeModal();
 });
+
 </script>
 </body>
 </html>
