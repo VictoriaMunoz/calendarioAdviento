@@ -259,6 +259,7 @@ body {
 </head>
 <body>
 
+<!-- Decoración de fondo: hojas y bichos -->
 <div class="bg-deco">
   <div class="leaf" style="top:5%;left:3%;--s:3.5rem;--o:.12;--d:7s;--r1:-10deg;--r2:6deg">🌿</div>
   <div class="leaf" style="top:15%;right:4%;--s:2.5rem;--o:.1;--d:9s;--r1:5deg;--r2:-12deg">🍃</div>
@@ -275,6 +276,7 @@ body {
   <div class="leaf" style="top:25%;left:12%;--s:2rem;--o:.08;--d:15s;--r1:3deg;--r2:-8deg">🌸</div>
 </div>
 
+<!-- Header -->
 <header class="hdr">
   <div class="hdr-tag">🌿 calendario de adviento 🌿</div>
   <h1 class="hdr-title">Para ti, <span>preciosa</span> 🖤</h1>
@@ -282,6 +284,7 @@ body {
   <div class="hdr-deco">🌿 🐛 🌸 🐝 🍃</div>
 </header>
 
+<!-- Grid -->
 <div class="grid-wrap">
   <div class="grid" id="grid"></div>
 </div>
@@ -290,8 +293,9 @@ body {
   <p>🔒 Las cajitas se abren el día que corresponden · ¡No hagas trampa! 🌿</p>
 </div>
 
-<footer class="ftr">hecho con 💚 para ti · diciembre 2026</footer>
+<footer class="ftr">hecho con 💚 para ti · junio 2026</footer>
 
+<!-- Modal "aún no" -->
 <div class="modal-bg" id="modal">
   <div class="modal">
     <div class="modal-emoji">🐛</div>
@@ -302,37 +306,37 @@ body {
 </div>
 
 <script>
-// ── CONFIGURACIÓN AUTOMÁTICA ──────────────────────────────────────────
+// ── CONFIGURACIÓN DE INICIO: 1 DE JUNIO DE 2026 ─────────────────
 const START_YEAR  = 2026;
-const START_MONTH = 11; // 11 = Diciembre en JavaScript (0-indexed)
+const START_MONTH = 5; // 5 = Junio (Enero es 0)
 const START_DAY   = 1;
 
-// Emojis estéticos para el recorrido
 const EMOJIS = [
   '🌿','🐛','🌸','🍃','🐝','🦋','🌱','🐞',
   '🌺','🍀','🐌','🌻','🌿','🐛','🌸','🍃',
   '🐝','🦋','🌱','🐞','🌺','🍀','🐌','🌟'
 ];
 
-// ── LÓGICA DE FECHAS NATURALEZA DINÁMICA ───────────────────────────────────────
+// ── LÓGICA DE COMPARACIÓN LOCAL CORREGIDA ─────────────────────────
 const today     = new Date();
 const todayDay  = today.getDate();
 const todayMonth= today.getMonth();
 const todayYear = today.getFullYear();
 
+// Creamos un objeto de fecha "limpio" de hoy a la medianoche local
+const localToday = new Date(todayYear, todayMonth, todayDay).getTime();
+
+function getBoxTime(day) {
+  // Retorna la estampa de tiempo para la medianoche local de cada cajita
+  return new Date(START_YEAR, START_MONTH, START_DAY + day - 1).getTime();
+}
+
 function isUnlocked(day) {
-  const boxDate  = new Date(START_YEAR, START_MONTH, START_DAY + day - 1);
-  const todayObj = new Date(todayYear, todayMonth, todayDay);
-  return boxDate <= todayObj;
+  return getBoxTime(day) <= localToday;
 }
 
 function isToday(day) {
-  const boxDate = new Date(START_YEAR, START_MONTH, START_DAY + day - 1);
-  return (
-    boxDate.getDate()     === todayDay   &&
-    boxDate.getMonth()    === todayMonth &&
-    boxDate.getFullYear() === todayYear
-  );
+  return getBoxTime(day) === localToday;
 }
 
 function boxDateLabel(day) {
@@ -352,7 +356,6 @@ for (let d = 1; d <= 24; d++) {
   a.className = 'box' + (unlocked ? (today_ ? ' today open' : ' open') : ' locked');
 
   if (unlocked) {
-    // Apunta dinámicamente al archivo sin ceros molestos a la izquierda
     a.href = `dia-${d}.html`;
   } else {
     a.href = '#';
@@ -375,7 +378,7 @@ for (let d = 1; d <= 24; d++) {
   grid.appendChild(a);
 }
 
-// ── MANEJO DEL MODAL INFORMATIVO ──────────────────────────────────────────────────
+// ── MODAL INFORMATIVO ──────────────────────────────────────────────────
 function openModal(day) {
   document.getElementById('modal-date').textContent = boxDateLabel(day);
   document.getElementById('modal').classList.add('show');
