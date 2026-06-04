@@ -4,327 +4,584 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de conquista internacional // Día 03</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* ==========================================================================
-           1. ESTILOS GENERALES Y TEMATIZACIÓN TERMINAL BASH
-           ========================================================================== */
+        :root {
+            --hot-pink: #ff2d78;
+            --cyber-yellow: #ffe600;
+            --electric-blue: #00c8ff;
+            --lime: #7fff00;
+            --purple: #bf5fff;
+            --bg: #0a0012;
+            --bg2: #110020;
+            --border: #ff2d78;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
         body {
-            background-color: #0d0d0d;
-            color: #c084fc;
-            font-family: 'Courier New', Courier, monospace;
+            background-color: var(--bg);
+            font-family: 'Share Tech Mono', monospace;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
-        }
-
-        .terminal-container {
-            width: 95%;
-            max-width: 700px;
-            background-color: #1a1a1a;
-            border-radius: 8px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
-            border: 1px solid #2a2a2a;
+            min-height: 100vh;
             overflow: hidden;
             position: relative;
         }
 
+        /* Scanlines overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0,0,0,0.18) 2px,
+                rgba(0,0,0,0.18) 4px
+            );
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        /* CRT pixel grid */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+            background-size: 4px 4px;
+            pointer-events: none;
+            z-index: 998;
+        }
+
+        /* Floating deco elements */
+        .deco-star {
+            position: fixed;
+            font-family: 'VT323', monospace;
+            font-size: 20px;
+            opacity: 0.18;
+            animation: floatStar 6s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .deco-star:nth-child(1)  { top: 8%;  left: 5%;  color: var(--hot-pink);     animation-delay: 0s;   font-size: 28px; }
+        .deco-star:nth-child(2)  { top: 20%; right: 8%; color: var(--cyber-yellow); animation-delay: 1s;   font-size: 16px; }
+        .deco-star:nth-child(3)  { top: 60%; left: 3%;  color: var(--electric-blue);animation-delay: 2s;   font-size: 22px; }
+        .deco-star:nth-child(4)  { top: 80%; right: 6%; color: var(--lime);         animation-delay: 0.5s; font-size: 18px; }
+        .deco-star:nth-child(5)  { top: 45%; right: 2%; color: var(--purple);       animation-delay: 3s;   font-size: 24px; }
+        .deco-star:nth-child(6)  { top: 90%; left: 12%; color: var(--hot-pink);     animation-delay: 1.5s; font-size: 14px; }
+
+        @keyframes floatStar {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50%       { transform: translateY(-12px) rotate(15deg); }
+        }
+
+        /* Terminal window */
+        .terminal-container {
+            width: 95%;
+            max-width: 680px;
+            background: var(--bg2);
+            border: 2px solid var(--hot-pink);
+            border-radius: 0;
+            position: relative;
+            z-index: 10;
+            box-shadow:
+                4px 4px 0 var(--cyber-yellow),
+                8px 8px 0 var(--purple),
+                0 0 40px rgba(255,45,120,0.25),
+                inset 0 0 60px rgba(0,0,0,0.4);
+        }
+
+        /* Pixelated corner accents */
+        .terminal-container::before,
+        .terminal-container::after {
+            content: '◆';
+            position: absolute;
+            font-size: 10px;
+            color: var(--cyber-yellow);
+        }
+        .terminal-container::before { top: -1px; right: 12px; }
+        .terminal-container::after  { bottom: -1px; left: 12px; color: var(--electric-blue); }
+
+        /* Title bar */
         .terminal-header {
-            background-color: #333;
-            padding: 10px;
+            background: var(--hot-pink);
+            padding: 0;
+            display: flex;
+            align-items: stretch;
+            border-bottom: 2px solid var(--cyber-yellow);
+            position: relative;
+        }
+
+        .header-title-block {
+            flex: 1;
             display: flex;
             align-items: center;
-            border-bottom: 1px solid #222;
+            gap: 10px;
+            padding: 7px 14px;
         }
 
-        .dot { height: 12px; width: 12px; border-radius: 50%; margin-right: 6px; }
-        .red    { background-color: #ff5f56; }
-        .yellow { background-color: #ffbd2e; }
-        .green  { background-color: #27c93f; }
+        .header-tag {
+            font-family: 'Silkscreen', monospace;
+            font-size: 10px;
+            color: #fff;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0.9;
+        }
 
-        .terminal-title { color: #aaa; font-size: 12px; margin-left: 10px; }
+        .header-dots {
+            display: flex;
+            gap: 5px;
+            margin-left: auto;
+            padding: 7px 12px;
+            border-left: 2px solid rgba(255,255,255,0.3);
+        }
 
+        .dot {
+            width: 12px; height: 12px;
+            border-radius: 0;
+            border: 1.5px solid rgba(255,255,255,0.7);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .dot::after { content: '×'; font-size: 10px; color: rgba(255,255,255,0.7); line-height: 1; }
+        .dot.green::after { content: '○'; }
+        .dot.yellow::after { content: '−'; }
+
+        /* Body */
         .terminal-body {
-            padding: 25px;
-            height: 440px;
+            padding: 22px 24px;
+            height: 460px;
             overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--hot-pink) transparent;
         }
 
-        .highlight { color: #fff; font-weight: bold; }
+        .terminal-body::-webkit-scrollbar { width: 4px; }
+        .terminal-body::-webkit-scrollbar-track { background: transparent; }
+        .terminal-body::-webkit-scrollbar-thumb { background: var(--hot-pink); }
 
-        .success-highlight {
-            color: #27c93f !important;
-            font-weight: bold;
-            text-shadow: 0 0 8px #27c93f;
-        }
-
-        .command {
-            color: #a855f7;
-            cursor: pointer;
-            margin: 12px 0;
-            transition: 0.3s ease;
-        }
-        .command:hover {
-            color: #fff;
-            text-shadow: 0 0 10px #a855f7;
+        /* ASCII / Kuromi art */
+        #login-ascii {
+            color: var(--purple);
+            font-family: 'VT323', monospace;
+            font-size: 12px;
+            line-height: 1.15;
+            margin-bottom: 16px;
+            filter: drop-shadow(0 0 6px var(--purple));
         }
 
-        /* Enlaces/Botones de navegación de la terminal */
-        .command-nav {
-            color: #64748b;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 12px;
-            cursor: pointer;
-            transition: 0.3s ease;
+        /* Login output text */
+        #login-output {
+            color: var(--electric-blue);
+            font-size: 14px;
+            line-height: 1.8;
+            font-family: 'Share Tech Mono', monospace;
         }
-        .command-nav.primary {
-            color: #ff80ab;
+
+        /* Input line */
+        #input-line {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-top: 1px dashed rgba(255,230,0,0.3);
+            padding-top: 10px;
         }
-        .command-nav:hover {
-            color: #fff;
-            text-shadow: 0 0 10px currentColor;
+
+        .prompt-label {
+            color: var(--cyber-yellow);
+            font-family: 'Silkscreen', monospace;
+            font-size: 11px;
+            white-space: nowrap;
         }
 
         #access-key {
             background: transparent;
             border: none;
             color: #fff;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 16px;
+            font-family: 'VT323', monospace;
+            font-size: 20px;
             outline: none;
-            width: 200px;
+            flex: 1;
+            caret-color: var(--hot-pink);
         }
 
-        #cursor {
-            display: inline-block;
-            animation: blink 1s infinite;
-        }
-
+        /* Main interface */
         .welcome-container {
             display: flex;
-            align-items: center;
-            gap: 15px;
+            align-items: flex-start;
+            gap: 16px;
             margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px dashed rgba(255,45,120,0.4);
         }
+
+        #ascii-art {
+            color: var(--purple);
+            font-family: 'VT323', monospace;
+            font-size: 14px;
+            line-height: 1.2;
+            flex-shrink: 0;
+            filter: drop-shadow(0 0 4px var(--purple));
+        }
+
+        .title-block { display: flex; flex-direction: column; gap: 4px; }
 
         .main-system-title {
-            font-size: 20px;
-            font-weight: bold;
-            color: #ffffff;
-            text-shadow: 0 0 12px #a855f7;
-            margin: 0;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'Silkscreen', monospace;
+            font-size: 15px;
+            color: #fff;
+            letter-spacing: 1px;
+            line-height: 1.6;
         }
 
+        .title-sub {
+            font-family: 'VT323', monospace;
+            font-size: 16px;
+            color: var(--electric-blue);
+            letter-spacing: 2px;
+        }
+
+        /* Status line */
+        .status-row {
+            display: flex;
+            gap: 18px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+        .status-chip {
+            font-family: 'Silkscreen', monospace;
+            font-size: 9px;
+            padding: 3px 8px;
+            border: 1px solid;
+            letter-spacing: 1px;
+        }
+        .chip-green  { color: var(--lime);          border-color: var(--lime);          background: rgba(127,255,0,0.06); }
+        .chip-pink   { color: var(--hot-pink);       border-color: var(--hot-pink);       background: rgba(255,45,120,0.06); }
+        .chip-blue   { color: var(--electric-blue);  border-color: var(--electric-blue);  background: rgba(0,200,255,0.06); }
+
+        /* Commands */
+        .command-list { margin-bottom: 6px; }
+
+        .command {
+            display: block;
+            color: var(--cyber-yellow);
+            cursor: pointer;
+            margin: 10px 0;
+            padding: 8px 12px;
+            border: 1px solid rgba(255,230,0,0.25);
+            border-left: 3px solid var(--cyber-yellow);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 13px;
+            transition: all 0.12s;
+            position: relative;
+            background: rgba(255,230,0,0.03);
+        }
+        .command:hover {
+            background: rgba(255,230,0,0.1);
+            border-color: var(--cyber-yellow);
+            color: #fff;
+            padding-left: 18px;
+        }
+        .command .cmd-num {
+            color: var(--hot-pink);
+            font-family: 'Silkscreen', monospace;
+            font-size: 10px;
+            margin-right: 8px;
+        }
+        .command .cmd-arrow {
+            color: var(--purple);
+            margin: 0 6px;
+        }
+        .command .cmd-desc {
+            color: rgba(255,255,255,0.55);
+            font-size: 12px;
+        }
+
+        .command-nav {
+            display: block;
+            color: rgba(0,200,255,0.6);
+            cursor: pointer;
+            margin-top: 14px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 12px;
+            padding: 5px 12px;
+            border: 1px solid rgba(0,200,255,0.2);
+            border-left: 3px solid var(--electric-blue);
+            transition: all 0.12s;
+        }
+        .command-nav.primary {
+            color: rgba(255,45,120,0.7);
+            border-color: rgba(255,45,120,0.2);
+            border-left-color: var(--hot-pink);
+        }
+        .command-nav:hover {
+            color: #fff;
+            background: rgba(255,255,255,0.05);
+            padding-left: 18px;
+        }
+
+        /* Message output */
         #typed-output {
-            line-height: 1.5;
-            font-size: 14px;
-            color: #c084fc;
-            text-align: left;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 13px;
+            color: rgba(255,255,255,0.85);
+            line-height: 1.75;
             white-space: pre-wrap;
         }
-
-        #typed-output span.char {
-            opacity: 0;
-        }
-
-        #typed-output span.char.visible {
-            opacity: 1;
-        }
-
+        #typed-output span.char { opacity: 0; }
+        #typed-output span.char.visible { opacity: 1; }
         #typed-output b {
-            color: #fbbf24 !important;
-            font-weight: 900 !important;
-            text-shadow: 0 0 12px #fbbf24, 0 0 4px rgba(255,248,224,0.5) !important;
+            color: var(--cyber-yellow) !important;
+            font-weight: 700 !important;
+            text-shadow: 0 0 8px rgba(255,230,0,0.6) !important;
         }
 
         .msg-header {
-            color: #a855f7;
-            font-weight: bold;
-            line-height: 1.2;
-            margin-bottom: 5px;
-            display: inline-block;
+            display: block;
+            font-family: 'Silkscreen', monospace;
+            font-size: 12px;
+            color: #fff;
+            letter-spacing: 1.5px;
+            border: 1px solid var(--hot-pink);
+            border-left: 4px solid var(--hot-pink);
+            padding: 10px 14px;
+            margin-bottom: 16px;
+            background: rgba(255,45,120,0.12);
         }
 
+        /* Secret scan */
         #secret-scan {
-            margin-top: 20px;
+            margin-top: 18px;
             font-size: 13px;
-            color: #666;
-            border-top: 1px solid #2a2a2a;
-            padding-top: 12px;
-            line-height: 1.8;
+            border-top: 1px dashed rgba(255,45,120,0.3);
+            padding-top: 14px;
+            line-height: 2;
         }
-
-        .scan-line {
-            color: #555;
-            font-family: 'Courier New', Courier, monospace;
-        }
-
-        .scan-line.ok {
-            color: #27c93f;
-            font-weight: bold;
-        }
+        .scan-line     { color: rgba(255,255,255,0.35); font-family: 'Share Tech Mono', monospace; font-size: 12px; }
+        .scan-line.ok  { color: var(--lime); font-weight: bold; font-family: 'Share Tech Mono', monospace; font-size: 13px; letter-spacing: 0.5px; }
 
         .secret-reveal {
-            margin-top: 15px;
-            padding: 12px 16px;
-            border: 1px solid rgba(251, 191, 36, 0.25);
-            border-radius: 4px;
-            background: rgba(251, 191, 36, 0.03);
+            margin-top: 16px;
+            padding: 14px 18px;
+            border: 2px solid var(--cyber-yellow);
+            background: rgba(255,230,0,0.04);
+            box-shadow: 4px 4px 0 var(--hot-pink);
+            position: relative;
         }
-
-        .secret-reveal .secret-label {
-            color: #888;
-            font-size: 11px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+        .secret-reveal::before {
+            content: '★';
+            position: absolute;
+            top: -10px; left: 12px;
+            background: var(--bg2);
+            padding: 0 6px;
+            color: var(--cyber-yellow);
+            font-size: 14px;
+        }
+        .secret-label {
             display: block;
-        }
-
-        .secret-reveal .secret-words {
-            color: #fbbf24;
-            font-weight: bold;
-            font-size: 16px;
-            text-shadow: 0 0 14px #fbbf24;
+            font-family: 'Silkscreen', monospace;
+            font-size: 9px;
+            color: rgba(255,255,255,0.4);
             letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        .secret-words {
             display: block;
-            margin-top: 6px;
-            animation: pulseGold 2s ease-in-out infinite;
+            font-family: 'VT323', monospace;
+            font-size: 28px;
+            color: var(--cyber-yellow);
+            letter-spacing: 3px;
+            animation: pulseY2K 2s ease-in-out infinite;
         }
 
-        @keyframes pulseGold {
-            0%, 100% { text-shadow: 0 0 14px #fbbf24, 0 0 6px rgba(255,255,255,0.4); }
-            50%       { text-shadow: 0 0 24px #fbbf24, 0 0 12px rgba(255,217,112,0.5); }
+        @keyframes pulseY2K {
+            0%, 100% { text-shadow: 2px 2px 0 var(--hot-pink), 0 0 20px rgba(255,230,0,0.5); }
+            50%       { text-shadow: 2px 2px 0 var(--purple),  0 0 30px rgba(255,230,0,0.8); }
         }
 
         .footer-msg {
-            color: #444;
-            font-size: 12px;
-            margin-top: 14px;
+            color: rgba(255,255,255,0.3);
+            font-size: 11px;
+            font-family: 'Share Tech Mono', monospace;
+            margin-top: 16px;
+            letter-spacing: 0.5px;
         }
 
+        /* Cursor */
+        #cursor {
+            display: inline-block;
+            color: var(--hot-pink);
+            font-family: 'VT323', monospace;
+            font-size: 22px;
+            animation: blink 0.8s step-end infinite;
+            line-height: 1;
+        }
         @keyframes blink { 50% { opacity: 0; } }
-        #login-ascii, #ascii-art { color: #a855f7; font-size: 11px; line-height: 1.2; margin: 0; }
 
+        /* ALERT MODAL */
         .custom-alert-bg {
             position: absolute;
             inset: 0;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0,0,0,0.85);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 100;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.2s;
         }
-        .custom-alert-bg.show {
-            opacity: 1;
-            pointer-events: all;
-        }
+        .custom-alert-bg.show { opacity: 1; pointer-events: all; }
+
         .custom-alert {
-            background: #141414;
-            border: 2px solid #ff5f56;
-            border-radius: 8px;
-            padding: 25px;
-            max-width: 380px;
-            width: 85%;
+            background: var(--bg2);
+            border: 2px solid var(--hot-pink);
+            padding: 28px 24px;
+            max-width: 360px;
+            width: 88%;
             text-align: center;
-            box-shadow: 0 0 30px rgba(255, 95, 86, 0.2);
-            transform: scale(0.9);
-            transition: transform 0.3s ease;
+            box-shadow: 6px 6px 0 var(--cyber-yellow);
+            transform: scale(0.92);
+            transition: transform 0.2s;
+            position: relative;
         }
-        .custom-alert-bg.show .custom-alert {
-            transform: scale(1);
+        .custom-alert-bg.show .custom-alert { transform: scale(1); }
+        .custom-alert::before {
+            content: '! ERROR !';
+            font-family: 'Silkscreen', monospace;
+            font-size: 9px;
+            letter-spacing: 3px;
+            color: var(--cyber-yellow);
+            background: var(--hot-pink);
+            padding: 3px 12px;
+            position: absolute;
+            top: -13px; left: 50%;
+            transform: translateX(-50%);
         }
-        .alert-icon {
-            color: #ff5f56;
-            font-size: 24px;
-            margin-bottom: 12px;
-            font-weight: bold;
-        }
-        .alert-text {
-            color: #fff;
-            font-size: 13px;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
+
+        .alert-icon  { color: var(--hot-pink); font-family: 'VT323', monospace; font-size: 40px; margin-bottom: 10px; }
+        .alert-text  { color: rgba(255,255,255,0.8); font-size: 13px; line-height: 1.7; margin-bottom: 20px; font-family: 'Share Tech Mono', monospace; }
         .alert-btn {
             background: transparent;
-            color: #ff5f56;
-            border: 1px solid #ff5f56;
-            padding: 8px 20px;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 12px;
-            font-weight: bold;
+            color: var(--cyber-yellow);
+            border: 2px solid var(--cyber-yellow);
+            padding: 8px 24px;
+            font-family: 'Silkscreen', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
             cursor: pointer;
-            border-radius: 4px;
-            transition: all 0.2s ease;
+            transition: all 0.15s;
         }
-        .alert-btn:hover {
-            background: #ff5f56;
-            color: #141414;
-            box-shadow: 0 0 10px rgba(255, 95, 86, 0.4);
-        }
+        .alert-btn:hover { background: var(--cyber-yellow); color: #000; box-shadow: 3px 3px 0 var(--hot-pink); }
+
+        /* Scrollbar & misc */
+        .success-highlight { color: var(--lime) !important; font-family: 'Silkscreen', monospace; font-size: 10px; letter-spacing: 1px; }
     </style>
 </head>
 <body>
 
+    <!-- Floating decorations -->
+    <span class="deco-star">★</span>
+    <span class="deco-star">✦</span>
+    <span class="deco-star">◆</span>
+    <span class="deco-star">★</span>
+    <span class="deco-star">✧</span>
+    <span class="deco-star">◇</span>
+
     <div class="terminal-container">
+
+        <!-- Title bar -->
         <div class="terminal-header">
-            <span class="dot red"></span>
-            <span class="dot yellow"></span>
-            <span class="dot green"></span>
-            <span class="terminal-title">bash — /home/ame/refugio</span>
+            <div class="header-title-block">
+                <span class="header-tag">bash &mdash; /home/ame/refugio</span>
+            </div>
+            <div class="header-dots">
+                <span class="dot green"></span>
+                <span class="dot yellow"></span>
+                <span class="dot red"></span>
+            </div>
         </div>
-        
+
+        <!-- Body -->
         <div class="terminal-body" id="terminal-body">
-            
-            <!-- Pantalla de Login -->
+
+            <!-- Login screen -->
             <div id="login-screen">
-                <pre id="login-ascii" style="color: #a855f7; font-family: monospace; font-size: 10px; line-height: 1.1; margin-bottom: 15px;"></pre>
+                <pre id="login-ascii"></pre>
                 <div id="login-output"></div>
-                <div id="input-line" style="display: none;">
-                    <span class="highlight">guest@refugio:~$</span> 
+                <div id="input-line" style="display:none;">
+                    <span class="prompt-label">guest@refugio:~$</span>
                     <input type="text" id="access-key" autofocus autocomplete="off">
                 </div>
             </div>
 
-            <!-- Interfaz Principal -->
-            <div id="main-interface" style="display: none;">
+            <!-- Main interface -->
+            <div id="main-interface" style="display:none;">
                 <div class="welcome-container">
                     <pre id="ascii-art">
   /\_/\  
  ( o.o )  
   > ^ <   
                     </pre>
-                    <h1 class="main-system-title">Sistema de conquista internacional &lt;3</h1>
+                    <div class="title-block">
+                        <p class="title-sub">// sistema activo</p>
+                        <h1 class="main-system-title">Sistema de conquista<br>internacional &lt;3</h1>
+                    </div>
                 </div>
+
+                <div class="status-row">
+                    <span class="status-chip chip-green">● CONEXIÓN OK</span>
+                    <span class="status-chip chip-pink">♡ USUARIO: AME</span>
+                    <span class="status-chip chip-blue">◆ DÍA 03</span>
+                </div>
+
                 <div id="output">
-                    <p>> Conexión establecida... <span class="success-highlight">EXITOSO</span></p>
-                    <p>> Usuario: <span class="success-highlight">Ame</span></p>
-                    <br>
-                    <p>Selecciona un protocolo para ejecutar:</p>
-                    <p class="command" onclick="runCommand('pesado')">[1] ./dia_pesado.sh  --> Si la oficina estuvo densa</p>
-                    <p class="command" onclick="runCommand('sonreir')">[2] ./sacar_sonrisa.sh --> Si te hace falta una alegría</p>
-                    <p class="command" onclick="runCommand('extrañar')">[3] ./abrazo_virtual.sh --> Si quieres sentirme cerca</p>
-                    <span class="command-nav primary" onclick="location.href='index.html'">[9] salir_al_calendario.sh</span>
+                    <p style="color:rgba(255,255,255,0.4); font-size:12px; margin-bottom:12px; font-family:'Share Tech Mono',monospace;">
+                        &gt; Selecciona un protocolo para ejecutar:
+                    </p>
+                    <div class="command-list">
+                        <span class="command" onclick="runCommand('pesado')">
+                            <span class="cmd-num">[01]</span>
+                            ./dia_pesado.sh
+                            <span class="cmd-arrow">→</span>
+                            <span class="cmd-desc">si la oficina estuvo densa</span>
+                        </span>
+                        <span class="command" onclick="runCommand('sonreir')">
+                            <span class="cmd-num">[02]</span>
+                            ./sacar_sonrisa.sh
+                            <span class="cmd-arrow">→</span>
+                            <span class="cmd-desc">si te hace falta una alegría</span>
+                        </span>
+                        <span class="command" onclick="runCommand('extrañar')">
+                            <span class="cmd-num">[03]</span>
+                            ./abrazo_virtual.sh
+                            <span class="cmd-arrow">→</span>
+                            <span class="cmd-desc">si quieres sentirme cerca</span>
+                        </span>
+                    </div>
+                    <span class="command-nav primary" onclick="location.href='index.html'">
+                        [09] salir_al_calendario.sh
+                    </span>
                 </div>
+
                 <div id="typed-output"></div>
                 <div id="secret-scan" style="display:none;"></div>
-                <div id="cursor">_</div>
+                <span id="cursor">█</span>
             </div>
-
         </div>
 
-        <!-- Alerta integrada personalizada sin URL -->
+        <!-- Alert -->
         <div class="custom-alert-bg" id="alert-bg">
             <div class="custom-alert">
-                <div class="alert-icon">⚠️ ACCESO DENEGADO</div>
-                <div class="alert-text">La firma digital no coincide.<br>Revisa la letra de la canción e intenta de nuevo.</div>
+                <div class="alert-icon">⚠</div>
+                <div class="alert-text">La firma digital no coincide.<br>Revisa la letra de la canción<br>e intenta de nuevo.</div>
                 <button class="alert-btn" onclick="closeAlert()">REINTENTAR</button>
             </div>
         </div>
@@ -333,11 +590,9 @@
 
     <script>
         const mensajes = {
-            pesado: "<div class='msg-header'>=========================================<br>  PROTOCOLO: DESCONEXIÓN Y CALMA <br>=========================================</div><br><br>Sé muy bien lo mucho que te esfuerzas día a día y la dedicación tan increíble que le pones a cada una de las tareas que fábricas o manejas. <b>Aquí</b> tu manera de afrontar los retos en la oficina es admirable, pero a veces las rutinas se vuelven sumamente densas y el cansancio físico y mental empieza a pegar con mucha fuerza. Sé que el ritmo puede ser abrumador, pero justo hoy quería pasar por aquí para recordarte que <b>estoy</b> convencida de que está bien pausar, respirar profundo y soltar el control por un momento. No tienes que cargar con el peso del mundo sobre tus hombros; <b>siempre</b> mantén en mente que eres una mujer sumamente inteligente y tesa, y absolutamente nada de lo que ocurra en un día caótico va a cambiar lo valiosa que eres. Cuando por fin cierres la pantalla hoy, quiero que dejes el estrés ahí adentro. Recuerda que cuentas <b>contigo</b> misma para brillar, pero que también aquí estoy yo, celebrando cada uno de tus procesos, admirándote en silencio y completamente dispuesta a escucharte o a acompañarte en completo silencio, como tú lo prefieras. Desconéctate tranquila, descansa tu mente y recuerda que te mereces toda la paz del mundo, preciosa.",
-            
-            sonreir: "<div class='msg-header'>=========================================<br>  PROTOCOLO: SINCRONÍA Y COMPLICIDAD <br>=========================================</div><br><br>Si terminaste en este comando es porque seguramente al día le está haciendo falta un poquito de luz, y tienes que saber que mi misión favorita siempre va a ser recordarte lo bonito que es compartir la vida. <b>Tu</b> forma de ser es increíble, tienes una chispa única y una <b>felicidad</b> que contagia a cualquiera. Me pasa seguido que me quedo pensando en nuestras charlas, en las bobadas que solo nosotras entendemos, en los chistes internos y en cómo un día cualquiera <b>me</b> parece el mejor momento de la semana con solo ponernos a conversar un rato. Me <b>hace</b> inmensamente feliz saber que, aunque los kilómetros nos separen físicamente en el mapa, compartimos una sintonía tan linda y real. Hemos construido un espacio muy sano en donde nos sentimos <b>bien</b> y podemos hablar de todo con total transparencia, y eso es algo que valoro más de lo que te imaginas. Espero de todo corazón que leer esto te robe esa sonrisa gigante que tanto me gusta ver y que te recuerde que tu bienestar le da un color hermoso a mi realidad. ¡Te adoro un montón, Ame!",
-            
-            extrañar: "<div class='msg-header'>=========================================<br>  PROTOCOLO: ABRAZO A LA DISTANCIA <br>=========================================</div><br><br>Si te dio por presionar este protocolo, quiero pedirte que cierres los ojos un segundo y sientas este lazo tan fuerte que nos une. <b>Eres</b> una persona hermosa en todos los sentidos posibles, tanto por dentro como por fuera, de esas que esparcen <b>magia</b> por donde caminan por la forma tan bonita en que transformas todo a tu alrededor. La distancia puede parecer un obstáculo muy grande, pero se vuelve un número completamente tonto cuando alguien influye <b>en</b> tu día de la manera tan limpia, bonita y honesta en que lo hacemos nosotras. No pasa un solo día en el que no agradezca el haber coincidido contigo en el camino; tu presencia le da un toque hermoso a <b>mi</b> realidad y me encanta escucharte, conocer cada día más de ti, compartir nuestros gustos y saber que estás al otro lado de la pantalla siendo un refugio seguro. No dudes jamás de lo mucho que te llevo conmigo en mis pensamientos. Este rinconcito que acompaña tu <b>vida</b> lo creé con mis propias manos para que nunca tengas espacio a dudar de lo importante que eres para mí, preciosa. Estoy aquí para ti hoy, mañana y siempre."
+            pesado: "<div class='msg-header'>PROTOCOLO :: DESCONEXIÓN Y CALMA</div>Sé muy bien lo mucho que te esfuerzas día a día y la dedicación tan increíble que le pones a cada una de las tareas que fábricas o manejas. <b>Aquí</b> tu manera de afrontar los retos en la oficina es admirable, pero a veces las rutinas se vuelven sumamente densas y el cansancio físico y mental empieza a pegar con mucha fuerza. Sé que el ritmo puede ser abrumador, pero justo hoy quería pasar por aquí para recordarte que <b>estoy</b> convencida de que está bien pausar, respirar profundo y soltar el control por un momento. No tienes que cargar con el peso del mundo sobre tus hombros; <b>siempre</b> mantén en mente que eres una mujer sumamente inteligente y tesa, y absolutamente nada de lo que ocurra en un día caótico va a cambiar lo valiosa que eres. Cuando por fin cierres la pantalla hoy, quiero que dejes el estrés ahí adentro. Recuerda que cuentas <b>contigo</b> misma para brillar, pero que también aquí estoy yo, celebrando cada uno de tus procesos, admirándote en silencio y completamente dispuesta a escucharte o a acompañarte en completo silencio, como tú lo prefieras. Desconéctate tranquila, descansa tu mente y recuerda que te mereces toda la paz del mundo, preciosa.",
+            sonreir: "<div class='msg-header'>PROTOCOLO :: SINCRONÍA Y COMPLICIDAD</div>Si terminaste en este comando es porque seguramente al día le está haciendo falta un poquito de luz, y tienes que saber que mi misión favorita siempre va a ser recordarte lo bonito que es compartir la vida. <b>Tu</b> forma de ser es increíble, tienes una chispa única y una <b>felicidad</b> que contagia a cualquiera. Me pasa seguido que me quedo pensando en nuestras charlas, en las bobadas que solo nosotras entendemos, en los chistes internos y en cómo un día cualquiera <b>me</b> parece el mejor momento de la semana con solo ponernos a conversar un rato. Me <b>hace</b> inmensamente feliz saber que, aunque los kilómetros nos separen físicamente en el mapa, compartimos una sintonía tan linda y real. Hemos construido un espacio muy sano en donde nos sentimos <b>bien</b> y podemos hablar de todo con total transparencia, y eso es algo que valoro más de lo que te imaginas. Espero de todo corazón que leer esto te robe esa sonrisa gigante que tanto me gusta ver y que te recuerde que tu bienestar le da un color hermoso a mi realidad. ¡Te adoro un montón, Ame!",
+            extrañar: "<div class='msg-header'>PROTOCOLO :: ABRAZO A LA DISTANCIA</div>Si te dio por presionar este protocolo, quiero pedirte que cierres los ojos un segundo y sientas este lazo tan fuerte que nos une. <b>Eres</b> una persona hermosa en todos los sentidos posibles, tanto por dentro como por fuera, de esas que esparcen <b>magia</b> por donde caminan por la forma tan bonita en que transformas todo a tu alrededor. La distancia puede parecer un obstáculo muy grande, pero se vuelve un número completamente tonto cuando alguien influye <b>en</b> tu día de la manera tan limpia, bonita y honesta en que lo hacemos nosotras. No pasa un solo día en el que no agradezca el haber coincidido contigo en el camino; tu presencia le da un toque hermoso a <b>mi</b> realidad y me encanta escucharte, conocer cada día más de ti, compartir nuestros gustos y saber que estás al otro lado de la pantalla siendo un refugio seguro. No dudes jamás de lo mucho que te llevo conmigo en mis pensamientos. Este rinconcito que acompaña tu <b>vida</b> lo creé con mis propias manos para que nunca tengas espacio a dudar de lo importante que eres para mí, preciosa. Estoy aquí para ti hoy, mañana y siempre."
         };
 
         const mensajesSecretos = {
@@ -355,7 +610,7 @@
         ];
 
         const loginOutput    = document.getElementById('login-output');
-        const inputLine     = document.getElementById('input-line');
+        const inputLine      = document.getElementById('input-line');
         const accessKeyInput = document.getElementById('access-key');
         const loginAscii     = document.getElementById('login-ascii');
         const alertBg        = document.getElementById('alert-bg');
@@ -382,19 +637,17 @@
         window.onload = () => {
             loginAscii.textContent = kuromiArt;
             typeEffect(introText, loginOutput, () => {
-                inputLine.style.display = 'block';
+                inputLine.style.display = 'flex';
                 accessKeyInput.focus();
             });
         };
 
-        accessKeyInput.addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                validarAcceso(this.value.toLowerCase().trim());
-            }
+        accessKeyInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') validarAcceso(this.value.toLowerCase().trim());
         });
 
         function validarAcceso(key) {
-            if (key === 'magia') { 
+            if (key === 'magia') {
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('main-interface').style.display = 'block';
             } else {
@@ -404,7 +657,7 @@
 
         function closeAlert() {
             alertBg.classList.remove('show');
-            accessKeyInput.value = "";
+            accessKeyInput.value = '';
             accessKeyInput.focus();
         }
 
@@ -418,35 +671,35 @@
                     clearInterval(timer);
                     if (callback) callback();
                 }
-            }, 45);
+            }, 40);
         }
 
         function resetTerminalMenu() {
             document.getElementById('output').style.display = 'block';
-            document.getElementById('typed-output').innerHTML = "";
+            document.getElementById('typed-output').innerHTML = '';
             document.getElementById('secret-scan').style.display = 'none';
-            document.getElementById('secret-scan').innerHTML = "";
-            const welcomeContainer = document.querySelector('.welcome-container');
-            if (welcomeContainer) welcomeContainer.style.display = 'flex';
+            document.getElementById('secret-scan').innerHTML = '';
+            const wc = document.querySelector('.welcome-container');
+            if (wc) wc.style.display = 'flex';
         }
 
         function runCommand(tipo) {
             if (isTyping) return;
-            
-            const mainOutput       = document.getElementById('output');
-            const typedDiv         = document.getElementById('typed-output');
-            const secretScanDiv    = document.getElementById('secret-scan');
-            const welcomeContainer = document.querySelector('.welcome-container');
-            const rawText          = mensajes[tipo];
-            
+
+            const mainOutput    = document.getElementById('output');
+            const typedDiv      = document.getElementById('typed-output');
+            const secretScanDiv = document.getElementById('secret-scan');
+            const wc            = document.querySelector('.welcome-container');
+            const rawText       = mensajes[tipo];
+
             mainOutput.style.display    = 'none';
             secretScanDiv.style.display = 'none';
             secretScanDiv.innerHTML     = '';
-            if (welcomeContainer) welcomeContainer.style.display = 'none';
-            typedDiv.innerHTML = "";
+            if (wc) wc.style.display   = 'none';
+            typedDiv.innerHTML          = '';
             isTyping = true;
 
-            let parsedHTML = "";
+            let parsedHTML = '';
             let j = 0;
             while (j < rawText.length) {
                 if (rawText.charAt(j) === '<') {
@@ -458,17 +711,16 @@
                     j++;
                 }
             }
-            
+
             typedDiv.innerHTML = parsedHTML;
-            
             const chars = typedDiv.querySelectorAll('.char');
             let charIndex = 0;
-            
+
             function revealChar() {
                 if (charIndex < chars.length) {
                     chars[charIndex].classList.add('visible');
                     charIndex++;
-                    setTimeout(revealChar, 35);
+                    setTimeout(revealChar, 30);
                 } else {
                     isTyping = false;
                     mostrarEscaneo(tipo);
@@ -480,7 +732,7 @@
         function mostrarEscaneo(tipo) {
             const secretScanDiv = document.getElementById('secret-scan');
             const terminalBody  = document.getElementById('terminal-body');
-            
+
             secretScanDiv.style.display = 'block';
             secretScanDiv.innerHTML     = '';
 
@@ -508,22 +760,16 @@
 
                 const footer = document.createElement('p');
                 footer.className = 'footer-msg';
-                footer.textContent = '[ SISTEMA ] Ejecución terminada. Elige una de las siguientes secuencias de comando:';
+                footer.textContent = '[ SISTEMA ] Ejecución terminada. Elige una secuencia de comando:';
                 secretScanDiv.appendChild(footer);
 
-                /* ── CORREGIDO: Menú Dinámico con los 2 botones solicitados al finalizar ── */
                 const navContainer = document.createElement('div');
-                navContainer.style.marginTop = '15px';
-                navContainer.style.display = 'flex';
-                navContainer.style.flexDirection = 'column';
-                navContainer.style.gap = '8px';
-                
+                navContainer.style.cssText = 'margin-top:12px; display:flex; flex-direction:column; gap:8px;';
                 navContainer.innerHTML = `
-                    <span class="command-nav" onclick="resetTerminalMenu()">[0] volver_al_menu_de_comandos.sh</span>
-                    <span class="command-nav primary" onclick="location.href='index.html'">[9] salir_al_calendario.sh</span>
+                    <span class="command-nav" onclick="resetTerminalMenu()">[00] volver_al_menu_de_comandos.sh</span>
+                    <span class="command-nav primary" onclick="location.href='index.html'">[09] salir_al_calendario.sh</span>
                 `;
                 secretScanDiv.appendChild(navContainer);
-
                 terminalBody.scrollTop = terminalBody.scrollHeight;
             }, totalDelay);
         }
