@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>🌟 Día 9 · Tu Constelación · Ame</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Cinzel:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#04051a;min-height:100vh;overflow-x:hidden}
+canvas#bg{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* ── PLANETAS ── */
+.planet{
+  position:fixed;border-radius:50%;pointer-events:none;z-index:1;
+  animation:floatPlanet var(--pd,20s) ease-in-out infinite alternate;
+}
+@keyframes floatPlanet{
+  0%  {transform:translate(0,0) rotate(0deg)}
+  100%{transform:translate(var(--px,10px),var(--py,-15px)) rotate(var(--pr,10deg))}
+}
+
+/* ── BOTÓN VOLVER ── */
+.back-btn{
+  position:fixed;top:1rem;left:1rem;z-index:10;
+  display:inline-flex;align-items:center;gap:.4rem;
+  background:rgba(6,4,22,.8);
+  color:rgba(168,159,216,.8);
+  font-family:'Cinzel',serif;font-size:.7rem;
+  letter-spacing:1.5px;text-transform:uppercase;
+  padding:.4rem 1rem;border-radius:999px;
+  border:1px solid rgba(168,159,216,.25);
+  backdrop-filter:blur(10px);
+  text-decoration:none;
+  transition:color .2s,border-color .2s;
+}
+.back-btn:hover{color:#f4a8c0;border-color:rgba(244,168,192,.4)}
+
+.hdr{text-align:center;padding:2.2rem 1rem .6rem;position:relative;z-index:3}
+.hdr-sup{font-family:'Cormorant Garamond',serif;font-size:.85rem;color:#a89fd8;letter-spacing:4px;text-transform:uppercase;display:block;margin-bottom:.5rem}
+.hdr-title{font-family:'Cinzel',serif;font-size:clamp(1.4rem,4vw,2rem);color:#fff;font-weight:400;letter-spacing:2px;line-height:1.3}
+.hdr-title em{color:#f4a8c0;font-style:italic;font-family:'Cormorant Garamond',serif;font-size:1.15em}
+.hdr-sub{font-family:'Cormorant Garamond',serif;font-size:.95rem;color:#6b6a8a;margin-top:.4rem;letter-spacing:1px;font-style:italic}
+
+#sky-wrap{position:relative;width:100%;max-width:540px;margin:1.2rem auto 0;z-index:2}
+#sky{position:relative;width:100%;height:460px}
+#lsvg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
+
+.snode{position:absolute;transform:translate(-50%,-50%);cursor:pointer;z-index:4;opacity:0;transition:opacity .8s ease}
+.snode.visible{opacity:1}
+.sdot{
+  width:var(--sz,10px);height:var(--sz,10px);border-radius:50%;
+  background:#fff;margin:0 auto;
+  box-shadow:0 0 5px 2px rgba(255,255,255,.7),0 0 12px 3px rgba(200,180,255,.35);
+  transition:transform .2s,box-shadow .2s;
+}
+.snode:hover .sdot{transform:scale(1.9);box-shadow:0 0 10px 4px rgba(255,255,255,1),0 0 26px 7px rgba(244,168,192,.65)}
+.slabel{font-family:'Cinzel',serif;font-size:.6rem;color:rgba(200,190,255,.55);text-align:center;margin-top:5px;white-space:nowrap;letter-spacing:1.5px;text-transform:uppercase;transition:color .2s}
+.snode:hover .slabel{color:#f4a8c0}
+
+.star4{position:absolute;transform:translate(-50%,-50%);z-index:5;opacity:0;transition:opacity .8s ease;cursor:pointer}
+.star4.visible{opacity:1}
+.star4 svg{filter:drop-shadow(0 0 8px rgba(255,255,255,.9)) drop-shadow(0 0 20px rgba(244,168,192,.5));transition:filter .2s}
+.star4:hover svg{filter:drop-shadow(0 0 16px #fff) drop-shadow(0 0 32px rgba(244,168,192,1))}
+.star4 .slabel{color:rgba(244,168,192,.9);font-size:.65rem}
+
+.card{
+  position:fixed;z-index:20;
+  background:rgba(6,4,22,.96);
+  border:1px solid rgba(168,159,216,.22);
+  border-radius:16px;padding:1.4rem 1.5rem;
+  max-width:260px;width:84vw;
+  backdrop-filter:blur(18px);
+  box-shadow:0 10px 50px rgba(0,0,0,.7);
+  opacity:0;pointer-events:none;
+  transition:opacity .22s,transform .22s;
+  transform:translateY(10px);
+}
+.card.show{opacity:1;pointer-events:all;transform:translateY(0)}
+.card-name{font-family:'Cinzel',serif;font-size:.92rem;color:#f4a8c0;margin-bottom:.6rem;letter-spacing:2px;text-transform:uppercase}
+.card-text{font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:#d4cff0;line-height:1.7;font-style:italic}
+.card-close{position:absolute;top:.6rem;right:.8rem;background:none;border:none;color:rgba(168,159,216,.35);font-size:.8rem;cursor:pointer;font-family:'Cinzel',serif;letter-spacing:1px}
+.card-close:hover{color:#f4a8c0}
+
+.final-msg{text-align:center;padding:1rem 1.5rem 3rem;position:relative;z-index:3;opacity:0;transition:opacity 1.5s ease}
+.final-msg.show{opacity:1}
+.final-line{font-family:'Cormorant Garamond',serif;font-size:1.08rem;color:#a89fd8;line-height:2;max-width:400px;margin:0 auto;font-style:italic}
+.final-line em{color:#f4a8c0;font-style:normal;font-family:'Cinzel',serif;font-size:.88em;letter-spacing:1px}
+.final-line .nowrap{white-space:nowrap}
+.final-sig{font-family:'Cinzel',serif;font-size:.7rem;color:rgba(168,159,216,.35);margin-top:.8rem;letter-spacing:3px;text-transform:uppercase}
+</style>
+</head>
+<body>
+
+<a class="back-btn" href="index.html">← volver</a>
+
+<!-- Planetas -->
+<div class="planet" style="width:90px;height:90px;top:8%;right:6%;background:radial-gradient(circle at 35% 30%,#7b5ea7,#2d1b4e);opacity:.35;box-shadow:0 0 30px rgba(123,94,167,.3);--pd:18s;--px:12px;--py:-18px;--pr:8deg"></div>
+<div class="planet" style="width:50px;height:50px;top:55%;left:4%;background:radial-gradient(circle at 40% 35%,#c47a3a,#4a2200);opacity:.3;box-shadow:0 0 20px rgba(196,122,58,.25);--pd:24s;--px:-8px;--py:12px;--pr:-6deg"></div>
+<div class="planet" style="width:30px;height:30px;bottom:22%;right:8%;background:radial-gradient(circle at 35% 30%,#4a8fc4,#0a2a4a);opacity:.28;box-shadow:0 0 14px rgba(74,143,196,.2);--pd:15s;--px:10px;--py:-8px;--pr:12deg"></div>
+<div class="planet" style="width:130px;height:28px;top:calc(8% + 31px);right:calc(6% - 20px);background:transparent;border:2px solid rgba(123,94,167,.2);border-radius:50%;opacity:.35;--pd:18s;--px:12px;--py:-18px;--pr:8deg;transform:rotate(-20deg)"></div>
+
+<canvas id="bg"></canvas>
+
+<header class="hdr">
+  <span class="hdr-sup">constelación personal · día 9</span>
+  <h1 class="hdr-title">La constelación de <em>Ame</em></h1>
+  <p class="hdr-sub">toca cada estrella para descubrirla</p>
+</header>
+
+<div id="sky-wrap">
+  <svg id="lsvg" xmlns="http://www.w3.org/2000/svg"></svg>
+  <div id="sky"></div>
+</div>
+
+<div class="final-msg" id="fmsg">
+  <p class="final-line">
+    Estas son las doce estrellas que forman <span class="nowrap"><em>tu constelación</em>.</span><br>
+    Cada una existe porque tú existes,<br>
+    y juntas forman lo más bonito que he podido ver en un cielo.<br>
+    <em>Gracias por dejarme mirarte así, preciosa.</em>
+  </p>
+  <p class="final-sig">con todo mi amor · día 9</p>
+</div>
+
+<div class="card" id="card">
+  <button class="card-close" onclick="closeCard()">cerrar</button>
+  <div class="card-name" id="cn"></div>
+  <div class="card-text" id="ct"></div>
+</div>
+
+<script>
+const STARS=[
+  {name:'Amor',      text:'Es la primera palabra que me sale cuando pienso en ti. No necesita explicación. Solo es la más verdadera.', is4:true},
+  {name:'Melodía',   text:'Tu voz y tu acento son lo más parecido a tener mi canción favorita puesta todo el tiempo. Lo linda que se te ve sonriendo mientras hablas.'},
+  {name:'Primavera', text:'Para mí eres la primavera. Brotan mil cosas hermosas en mí cada vez que estás. Riegas un jardín sin siquiera tenerlo.'},
+  {name:'Verdad',    text:'Me marcó saber que no te gusta que te mientan. Desde ese día decidí ser completamente honesta contigo, siempre.'},
+  {name:'Raíz',      text:'Has vivido cosas muy difíciles y aun así tienes ganas de creer y confiar de nuevo. Eso no es poca cosa. Eso es una raíz que nada rompe.'},
+  {name:'Refugio',   text:'Hablar contigo es lo más hermoso que he podido experimentar en mi vida. Contigo puedo ser absolutamente todo sin miedo.'},
+  {name:'Llama',     text:'Cuando hablo contigo siento escalofríos, la panza me da vueltas y una llama creciendo en mi ser. Nadie más me genera eso.'},
+  {name:'Ternura',   text:'Tu lado tierno es escaso y por eso vale oro. Sentí un orgullo increíble cuando me lo dejaste conocer. Sé lo mucho que cuesta mostrarlo.'},
+  {name:'Universo',  text:'Eres capaz de absolutamente todo. Eres increíblemente inteligente. A veces te autosaboteas, pero el universo que llevas dentro es inmenso.'},
+  {name:'Preciosa',  text:'Es la palabra que más me dices y cada vez que aparece en pantalla se me derrite algo por dentro. Preciosa. Sí, exacto. Tú.'},
+  {name:'Real',      text:'Todo contigo es real. No hay filtros, no hay poses. Lo que das, lo das de verdad. Y eso, en este mundo, es casi un milagro.'},
+  {name:'Futuro',    text:'Me emociona todo lo que te espera. Que te vaya bonito en la vida es algo que deseo con el alma. Te mereces todo y más.'},
+];
+
+const POS=[
+  {x:50,y:8},{x:30,y:20},{x:70,y:20},{x:15,y:40},{x:85,y:40},
+  {x:50,y:38},{x:22,y:62},{x:78,y:62},{x:38,y:60},{x:62,y:60},
+  {x:50,y:80},{x:50,y:55},
+];
+const LINES=[
+  [3,1],[1,0],[0,2],[2,4],[3,6],[4,7],[6,10],[7,10],
+  [0,5],[0,11],[1,5],[2,5],[1,8],[2,9],[3,5],[4,5],
+  [3,11],[4,11],[5,8],[5,9],[5,11],[8,11],[9,11],
+  [8,10],[9,10],[1,10],[2,10],[6,11],[7,11],[6,8],[7,9],
+];
+
+const canvas=document.getElementById('bg');
+const ctx=canvas.getContext('2d');
+let W,H;
+const staticStars=[];
+const shootingStars=[];
+
+function initStars(){
+  W=canvas.width=innerWidth;H=canvas.height=innerHeight;
+  staticStars.length=0;
+  for(let i=0;i<340;i++){
+    staticStars.push({
+      x:Math.random()*W,y:Math.random()*H,
+      r:Math.random()*1.15+.15,
+      a:Math.random()*.7+.2,
+      twinkleSpeed:Math.random()*.02+.005,
+      twinkleOffset:Math.random()*Math.PI*2,
+    });
+  }
+}
+
+let t=0;
+function spawnShootingStar(){
+  const fromRight=Math.random()>.5;
+  shootingStars.push({
+    x:fromRight?W*(.6+Math.random()*.4):W*(Math.random()*.3),
+    y:Math.random()*H*.45,
+    len:90+Math.random()*80,
+    speed:8+Math.random()*6,
+    angle:fromRight?Math.PI*.8:Math.PI*.25,
+    life:1,decay:.018+Math.random()*.012,
+  });
+}
+
+function drawFrame(){
+  ctx.clearRect(0,0,W,H);
+  t+=.012;
+  staticStars.forEach(s=>{
+    const a=s.a*(0.6+0.4*Math.sin(t*s.twinkleSpeed*60+s.twinkleOffset));
+    ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(255,255,255,${a})`;ctx.fill();
+  });
+  for(let i=shootingStars.length-1;i>=0;i--){
+    const s=shootingStars[i];
+    const tx=s.x+Math.cos(s.angle)*s.len;
+    const ty=s.y+Math.sin(s.angle)*s.len;
+    const grad=ctx.createLinearGradient(s.x,s.y,tx,ty);
+    grad.addColorStop(0,`rgba(255,255,255,0)`);
+    grad.addColorStop(.4,`rgba(255,255,255,${s.life*.6})`);
+    grad.addColorStop(1,`rgba(255,255,255,${s.life*.9})`);
+    ctx.beginPath();ctx.moveTo(s.x,s.y);ctx.lineTo(tx,ty);
+    ctx.strokeStyle=grad;ctx.lineWidth=1.5;ctx.stroke();
+    ctx.beginPath();ctx.arc(tx,ty,1.5,0,Math.PI*2);
+    ctx.fillStyle=`rgba(255,255,255,${s.life})`;ctx.fill();
+    s.x+=Math.cos(s.angle)*s.speed;
+    s.y+=Math.sin(s.angle)*s.speed;
+    s.life-=s.decay;
+    if(s.life<=0)shootingStars.splice(i,1);
+  }
+  requestAnimationFrame(drawFrame);
+}
+
+initStars();drawFrame();
+addEventListener('resize',initStars);
+setInterval(()=>{if(Math.random()>.3)spawnShootingStar()},4000);
+setTimeout(spawnShootingStar,1200);
+
+const wrap=document.getElementById('sky-wrap');
+const sky=document.getElementById('sky');
+const lsvg=document.getElementById('lsvg');
+const starEls=[];
+
+function getXY(p){return{x:wrap.offsetWidth*p.x/100,y:sky.offsetHeight*p.y/100}}
+
+function drawLines(){
+  lsvg.innerHTML='';
+  LINES.forEach(([a,b])=>{
+    const pa=getXY(POS[a]),pb=getXY(POS[b]);
+    const line=document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1',pa.x);line.setAttribute('y1',pa.y);
+    line.setAttribute('x2',pb.x);line.setAttribute('y2',pb.y);
+    line.setAttribute('stroke','rgba(168,159,216,0.18)');
+    line.setAttribute('stroke-width','1');
+    lsvg.appendChild(line);
+  });
+}
+
+STARS.forEach((s,i)=>{
+  if(s.is4){
+    const g=document.createElement('div');
+    g.className='star4';
+    g.innerHTML=`<svg width="28" height="28" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+      <path d="M16,0 L18.5,13.5 L32,16 L18.5,18.5 L16,32 L13.5,18.5 L0,16 L13.5,13.5 Z" fill="#fff"/>
+    </svg><div class="slabel" style="margin-top:6px">${s.name}</div>`;
+    g.addEventListener('click',()=>openCard(i,g));
+    sky.appendChild(g);starEls.push(g);
+  } else {
+    const g=document.createElement('div');
+    g.className='snode';
+    g.style.setProperty('--sz','10px');
+    g.innerHTML=`<div class="sdot"></div><div class="slabel">${s.name}</div>`;
+    g.addEventListener('click',()=>openCard(i,g));
+    sky.appendChild(g);starEls.push(g);
+  }
+});
+
+function positionStars(){
+  starEls.forEach((g,i)=>{const{x,y}=getXY(POS[i]);g.style.left=x+'px';g.style.top=y+'px'});
+  drawLines();
+}
+positionStars();addEventListener('resize',positionStars);
+
+starEls.forEach((g,i)=>{
+  setTimeout(()=>{
+    g.classList.add('visible');
+    if(i===STARS.length-1)setTimeout(()=>document.getElementById('fmsg').classList.add('show'),1000);
+  },400+i*240);
+});
+
+const card=document.getElementById('card');
+function openCard(i,el){
+  document.getElementById('cn').textContent=STARS[i].name;
+  document.getElementById('ct').textContent=STARS[i].text;
+  const rect=el.getBoundingClientRect();
+  const cw=Math.min(260,innerWidth*.84);
+  let left=rect.left+rect.width/2-cw/2;
+  let top=rect.bottom+12;
+  if(left<8)left=8;
+  if(left+cw>innerWidth-8)left=innerWidth-cw-8;
+  if(top+200>innerHeight)top=rect.top-215;
+  card.style.left=left+'px';card.style.top=top+'px';card.style.width=cw+'px';
+  card.classList.add('show');
+}
+function closeCard(){card.classList.remove('show')}
+document.addEventListener('click',e=>{
+  if(!card.contains(e.target)&&!e.target.closest('.snode')&&!e.target.closest('.star4'))closeCard();
+});
+</script>
+</body>
+</html>
