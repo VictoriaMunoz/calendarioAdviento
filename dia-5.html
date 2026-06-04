@@ -4,624 +4,388 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>✨ Bikini Bottom Stats · Ame ✨</title>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&family=Bubblegum+Sans&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
 <style>
-:root {
-  --ocean:    #00b4d8;
-  --ocean-d:  #0077b6;
-  --ocean-dk: #023e8a;
-  --sand:     #ffd166;
-  --sand-d:   #f4a522;
-  --coral:    #ef233c;
-  --coral-l:  #ff758f;
-  --kelp:     #2dc653;
-  --kelp-d:   #1a7a31;
-  --bubble:   rgba(255,255,255,0.55);
-  --foam:     #e0f7fa;
-  --night:    #03045e;
-  --gary:     #9d4edd;
-}
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
 
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-
-body {
-  min-height:100vh;
-  background: #006994;
-  background-image:
-    radial-gradient(ellipse 80% 60% at 50% 0%,   #00b4d8 0%,  transparent 65%),
-    radial-gradient(ellipse 60% 40% at 20% 80%,  #0096c7 0%,  transparent 50%),
-    radial-gradient(ellipse 50% 35% at 85% 70%,  #023e8a 0%,  transparent 55%);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  padding:2rem 1rem 5rem;
-  font-family:'Nunito',sans-serif;
-  overflow-x:hidden;
-  position:relative;
-}
-
-/* ── FONDO OCÉANO con rayas de luz ─────────────────────── */
-body::before {
-  content:'';
-  position:fixed;
-  inset:0;
-  background: repeating-linear-gradient(
-    170deg,
-    transparent 0px,
-    transparent 60px,
-    rgba(255,255,255,0.04) 60px,
-    rgba(255,255,255,0.04) 62px
-  );
-  pointer-events:none;
-  z-index:0;
-}
-
-/* ── BURBUJAS DE FONDO ─────────────────────────────────── */
-#bubbles{position:fixed;inset:0;pointer-events:none;z-index:0}
-.bub{
-  position:absolute;
-  border-radius:50%;
-  background:radial-gradient(circle at 30% 25%, rgba(255,255,255,0.8), rgba(255,255,255,0.1));
-  border:1.5px solid rgba(255,255,255,0.5);
-  bottom:-80px;
-  animation:rise var(--d) ease-in infinite;
-  animation-delay:var(--delay);
-}
-@keyframes rise{
-  0%  {transform:translateY(0)   translateX(0)      scale(0.8);opacity:0}
-  8%  {opacity:.7}
-  90% {opacity:.3}
-  100%{transform:translateY(-110vh) translateX(var(--tx)) scale(1.1);opacity:0}
-}
-
-/* ── PLANTAS / ALGAS decorativas ───────────────────────── */
-.seaweed{
-  position:fixed;bottom:0;pointer-events:none;z-index:0;opacity:.55;
-}
-.seaweed svg path{animation:sway 4s ease-in-out infinite alternate}
-.seaweed-r{right:2%;animation-delay:-2s}
-.seaweed-l{left:2%}
-@keyframes sway{
-  0%  {transform:skewX(-6deg) scaleY(1)}
-  100%{transform:skewX(8deg)  scaleY(1.05)}
-}
-
-/* ── PIEDRAS DEL FONDO ─────────────────────────────────── */
-.rocks{position:fixed;bottom:0;left:0;right:0;pointer-events:none;z-index:0;opacity:.45}
-
-/* ── HEADER ─────────────────────────────────────────────── */
-.hdr{text-align:center;position:relative;z-index:2;margin-bottom:1.8rem;animation:splashIn .9s cubic-bezier(.34,1.56,.64,1) both}
-@keyframes splashIn{
-  0%  {opacity:0;transform:scale(.7) translateY(-20px)}
-  100%{opacity:1;transform:scale(1)  translateY(0)}
-}
-.hdr-label{
-  display:inline-block;
-  font-family:'Fredoka One',cursive;
-  font-size:.8rem;letter-spacing:3px;
-  color:var(--night);
-  background:var(--sand);
-  border:3px solid var(--night);
-  border-radius:999px;
-  padding:.2rem 1.1rem;
-  margin-bottom:.6rem;
-  box-shadow:3px 3px 0 var(--night);
-}
-.hdr-title{
-  font-family:'Fredoka One',cursive;
-  font-size:clamp(2rem,6vw,3rem);
-  color:#fff;
-  -webkit-text-stroke:2.5px var(--night);
-  text-shadow:4px 4px 0 var(--night);
-  line-height:1;
-}
-.hdr-sub{
-  font-family:'Bubblegum Sans',cursive;
-  font-size:.95rem;
-  color:#fff;
-  margin-top:.5rem;
-  background:rgba(0,0,0,.25);
-  display:inline-block;
-  padding:.25rem 1rem;
-  border-radius:20px;
-}
-
-/* ── ESCENA FLIP (ALTO DE LA ESTRUCTURA FIJADO EN 740X) ── */
-.scene{
-  width:min(440px,96vw);
-  height: 740px; 
-  perspective:1400px;
-  position:relative;z-index:2;
-  animation:splashIn .9s .2s cubic-bezier(.34,1.56,.64,1) both;
-}
-.flip{
-  width:100%;
-  height:100%;
-  position:relative;
-  transform-style:preserve-3d;
-  transition:transform 1s cubic-bezier(.4,.2,.2,1);
-}
-.flip.flipped{transform:rotateY(180deg)}
-
-.face{
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  backface-visibility:hidden;
-  -webkit-backface-visibility:hidden;
-  border-radius:28px;
-  border:4px solid var(--night);
-  box-shadow:6px 6px 0 var(--night),0 16px 50px rgba(0,0,0,.3);
-  overflow: hidden;
-}
-
-.face-front{
-  background:#e0f7fa;
-  display: flex;
-  flex-direction: column;
-}
-
-.face-back{
-  transform:rotateY(180deg);
-  background:#fff9e6;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:space-between;
-  text-align:center;
-  padding:2.2rem 2rem 1.8rem; 
-}
-
-/* ── CABECERA CARD ── */
-.ch{
-  background:var(--ocean);
-  padding:1.6rem 1.6rem 1.2rem;
-  text-align:center;
-  border-bottom:4px dashed var(--night);
-  position:relative;
+.page{
+  width:100%;min-height:900px;position:relative;
+  display:flex;flex-direction:column;align-items:center;
+  padding:2rem 1rem 3rem;font-family:'Nunito',sans-serif;
   overflow:hidden;
+  background:linear-gradient(180deg,#4dd8f8 0%,#1fb8e8 15%,#0d8ec4 35%,#0a6aa0 55%,#084f80 75%,#052e58 100%);
 }
-.ch::before{
-  content:'';
+.rays{position:absolute;inset:0;pointer-events:none}
+.ray{position:absolute;top:0;transform-origin:top center;background:linear-gradient(180deg,rgba(255,255,255,0.12) 0%,transparent 70%)}
+.bbg{position:absolute;inset:0;pointer-events:none}
+.bb{position:absolute;border-radius:50%;border:1.5px solid rgba(255,255,255,0.45);background:rgba(255,255,255,0.08);animation:rise var(--d) ease-in infinite var(--del)}
+@keyframes rise{0%{transform:translateY(0) translateX(0);opacity:0}10%{opacity:.8}90%{opacity:.2}100%{transform:translateY(-900px) translateX(var(--tx));opacity:0}}
+
+.floor{position:absolute;bottom:0;left:0;right:0;height:80px;background:linear-gradient(0deg,#b87520 0%,#d4a030 60%,transparent 100%)}
+
+.fish-layer{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.fish{position:absolute}
+.fish svg{display:block}
+.fish-a{animation:swim-r 18s linear infinite}
+.fish-b{animation:swim-l 22s linear infinite}
+.fish-c{animation:swim-r 14s linear infinite 4s}
+.fish-d{animation:swim-l 26s linear infinite 8s}
+@keyframes swim-r{0%{transform:translateX(-120px)}100%{transform:translateX(calc(100vw + 120px))}}
+@keyframes swim-l{0%{transform:translateX(calc(100vw + 120px)) scaleX(-1)}100%{transform:translateX(-120px) scaleX(-1)}}
+
+/* botón volver */
+.btn-back{
+  position:relative;z-index:5;
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(255,255,255,0.15);
+  color:#fff;
+  font-family:'Fredoka One',cursive;
+  font-size:13px;letter-spacing:1.5px;
+  padding:8px 18px;border-radius:999px;
+  border:2px solid rgba(255,255,255,0.4);
+  text-decoration:none;
+  backdrop-filter:blur(6px);
+  box-shadow:0 2px 16px rgba(0,40,100,0.3);
+  transition:background .2s,transform .15s,box-shadow .2s;
+  align-self:flex-start;
+  margin-bottom:0.6rem;
+}
+.btn-back:hover{background:rgba(255,255,255,0.28);transform:translateY(-2px);box-shadow:0 6px 22px rgba(0,40,100,0.4)}
+.btn-back:active{transform:scale(0.97)}
+.btn-back svg{width:16px;height:16px;flex-shrink:0}
+
+.hdr{position:relative;z-index:3;text-align:center;margin-bottom:1.2rem}
+.hdr-pill{display:inline-block;background:rgba(255,218,80,0.95);color:#3a2800;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;padding:4px 14px;border-radius:999px;margin-bottom:6px}
+.hdr-title{font-family:'Fredoka One',cursive;font-size:clamp(1.7rem,5vw,2.3rem);color:#fff;text-shadow:0 2px 16px rgba(0,60,130,0.5);line-height:1}
+.hdr-sub{font-size:11px;color:rgba(255,255,255,0.7);margin-top:4px;letter-spacing:1.5px}
+
+.scene{width:min(420px,95vw);perspective:1400px;position:relative;z-index:3}
+.flip{width:100%;height:760px;position:relative;transform-style:preserve-3d;transition:transform 1s cubic-bezier(.4,.2,.2,1);cursor:pointer}
+.flip.flipped{transform:rotateY(180deg)}
+.face{
   position:absolute;inset:0;
-  background: repeating-linear-gradient(
-    45deg, transparent 0,transparent 12px,
-    rgba(255,255,255,.07) 12px,rgba(255,255,255,.07) 14px
-  );
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  border-radius:24px;overflow:hidden;
+  border:3px solid rgba(255,255,255,0.32);
+  box-shadow:0 12px 55px rgba(0,25,80,0.6),inset 0 1px 0 rgba(255,255,255,0.18);
 }
-.ch-badge{
-  display:inline-flex;align-items:center;gap:.4rem;
-  background:var(--sand);
-  color:var(--night);
-  font-family:'Fredoka One',cursive;
-  font-size:.78rem;letter-spacing:1px;
-  padding:.3rem 1rem;border-radius:999px;
-  border:2.5px solid var(--night);
-  box-shadow:3px 3px 0 var(--night);
-  margin-bottom:.6rem;position:relative;
-}
-.ch-name{
-  font-family:'Fredoka One',cursive;
-  font-size:2.6rem;color:#fff;
-  -webkit-text-stroke:2px var(--night);
-  text-shadow:3px 3px 0 var(--night);
-  position:relative;line-height:1;
-}
-.ch-title{
-  font-size:.8rem;color:#fff;
-  font-weight:800;letter-spacing:2px;
-  text-transform:uppercase;margin-top:.35rem;
-  position:relative;opacity:.9;
-}
-.ch-divs{display:flex;gap:.5rem;justify-content:center;margin-top:.5rem;position:relative}
-.ch-div{width:8px;height:8px;border-radius:50%;background:#fff;opacity:.6}
+.face-front{background:linear-gradient(168deg,#0e5d94 0%,#0a80be 38%,#0c6590 70%,#083460 100%);display:flex;flex-direction:column}
+.card-header{padding:1.3rem 1.5rem 1rem;text-align:center;background:rgba(255,255,255,0.07);border-bottom:2px dashed rgba(255,255,255,0.18);flex-shrink:0}
+.ch-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(255,218,80,0.18);border:1.5px solid rgba(255,218,80,0.5);color:#ffe060;font-size:10px;letter-spacing:2px;font-weight:800;padding:3px 12px;border-radius:999px;margin-bottom:6px}
+.ch-name{font-family:'Fredoka One',cursive;font-size:2.7rem;color:#fff;text-shadow:0 2px 20px rgba(80,200,255,0.5);line-height:1}
+.ch-lvl{font-size:10px;color:rgba(160,220,255,0.7);letter-spacing:2px;margin-top:4px;text-transform:uppercase}
+.stats{flex:1;padding:1rem 1.4rem 0.8rem;display:flex;flex-direction:column;justify-content:space-between}
+.sl{font-size:10px;letter-spacing:3px;color:rgba(160,220,255,0.5);text-align:center;text-transform:uppercase;margin-bottom:4px;flex-shrink:0}
+.sr{position:relative}
+.sr-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.sr-ico{width:31px;height:31px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;border:1.5px solid rgba(255,255,255,0.22);background:rgba(255,255,255,0.13)}
+.sr-name{font-size:12px;font-weight:800;color:rgba(225,242,255,0.93);flex:1;line-height:1.2}
+.sr-val{font-family:'Fredoka One',cursive;font-size:13.5px;white-space:nowrap}
 
-/* ── SECCIÓN STATS ── */
-.ss{
-  padding:1.5rem 1.6rem; 
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-.ss-label{
-  text-align:center;
-  font-family:'Fredoka One',cursive;
-  font-size:.78rem;letter-spacing:2.5px;
-  color:var(--ocean-d);text-transform:uppercase;
-  margin-bottom:0.5rem;opacity:.85;
-}
+.bar-wrap{position:relative;height:16px;border-radius:999px;background:var(--bar-color);box-shadow:inset 0 0 0 2px rgba(0,0,0,0.25),inset 0 2px 6px rgba(0,0,0,0.3)}
+.bar-fill{position:absolute;inset:0;border-radius:999px;width:0;background:var(--bar-fill);box-shadow:0 0 10px var(--bar-glow),0 0 20px var(--bar-glow2);transition:width 1.8s cubic-bezier(.4,0,.2,1)}
 
-/* ── FILA STAT ── */
-.sr{position:relative;margin-bottom:0px} 
-.sr-top{display:flex;align-items:center;gap:.55rem;margin-bottom:.35rem}
-.sr-icon{
-  width:36px;height:36px;border-radius:12px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.1rem;flex-shrink:0;
-  border:2.5px solid var(--night);
-  box-shadow:2px 2px 0 var(--night);
-  transition:transform .2s ease;
-  overflow: hidden;
-  background: white;
-}
-.sr-icon img {
-  width: 80%;
-  height: 80%;
-  object-fit: contain;
-}
-.sr:hover .sr-icon{transform:scale(1.2) rotate(-8deg)}
-.sr-name{font-weight:900;font-size:.88rem;color:var(--night);flex:1;line-height:1.2}
-.sr-val{
-  font-family:'Fredoka One',cursive;font-size:1.05rem;
-  white-space:nowrap;
-}
+.b0{--bar-color:rgba(255,60,120,0.45);--bar-fill:linear-gradient(90deg,#ffb3d0,#ff2277);--bar-glow:rgba(255,50,120,0.9);--bar-glow2:rgba(255,120,180,0.5);--tip-accent:#ff5599}
+.b0 .sr-val{color:#ff88bb}
+.b1{--bar-color:rgba(255,160,20,0.45);--bar-fill:linear-gradient(90deg,#ffe090,#ff9900);--bar-glow:rgba(255,150,0,0.9);--bar-glow2:rgba(255,200,60,0.5);--tip-accent:#ffcc44}
+.b1 .sr-val{color:#ffd060}
+.b2{--bar-color:rgba(20,200,60,0.45);--bar-fill:linear-gradient(90deg,#90ffb8,#00cc44);--bar-glow:rgba(0,200,60,0.9);--bar-glow2:rgba(80,255,120,0.5);--tip-accent:#40ee70}
+.b2 .sr-val{color:#5ce880}
+.b3{--bar-color:rgba(20,160,240,0.45);--bar-fill:linear-gradient(90deg,#a0eeff,#009cee);--bar-glow:rgba(0,160,240,0.9);--bar-glow2:rgba(80,210,255,0.5);--tip-accent:#40d0ff}
+.b3 .sr-val{color:#60d8ff}
+.b4{--bar-color:rgba(140,60,240,0.45);--bar-fill:linear-gradient(90deg,#d8b0ff,#8820ee);--bar-glow:rgba(140,40,240,0.9);--bar-glow2:rgba(200,130,255,0.5);--tip-accent:#bb80ff}
+.b4 .sr-val{color:#c090ff}
+.b5{--bar-color:rgba(230,180,0,0.45);--bar-fill:linear-gradient(90deg,#fff0a0,#f0b800);--bar-glow:rgba(220,170,0,0.9);--bar-glow2:rgba(255,230,80,0.5);--tip-accent:#ffdd40}
+.b5 .sr-val{color:#ffe060}
 
-/* Barra */
-.bar-track{
-  height:13px;border-radius:999px;
-  background:rgba(0,0,0,.1);
-  border:2px solid var(--night);overflow:hidden;
-}
-.bar-fill{
-  height:100%;border-radius:999px;
-  width:0;transition:width 1.5s cubic-bezier(.4,0,.2,1);
-}
+.tip{display:none;position:absolute;bottom:calc(100% + 12px);left:50%;transform:translateX(-50%);width:270px;max-width:90vw;background:linear-gradient(145deg,#071e42 0%,#0a3060 100%);border:2px solid var(--tip-accent);border-radius:18px;padding:13px 15px 12px;z-index:30;box-shadow:0 8px 30px rgba(0,0,0,0.55)}
+.tip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:8px solid transparent;border-top-color:#0a3060}
+.tip::before{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:10px solid transparent;border-top-color:var(--tip-accent);z-index:-1}
+.tip-head{display:flex;align-items:center;gap:7px;margin-bottom:7px}
+.tip-ico{font-size:18px;flex-shrink:0}
+.tip-badge{display:inline-block;font-size:9px;letter-spacing:1.5px;font-weight:800;text-transform:uppercase;padding:2px 9px;border-radius:999px;color:var(--tip-accent);border:1.5px solid var(--tip-accent);background:rgba(255,255,255,0.06)}
+.tip-text{font-size:12px;line-height:1.7;color:rgba(215,238,255,0.82);font-weight:600}
+.tip-text em{font-style:normal;font-weight:900;color:var(--tip-accent)}
+.sr:hover .tip{display:block}
 
-/* Colores por stat */
-.s0 .sr-icon{background:#ffb3c6}
-.s0 .sr-val {color:var(--coral)}
-.s0 .bar-fill{background:linear-gradient(90deg,#ff758f,#ef233c)}
+.card-foot{padding:10px 1.4rem;border-top:2px dashed rgba(255,255,255,0.14);background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.foot-tag{font-size:9px;letter-spacing:2px;color:rgba(160,210,255,0.4);text-transform:uppercase}
+.foot-hint{font-size:10px;letter-spacing:2px;color:rgba(255,218,80,0.8);font-weight:800;text-transform:uppercase;animation:sp 2.5s ease-in-out infinite}
+@keyframes sp{0%,100%{opacity:.55}50%{opacity:1}}
 
-.s1 .sr-icon{background:#ffe8a3}
-.s1 .sr-val {color:#c77700}
-.s1 .bar-fill{background:linear-gradient(90deg,#ffd166,#f4a522)}
+.face-back{transform:rotateY(180deg);background:linear-gradient(160deg,#083860 0%,#0b5888 50%,#062c50 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2.4rem 2rem;gap:0.85rem}
+.b-shell{font-size:2.5rem;animation:flt 3s ease-in-out infinite}
+@keyframes flt{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+.b-day{font-size:10px;letter-spacing:4px;color:rgba(140,220,255,0.55);text-transform:uppercase}
+.b-title{font-family:'Fredoka One',cursive;font-size:1.85rem;color:#fff;line-height:1.2;text-shadow:0 2px 16px rgba(80,180,255,0.4)}
+.b-rule{width:50px;height:2px;background:rgba(100,180,255,0.3);border-radius:999px}
+.b-msg{font-size:13.5px;line-height:1.85;color:rgba(210,238,255,0.75);max-width:330px;font-weight:600}
+.b-msg em{color:rgba(255,228,100,0.95);font-style:normal;font-weight:900}
+.b-sig{font-family:'Fredoka One',cursive;font-size:1rem;color:rgba(160,220,255,0.65)}
+.b-hearts{font-size:1.4rem;letter-spacing:6px;animation:hb 2s ease-in-out infinite}
+@keyframes hb{0%,100%{transform:scale(1)}40%{transform:scale(1.14)}}
+.b-ret{font-size:10px;letter-spacing:2px;color:rgba(100,170,230,0.35);margin-top:4px}
 
-.s2 .sr-icon{background:#b7f0c5}
-.s2 .sr-val {color:var(--kelp-d)}
-.s2 .bar-fill{background:linear-gradient(90deg,#2dc653,#1a7a31)}
-
-.s3 .sr-icon{background:#c0e8ff}
-.s3 .sr-val {color:var(--ocean-dk)}
-.s3 .bar-fill{background:linear-gradient(90deg,#48cae4,#023e8a)}
-
-.s4 .sr-icon{background:#e0d0ff}
-.s4 .sr-val {color:#5a189a}
-.s4 .bar-fill{background:linear-gradient(90deg,#9d4edd,#5a189a)}
-
-.s5 .sr-icon{background:#ffd6a5}
-.s5 .sr-val {color:#7f4f00}
-.s5 .bar-fill{background:linear-gradient(90deg,#ffb347,#7f4f00)}
-
-/* Tooltip ────────────────────────────────────────────────── */
-.tip{
-  position:absolute;bottom:calc(100% + 12px);left:50%;
-  transform:translateX(-50%) translateY(8px);
-  background:#fff;color:var(--night);
-  border-radius:16px;padding:.75rem 1rem;
-  font-size:.8rem;line-height:1.55;
-  width:270px;max-width:88vw;
-  pointer-events:none;opacity:0;
-  transition:opacity .22s,transform .22s;
-  z-index:20;
-  border:3px solid var(--night);
-  box-shadow:4px 4px 0 var(--night);
-}
-.tip::after{
-  content:'';position:absolute;top:100%;left:50%;
-  transform:translateX(-50%);
-  border:8px solid transparent;
-  border-top-color:#fff;
-}
-.tip::before{
-  content:'';position:absolute;top:100%;left:50%;
-  transform:translateX(-50%);
-  border:11px solid transparent;
-  border-top-color:var(--night);z-index:-1;
-}
-.tip strong{
-  display:block;
-  font-family:'Nunito', sans-serif;
-  font-weight:700;
-  font-size:.85rem;color:#2dc653;margin-bottom:.25rem;
-}
-.sr:hover .tip{opacity:1;transform:translateX(-50%) translateY(0)}
-
-/* ── PIE DE CARD ── */
-.cf{
-  padding:1rem 1.4rem;
-  border-top:4px dashed var(--night);
-  background:rgba(0,180,216,.12);
-  display:flex;align-items:center;justify-content:space-between;
-}
-.cf-tag{
-  font-family:'Fredoka One',cursive;font-size:0.75rem;
-  letter-spacing:1px;color:var(--ocean-d);opacity:.8;
-}
-.flip-hint{
-  display:inline-flex;align-items:center;gap:.3rem;
-  background:var(--coral-l);color:#fff;
-  font-family:'Fredoka One',cursive;font-size:.75rem;
-  padding:.3rem .9rem;border-radius:999px;
-  border:2.5px solid var(--night);
-  box-shadow:2px 2px 0 var(--night);
-  animation:pulse 2s ease-in-out infinite;
-}
-@keyframes pulse{
-  0%,100%{transform:scale(1)}
-  50%    {transform:scale(1.06)}
-}
-
-/* ── REVERSO ELEMENTOS ── */
-.back-shell{font-size:3.2rem;animation:float 3s ease-in-out infinite;margin-bottom:.3rem;display:flex;justify-content:center;align-items:center;}
-.back-shell img { width:65px; height:65px; object-fit:contain; }
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-
-.back-day{
-  font-family:'Fredoka One',cursive;font-size:.85rem;
-  letter-spacing:2.5px;color:#2dc653;text-transform:uppercase;margin-bottom:.4rem;
-}
-.back-title{
-  font-family:'Fredoka One',cursive;font-size:1.75rem;
-  color:var(--ocean-dk);line-height:1.2;margin-bottom:0.8rem;
-  text-shadow:1px 1px 0 #fff;
-}
-.back-msg{
-  font-size:.88rem;color:#1a1a2e;line-height:1.65;
-  max-width:360px;text-align:justify;
-}
-.back-p {
-  margin-bottom: 0.8rem;
-  text-indent: 0px;
-}
-.back-msg em{color:#2dc653;font-style:normal;font-weight:800}
-
-.back-sig{font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--ocean-d);margin-top:0.4rem;}
-.back-hearts{margin-top:.1rem;font-size:1.4rem;letter-spacing:4px;animation:hb 1.8s ease-in-out infinite}
-@keyframes hb{0%,100%{transform:scale(1)}30%{transform:scale(1.12)}60%{transform:scale(.96)}}
-.back-return{margin-top:0.6rem;font-size:.72rem;color:var(--ocean-d);opacity:.65;font-weight:700}
-
-/* BURBUJAS POP en click ─────────────────────────────────── */
-.bpop{
-  position:fixed;pointer-events:none;
-  width:12px;height:12px;border-radius:50%;
-  background:rgba(255,255,255,.6);
-  border:1.5px solid rgba(255,255,255,.9);
-  animation:bscatter .9s ease forwards;z-index:999;
-}
-@keyframes bscatter{
-  0%   {opacity:1;transform:translate(0,0) scale(.4)}
-  100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.6)}
-}
-
-/* Bob esponja decol ──────────────────────────────────────── */
-.deco-sponge{
-  position:fixed;pointer-events:none;z-index:1;
-  opacity:.18;font-size:6rem;
-  animation:wobble 8s ease-in-out infinite alternate;
-  display:flex;align-items:center;justify-content:center;
-}
-.deco-sponge img { width:120px; height:120px; object-fit:contain; }
-@keyframes wobble{
-  0%   {transform:rotate(-8deg) scale(1)}
-  100%{transform:rotate(6deg)  scale(1.05)}
-}
+.bpop{position:absolute;border-radius:50%;pointer-events:none;background:radial-gradient(circle at 30% 25%,rgba(255,255,255,0.9),rgba(160,220,255,0.15));border:1px solid rgba(255,255,255,0.7);animation:bsc 0.9s ease forwards;z-index:999}
+@keyframes bsc{0%{opacity:1;transform:translate(0,0) scale(.3)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.6)}}
 </style>
 </head>
 <body>
 
-<div class="deco-sponge" style="bottom:12%;left:-1%">🧽</div>
-<div class="deco-sponge" style="top:10%;right:-1%;animation-delay:-4s;font-size:4rem">🦀</div>
-<div class="deco-sponge" style="bottom:20%;right:2%;animation-delay:-2s;font-size:3.5rem">🐙</div>
-<div class="deco-sponge" style="top:30%;left:1%;font-size:3rem;animation-delay:-6s">🐚</div>
+<div class="page" id="page">
+  <div class="rays" id="rays"></div>
+  <div class="bbg" id="bgbub"></div>
 
-<div id="bubbles"></div>
-
-<div class="seaweed seaweed-l">
-  <svg width="60" height="220" viewBox="0 0 60 220" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M30,220 Q10,190 25,165 Q40,140 20,115 Q5,90 22,65 Q38,40 28,10" stroke="#2dc653" stroke-width="7" stroke-linecap="round" fill="none"/>
-    <path d="M30,220 Q50,185 35,160 Q20,135 40,110 Q55,85 38,60 Q22,35 32,10" stroke="#1a7a31" stroke-width="5" stroke-linecap="round" fill="none" opacity=".7"/>
-    <ellipse cx="25" cy="165" rx="16" ry="8" fill="#2dc653" opacity=".6" transform="rotate(-30 25 165)"/>
-    <ellipse cx="22" cy="115" rx="14" ry="7" fill="#1a7a31" opacity=".6" transform="rotate(25 22 115)"/>
-    <ellipse cx="22" cy="65"  rx="13" ry="7" fill="#2dc653" opacity=".5" transform="rotate(-20 22 65)"/>
-    <ellipse cx="38" cy="110" rx="12" ry="6" fill="#52b788" opacity=".5" transform="rotate(30 38 110)"/>
-  </svg>
-</div>
-
-<div class="seaweed seaweed-r">
-  <svg width="60" height="260" viewBox="0 0 60 260" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M30,260 Q50,225 35,195 Q20,165 38,135 Q55,105 40,75 Q25,45 35,10" stroke="#2dc653" stroke-width="7" stroke-linecap="round" fill="none"/>
-    <path d="M30,260 Q12,220 28,192 Q44,164 26,132 Q10,102 24,72 Q38,42 27,10" stroke="#1a7a31" stroke-width="5" stroke-linecap="round" fill="none" opacity=".7"/>
-    <ellipse cx="35" cy="195" rx="16" ry="8" fill="#2dc653" opacity=".6" transform="rotate(25 35 195)"/>
-    <ellipse cx="38" cy="135" rx="14" ry="7" fill="#1a7a31" opacity=".6" transform="rotate(-25 38 135)"/>
-    <ellipse cx="40" cy="75"  rx="13" ry="6" fill="#2dc653" opacity=".5" transform="rotate(20 40 75)"/>
-    <ellipse cx="26" cy="132" rx="12" ry="6" fill="#52b788" opacity=".5" transform="rotate(-30 26 132)"/>
-  </svg>
-</div>
-
-<div class="rocks">
-  <svg width="100%" height="90" viewBox="0 0 800 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <ellipse cx="80"  cy="75" rx="70"  ry="22" fill="#5e503f"/>
-    <ellipse cx="220" cy="80" rx="100" ry="18" fill="#4a3f35"/>
-    <ellipse cx="400" cy="72" rx="85"  ry="24" fill="#6b5044"/>
-    <ellipse cx="570" cy="78" rx="90"  ry="20" fill="#523d32"/>
-    <ellipse cx="720" cy="74" rx="75"  ry="22" fill="#5e503f"/>
-    <rect x="0" y="78" width="800" height="12" rx="0" fill="#c9a84c" opacity=".6"/>
-    <circle cx="150" cy="68" r="7" fill="#ef233c" opacity=".5"/>
-    <circle cx="155" cy="62" r="5" fill="#ff758f" opacity=".5"/>
-    <circle cx="480" cy="65" r="8" fill="#ef233c" opacity=".45"/>
-    <circle cx="488" cy="59" r="5" fill="#ff758f" opacity=".4"/>
-    <circle cx="310" cy="70" r="6" fill="#ffd166" opacity=".5"/>
-    <circle cx="640" cy="67" r="7" fill="#ef233c" opacity=".4"/>
-  </svg>
-</div>
-
-<header class="hdr">
-  <div class="hdr-label">✨ CARTA LEGENDARIA ✨</div>
-  <h1 class="hdr-title">Ficha de Personaje</h1>
-  <p class="hdr-sub">Edición Exclusiva · Día 05 🫧</p>
-</header>
-
-<div class="scene">
-  <div class="flip" id="card">
-
-    <div class="face face-front">
-      <div class="ch">
-        <div class="ch-badge">💖 ALMA PURA Y BRILLANTE 💖</div>
-        <div class="ch-name">Ame</div>
-        <div class="ch-title">Esencia Única del Océano · Level ∞</div>
-        <div class="ch-divs">
-          <div class="ch-div"></div><div class="ch-div"></div><div class="ch-div"></div>
-          <div class="ch-div"></div><div class="ch-div"></div>
-        </div>
-      </div>
-
-      <div class="ss">
-        <div class="ss-label">— atributos mágicos de su ser —</div>
-
-        <div class="sr s0">
-          <div class="sr-top">
-            <div class="sr-icon">🎵</div>
-            <div class="sr-name">Voz Melodiosa & Cantadita</div>
-            <div class="sr-val">MAX ∞</div>
-          </div>
-          <div class="bar-track"><div class="bar-fill" data-w="100"></div></div>
-          <div class="tip">
-            <strong>✦ Habilidad Pasiva Permanente</strong>
-            Escuchar sus notas de voz genera una calma infinita que abraza el alma. Su manera tan bonita y dulce de expresarse tiene un magnetismo tierno que alegra cualquier instante del día. Incluye el uso constante de "preciosa".
-          </div>
-        </div>
-
-        <div class="sr s1">
-          <div class="sr-top">
-            <div class="sr-icon">🌼</div>
-            <div class="sr-name">Ternura Sincera y Protegida</div>
-            <div class="sr-val">100 / 100</div>
-          </div>
-          <div class="bar-track"><div class="bar-fill" data-w="100"></div></div>
-          <div class="tip">
-            <strong>✦ Regalo de Acceso Exclusivo</strong>
-            El lado más dulce, limpio y transparente de todo su ser. Es un espacio íntimo y vulnerable que resguarda con timidez; una vez que te permite conocerlo, descubres el rincón más noble y honesto que pueda existir.
-          </div>
-        </div>
-
-        <div class="sr s2">
-          <div class="sr-top">
-            <div class="sr-icon">🔥</div>
-            <div class="sr-name">Pasión Surreal & Amor al Trabajo</div>
-            <div class="sr-val">∞ / ∞</div>
-          </div>
-          <div class="bar-track"><div class="bar-fill" data-w="100"></div></div>
-          <div class="tip">
-            <strong>✦ Aura de Inspiración Pura</strong>
-            La hermosa energía que transmite al platicar sobre lo que hace. Se percibe de inmediato un brillo único y un compromiso sincero con su labor, haciendo evidente que ama su profesión con el corazón. Inspira por completo.
-          </div>
-        </div>
-
-        <div class="sr s3">
-          <div class="sr-top">
-            <div class="sr-icon">🌊</div>
-            <div class="sr-name">Sabiduría & Comodidad Total</div>
-            <div class="sr-val">INVUL.</div>
-          </div>
-          <div class="bar-track"><div class="bar-fill" data-w="100"></div></div>
-          <div class="tip">
-            <strong>✦ Efecto de Entorno Confortable</strong>
-            Madurez y entendimiento profundo sobre la vida. Facilita un espacio seguro tan transparente donde es hermoso conversar de absolutamente todo con total fluidez. Su perrita y su familia son su pilar de paz.
-          </div>
-        </div>
-
-        <div class="sr s4">
-          <div class="sr-top">
-            <div class="sr-icon">🛡️</div>
-            <div class="sr-name">Campamento de Valentía (con Miedo)</div>
-            <div class="sr-val">100 / 100</div>
-          </div>
-          <div class="bar-track"><div class="bar-fill" data-w="100"></div></div>
-          <div class="tip">
-            <strong>✦ Modificador de Afecto Noble</strong>
-            Aunque recibir muestras intensas de cariño le cause timidez y existan miedos lógicos a causa de heridas pasadas, posee una fuerza inmensa para mantenerse presente, queriendo de la forma más bonita desde la distancia.
-          </div>
-        </div>
-
-        <div class="sr s5">
-          <div class="sr-top">
-            <div class="sr-icon">🌟</div>
-            <div class="sr-name">Felicidad por tus Logros</div>
-            <div class="sr-val">ÚNICO</div>
-          </div>
-          <div class="bar-track"><div class="bar-fill" data-w="100"></div></div>
-          <div class="tip">
-            <strong>✦ Bendición del Refugio Seguro</strong>
-            Le emociona con todo el corazón que te vaya bonito en la vida. Es un sentimiento real y libre de egoísmo; celebra tus alegrías con una ilusión tan sincera que se siente en la calidez de cada uno de sus mensajes.
-          </div>
-        </div>
-
-      </div>
-
-      <div class="cf">
-        <span class="cf-tag">CARTA LEGENDARIA · ED. EXCLUSIVA</span>
-        <div class="flip-hint">🫧 voltear</div>
-      </div>
+  <!-- peces animados -->
+  <div class="fish-layer">
+    <div class="fish fish-a" style="top:28%;left:0">
+      <svg width="60" height="30" viewBox="0 0 60 30">
+        <ellipse cx="34" cy="15" rx="20" ry="10" fill="#ffd166"/>
+        <polygon points="14,15 2,5 2,25" fill="#ffd166"/>
+        <circle cx="47" cy="11" r="3" fill="rgba(0,0,0,0.3)"/>
+        <circle cx="47" cy="11" r="1.2" fill="rgba(255,255,255,0.6)"/>
+      </svg>
     </div>
-    <div class="face face-back">
-      <div class="back-shell">🐚</div>
-      <div class="back-day">✦ día 05 ✦</div>
-      <h2 class="back-title">¡Feliz día cinco, mi vida!</h2>
-      <div class="back-msg">
-        <p class="back-p">Hoy me puse <em>muy creativa</em> y analicé con todo el cuidado del universo a mi personaje favorito de todo Bikini Bottom: <em>tú</em>. 🤭</p>
-        <p class="back-p">Quería plasmar lo que eres en una carta legendaria que tuviera tu esencia: la manera en que tus palabras me transmiten tanta paz, la ternura que me fuiste regalando poco a poco, y esa pasión tan surreal y bonita cuando hablas de lo que amas. Soy completamente consciente de la cantidad de cosas enormes que manejas en tu día a día, y me vuela la cabeza ver cómo logras hacer absolutamente todas a la perfección. Es admirable ver todo tu esfuerzo. Me hace muy feliz escucharte hablar de tu familia y de tu perrita. <em>Cuídate mucho, preciosa.</em></p>
-        <p class="back-p">Sé bien que a veces da nervios recibir tanto cariño o que da un poquito de miedo el pasado, pero me alegra inmensamente que estés aquí, queriéndome desde lejos de una forma tan limpia. Me emociona tanto que te vaya bonito en la vida, de verdad. Gracias por existir. 💖</p>
-      </div>
-      <div class="back-sig">Con todo mi cariño</div>
-      <div class="back-hearts">🫧 💜 🫧</div>
-      <div class="back-return">← toca para volver a tus stats</div>
+    <div class="fish fish-b" style="top:52%;right:0">
+      <svg width="48" height="24" viewBox="0 0 48 24">
+        <ellipse cx="28" cy="12" rx="16" ry="8" fill="#ff9ecc"/>
+        <polygon points="12,12 1,4 1,20" fill="#ff9ecc"/>
+        <circle cx="38" cy="9" r="2.5" fill="rgba(0,0,0,0.3)"/>
+        <circle cx="38" cy="9" r="1" fill="rgba(255,255,255,0.6)"/>
+      </svg>
     </div>
+    <div class="fish fish-c" style="top:42%;left:0">
+      <svg width="38" height="20" viewBox="0 0 38 20">
+        <ellipse cx="22" cy="10" rx="13" ry="6.5" fill="#80e8ff"/>
+        <polygon points="9,10 1,3 1,17" fill="#80e8ff"/>
+        <circle cx="30" cy="7" r="2" fill="rgba(0,0,0,0.3)"/>
+        <circle cx="30" cy="7" r="0.8" fill="rgba(255,255,255,0.6)"/>
+      </svg>
+    </div>
+    <div class="fish fish-d" style="top:20%;right:0">
+      <svg width="44" height="22" viewBox="0 0 44 22">
+        <ellipse cx="26" cy="11" rx="15" ry="7.5" fill="#ff8c42"/>
+        <polygon points="11,11 1,4 1,18" fill="#ff8c42"/>
+        <circle cx="35" cy="8" r="2.2" fill="rgba(0,0,0,0.3)"/>
+        <circle cx="35" cy="8" r="0.9" fill="rgba(255,255,255,0.6)"/>
+      </svg>
+    </div>
+  </div>
 
+  <!-- algas izq -->
+  <svg style="position:absolute;bottom:52px;left:6px;z-index:1;opacity:.9" width="55" height="200" viewBox="0 0 55 200">
+    <path d="M27,200 Q6,172 23,144 Q42,116 18,88 Q2,62 21,36 Q36,14 27,0" stroke="#2dc653" stroke-width="7" stroke-linecap="round" fill="none"/>
+    <ellipse cx="21" cy="144" rx="14" ry="7" fill="#2dc653" opacity=".75" transform="rotate(-28 21 144)"/>
+    <ellipse cx="18" cy="88" rx="13" ry="6" fill="#1a7a31" opacity=".75" transform="rotate(22 18 88)"/>
+  </svg>
+  <svg style="position:absolute;bottom:52px;right:6px;z-index:1;opacity:.9" width="55" height="200" viewBox="0 0 55 200">
+    <path d="M28,200 Q49,172 32,144 Q13,116 37,88 Q53,62 34,36 Q19,14 28,0" stroke="#2dc653" stroke-width="7" stroke-linecap="round" fill="none"/>
+    <ellipse cx="34" cy="144" rx="14" ry="7" fill="#2dc653" opacity=".75" transform="rotate(28 34 144)"/>
+    <ellipse cx="37" cy="88" rx="13" ry="6" fill="#1a7a31" opacity=".75" transform="rotate(-22 37 88)"/>
+  </svg>
+  <!-- corales -->
+  <svg style="position:absolute;bottom:28px;left:0;z-index:2;opacity:.95" width="110" height="68" viewBox="0 0 110 68">
+    <line x1="22" y1="68" x2="8" y2="22" stroke="#ef4b7a" stroke-width="6" stroke-linecap="round"/>
+    <line x1="22" y1="68" x2="22" y2="8" stroke="#ef4b7a" stroke-width="6" stroke-linecap="round"/>
+    <line x1="22" y1="68" x2="36" y2="18" stroke="#ef4b7a" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="8" cy="22" r="7" fill="#ff5590"/><circle cx="22" cy="8" r="7" fill="#ff80aa"/><circle cx="36" cy="18" r="7" fill="#ff5590"/>
+    <line x1="72" y1="68" x2="62" y2="30" stroke="#ffa040" stroke-width="5" stroke-linecap="round"/>
+    <line x1="72" y1="68" x2="80" y2="24" stroke="#ffa040" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="62" cy="30" r="6" fill="#ffc060"/><circle cx="80" cy="24" r="6" fill="#ffa040"/>
+  </svg>
+  <svg style="position:absolute;bottom:28px;right:0;z-index:2;opacity:.95" width="110" height="68" viewBox="0 0 110 68">
+    <line x1="88" y1="68" x2="74" y2="20" stroke="#ff758f" stroke-width="6" stroke-linecap="round"/>
+    <line x1="88" y1="68" x2="88" y2="8" stroke="#ff758f" stroke-width="6" stroke-linecap="round"/>
+    <line x1="88" y1="68" x2="102" y2="18" stroke="#ff758f" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="74" cy="20" r="7" fill="#ef4b7a"/><circle cx="88" cy="8" r="7" fill="#ff90aa"/><circle cx="102" cy="18" r="7" fill="#ef4b7a"/>
+    <line x1="28" y1="68" x2="18" y2="32" stroke="#a060f0" stroke-width="5" stroke-linecap="round"/>
+    <line x1="28" y1="68" x2="36" y2="26" stroke="#a060f0" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="18" cy="32" r="6" fill="#c090ff"/><circle cx="36" cy="26" r="6" fill="#a060f0"/>
+  </svg>
+
+  <div class="floor"></div>
+
+  <!-- BOTÓN VOLVER -->
+  <a href="index.html" class="btn-back">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M19 12H5M12 5l-7 7 7 7"/>
+    </svg>
+    Volver al inicio
+  </a>
+
+  <div class="hdr">
+    <div class="hdr-pill">✨ CARTA LEGENDARIA ✨</div>
+    <div class="hdr-title">Ficha de Personaje</div>
+    <div class="hdr-sub">Edición Exclusiva · Día 05 🫧</div>
+  </div>
+
+  <div class="scene">
+    <div class="flip" id="card">
+
+      <!-- FRENTE -->
+      <div class="face face-front">
+        <div class="card-header">
+          <div class="ch-badge">💖 ALMA PURA Y BRILLANTE 💖</div>
+          <div class="ch-name">Ame</div>
+          <div class="ch-lvl">Esencia Única del Océano · Level ∞</div>
+        </div>
+
+        <div class="stats">
+          <div class="sl">— atributos mágicos de su ser —</div>
+
+          <div class="sr b0">
+            <div class="sr-row">
+              <div class="sr-ico">🎵</div>
+              <div class="sr-name">Voz Melodiosa</div>
+              <div class="sr-val">MAX ∞</div>
+            </div>
+            <div class="bar-wrap"><div class="bar-fill" data-w="100"></div></div>
+            <div class="tip">
+              <div class="tip-head"><span class="tip-ico">🎵</span><span class="tip-badge">Habilidad Pasiva</span></div>
+              <div class="tip-text">Sus palabras generan una calma infinita. Tiene un magnetismo tierno que <em>alegra cualquier instante</em> con solo aparecer.</div>
+            </div>
+          </div>
+
+          <div class="sr b1">
+            <div class="sr-row">
+              <div class="sr-ico">🌼</div>
+              <div class="sr-name">Ternura Sincera y Protegida</div>
+              <div class="sr-val">100 / 100</div>
+            </div>
+            <div class="bar-wrap"><div class="bar-fill" data-w="100"></div></div>
+            <div class="tip">
+              <div class="tip-head"><span class="tip-ico">🌼</span><span class="tip-badge">Acceso Exclusivo</span></div>
+              <div class="tip-text">El lado más dulce de su ser. Una vez que te deja conocerlo, descubres <em>el rincón más noble y honesto</em> que pueda existir.</div>
+            </div>
+          </div>
+
+          <div class="sr b2">
+            <div class="sr-row">
+              <div class="sr-ico">🔥</div>
+              <div class="sr-name">Pasión & Amor al Trabajo</div>
+              <div class="sr-val">∞ / ∞</div>
+            </div>
+            <div class="bar-wrap"><div class="bar-fill" data-w="100"></div></div>
+            <div class="tip">
+              <div class="tip-head"><span class="tip-ico">🔥</span><span class="tip-badge">Aura de Inspiración</span></div>
+              <div class="tip-text">Ama su profesión con todo el corazón y lo transmite <em>cada vez que habla de ella</em>. Un brillo único que inspira.</div>
+            </div>
+          </div>
+
+          <div class="sr b3">
+            <div class="sr-row">
+              <div class="sr-ico">🌊</div>
+              <div class="sr-name">Sabiduría & Comodidad Total</div>
+              <div class="sr-val">INVUL.</div>
+            </div>
+            <div class="bar-wrap"><div class="bar-fill" data-w="100"></div></div>
+            <div class="tip">
+              <div class="tip-head"><span class="tip-ico">🌊</span><span class="tip-badge">Entorno Seguro</span></div>
+              <div class="tip-text">Crea un espacio donde es hermoso conversar de todo. <em>Su perrita y su familia</em> son su pilar de paz más grande.</div>
+            </div>
+          </div>
+
+          <div class="sr b4">
+            <div class="sr-row">
+              <div class="sr-ico">🛡️</div>
+              <div class="sr-name">Valentía (con Miedo)</div>
+              <div class="sr-val">100 / 100</div>
+            </div>
+            <div class="bar-wrap"><div class="bar-fill" data-w="100"></div></div>
+            <div class="tip">
+              <div class="tip-head"><span class="tip-ico">🛡️</span><span class="tip-badge">Afecto Noble</span></div>
+              <div class="tip-text">Aunque recibir cariño le cause timidez, tiene fuerza enorme para estar presente y <em>querer de la forma más bonita</em>.</div>
+            </div>
+          </div>
+
+          <div class="sr b5">
+            <div class="sr-row">
+              <div class="sr-ico">🌟</div>
+              <div class="sr-name">Felicidad por tus Logros</div>
+              <div class="sr-val">ÚNICO</div>
+            </div>
+            <div class="bar-wrap"><div class="bar-fill" data-w="100"></div></div>
+            <div class="tip">
+              <div class="tip-head"><span class="tip-ico">🌟</span><span class="tip-badge">Refugio Seguro</span></div>
+              <div class="tip-text">Celebra tus alegrías con una ilusión tan sincera que se siente en cada mensaje. <em>Real y libre de egoísmo</em>, siempre.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-foot">
+          <span class="foot-tag">Carta Legendaria · Ed. Exclusiva</span>
+          <span class="foot-hint">🫧 voltear</span>
+        </div>
+      </div>
+
+      <!-- REVERSO -->
+      <div class="face face-back">
+        <div class="b-shell">🐚</div>
+        <div class="b-day">✦ día 05 ✦</div>
+        <div class="b-title">¡Feliz día cinco,<br>mi vida!</div>
+        <div class="b-rule"></div>
+        <div class="b-msg">
+          Hoy me puse <em>muy creativa</em> y analicé con todo el cuidado del universo a mi personaje favorito de Bikini Bottom: <em>tú</em>. 🤭<br><br>
+          Quería plasmar todo lo que eres. La paz de tus palabras, la ternura que me fuiste regalando poco a poco, esa pasión tan surreal cuando hablas de lo que amas. Me vuela la cabeza todo lo que logras cada día. <em>Es admirable verte.</em><br><br>
+          Sé que a veces da nervios recibir tanto cariño, pero me alegra que estés aquí queriéndome de una forma tan limpia. Gracias por existir. <em>Cuídate mucho, preciosa.</em> 💖
+        </div>
+        <div class="b-sig">Con todo mi cariño</div>
+        <div class="b-hearts">🫧 💜 🫧</div>
+        <div class="b-ret">← toca para volver a tus stats</div>
+      </div>
+
+    </div>
   </div>
 </div>
 
 <script>
-const bf=document.getElementById('bubbles');
-for(let i=0;i<24;i++){
+const page = document.getElementById('page');
+
+const raysEl = document.getElementById('rays');
+for(let i=0;i<16;i++){
+  const r=document.createElement('div');
+  r.className='ray';
+  const w=35+Math.random()*55;
+  r.style.cssText=`left:${(i/16)*108-3}%;width:${w}px;height:${48+Math.random()*28}%;transform:rotate(${-22+i*3}deg);opacity:${0.04+Math.random()*0.07}`;
+  raysEl.appendChild(r);
+}
+
+const bgbub=document.getElementById('bgbub');
+for(let i=0;i<26;i++){
   const b=document.createElement('div');
-  b.className='bub';
-  const s=Math.random()*18+6;
-  b.style.cssText=`left:${Math.random()*100}vw;width:${s}px;height:${s}px;--d:${(Math.random()*5+6).toFixed(1)}s;--delay:-${(Math.random()*8).toFixed(1)}s;--tx:${(Math.random()*60-30).toFixed(0)}px`;
-  bf.appendChild(b);
+  b.className='bb';
+  const s=4+Math.random()*14;
+  b.style.cssText=`left:${Math.random()*100}%;bottom:${-s}px;width:${s}px;height:${s}px;--d:${(6+Math.random()*8).toFixed(1)}s;--del:-${(Math.random()*12).toFixed(1)}s;--tx:${(Math.random()*50-25).toFixed(0)}px`;
+  bgbub.appendChild(b);
 }
 
 window.addEventListener('load',()=>{
-  document.querySelectorAll('.bar-fill').forEach((b,i)=>{
-    setTimeout(()=>{ b.style.width=b.dataset.w+'%' }, 500+i*200);
+  document.querySelectorAll('.bar-fill').forEach((el,i)=>{
+    setTimeout(()=>{ el.style.width = el.dataset.w+'%'; }, 600+i*220);
   });
 });
 
-const card = document.getElementById('card');
-
-// Escucha clicks en toda la pantalla
-document.addEventListener('click', e => {
-  // Lanza el efecto visual de las burbujas en las coordenadas del click
-  pop(e.clientX, e.clientY);
-  
-  // Verifica si el click ocurrió dentro de la tarjeta
-  const clickedInsideCard = e.target.closest('.scene');
-  
-  if (clickedInsideCard) {
-    // Si fue dentro de la tarjeta, se activa el giro
-    card.classList.toggle('flipped');
-  }
+const card=document.getElementById('card');
+card.addEventListener('click',e=>{
+  card.classList.toggle('flipped');
+  spawnBubbles(e.clientX,e.clientY);
+});
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.scene') && !e.target.closest('.btn-back')) spawnBubbles(e.clientX,e.clientY);
 });
 
-function pop(cx,cy){
-  for(let i=0;i<12;i++){
+function spawnBubbles(cx,cy){
+  const rect=page.getBoundingClientRect();
+  const x=cx-rect.left, y=cy-rect.top;
+  for(let i=0;i<16;i++){
     const el=document.createElement('div');
     el.className='bpop';
-    const a=(i/12)*Math.PI*2;
-    const d=45+Math.random()*55;
-    el.style.cssText=`left:${cx}px;top:${cy}px;--dx:${(Math.cos(a)*d).toFixed(0)}px;--dy:${(Math.sin(a)*d).toFixed(0)}px;width:${(Math.random()*8+6).toFixed(0)}px;height:${(Math.random()*8+6).toFixed(0)}px`;
-    document.body.appendChild(el);
+    const angle=(i/16)*Math.PI*2;
+    const dist=35+Math.random()*65;
+    const s=(5+Math.random()*12).toFixed(0);
+    el.style.cssText=`left:${x}px;top:${y}px;width:${s}px;height:${s}px;--dx:${(Math.cos(angle)*dist).toFixed(0)}px;--dy:${(Math.sin(angle)*dist).toFixed(0)}px`;
+    page.appendChild(el);
     setTimeout(()=>el.remove(),950);
   }
 }
