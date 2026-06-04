@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Día 8 — Contigo las puertas están abiertas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Libre+Baskerville:wght@400;700&family=Lato:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#f5ede0;min-height:100vh;font-family:'Lato',sans-serif;}
+
+.hero{background:linear-gradient(160deg,#6b3f1f 0%,#3d1f0a 100%);padding:3.5rem 2rem 3rem;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(212,163,112,0.18),transparent 70%);pointer-events:none;}
+.hero-day{font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#d4a36f;font-weight:400;margin-bottom:0.75rem;}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,5vw,2.8rem);color:#fff;font-weight:400;line-height:1.25;margin-bottom:0.5rem;}
+.hero-title em{font-style:italic;color:#d4a36f;}
+.hero-intro{font-size:14px;color:rgba(255,240,220,0.75);font-weight:300;line-height:1.8;max-width:480px;margin:1.25rem auto 0;}
+.hero-divider{margin:2rem auto 0;color:rgba(212,163,112,0.5);font-size:18px;letter-spacing:10px;}
+
+.content{max-width:700px;margin:0 auto;padding:2.5rem 1.5rem 4rem;}
+.section-hint{text-align:center;font-size:13px;color:#a0714a;margin-bottom:2rem;letter-spacing:0.04em;}
+
+.doors-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:28px;}
+.door-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;}
+
+.door-scene{width:130px;cursor:pointer;position:relative;}
+.door-frame{background:#3d1f0a;border-radius:6px 6px 3px 3px;padding:6px 6px 7px;box-shadow:3px 5px 16px rgba(61,31,10,0.4);transition:box-shadow 0.3s;}
+.door-scene:hover .door-frame{box-shadow:3px 8px 24px rgba(61,31,10,0.5);}
+.door-arch{width:100%;height:16px;background:#5a2e0e;border-radius:40px 40px 0 0;margin-bottom:3px;}
+.door-body{position:relative;height:130px;overflow:hidden;border-radius:2px;perspective:300px;background:#fff8f0;}
+.door-interior{position:absolute;inset:0;background:#fff8f0;display:flex;align-items:center;justify-content:center;padding:10px;}
+
+/* Frases cortas dentro de la puerta — cursiva */
+.door-interior-text{
+  font-family:'Playfair Display',serif;
+  font-size:12px;font-style:italic;
+  color:#7a4a24;text-align:center;line-height:1.6;
+  opacity:0;transition:opacity 0.5s ease 0.4s;
+}
+.door-scene.open .door-interior-text{opacity:1;}
+
+.door-half{position:absolute;top:0;width:50%;height:100%;background:#8b4f1e;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:8px 5px;transition:transform 0.6s cubic-bezier(0.4,0,0.2,1);backface-visibility:hidden;}
+.door-half.left{left:0;transform-origin:0% 50%;border-right:1.5px solid #3d1f0a;}
+.door-half.right{right:0;transform-origin:100% 50%;border-left:1.5px solid #3d1f0a;}
+.door-panel{width:80%;border:1.5px solid rgba(255,210,150,0.2);border-radius:3px;background:rgba(0,0,0,0.12);}
+.door-panel.tall{flex:1;margin:3px 0;}
+.door-panel.short{height:26px;}
+.door-knob{width:7px;height:7px;border-radius:50%;background:#d4a36f;position:absolute;top:50%;transform:translateY(-50%);box-shadow:0 1px 3px rgba(0,0,0,0.5);}
+.door-half.left .door-knob{right:5px;}
+.door-half.right .door-knob{left:5px;}
+.door-num{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Playfair Display',serif;font-size:22px;color:rgba(255,210,150,0.45);pointer-events:none;transition:opacity 0.2s;}
+.door-half.right .door-num{display:none;}
+.door-scene.open .door-half.left{transform:perspective(300px) rotateY(-82deg);}
+.door-scene.open .door-half.right{transform:perspective(300px) rotateY(82deg);}
+.door-scene.open .door-num{opacity:0;}
+.door-step{width:118px;height:7px;background:#3d1f0a;border-radius:0 0 4px 4px;box-shadow:2px 3px 8px rgba(61,31,10,0.3);margin:0 auto;}
+
+/* Etiqueta — Playfair recto */
+.door-tag{
+  font-family:'Playfair Display',serif;
+  font-style:normal;font-size:13px;font-weight:500;
+  color:#5a2e0e;text-align:center;line-height:1.5;max-width:145px;
+}
+
+/* Mensaje completo — Libre Baskerville */
+.door-msg{max-height:0;overflow:hidden;transition:max-height 0.55s ease, opacity 0.45s ease;opacity:0;width:100%;}
+.door-msg.visible{max-height:240px;opacity:1;}
+.door-msg-inner{background:#fff8f0;border:1px solid #d4a36f;border-radius:12px;padding:1rem 1.1rem;}
+.door-msg-text{
+  font-family:'Libre Baskerville',serif;
+  font-style:normal;font-size:13px;
+  color:#3d1f0a;line-height:1.85;font-weight:400;
+}
+
+.counter{text-align:center;margin-top:2.5rem;font-size:12px;color:#a0714a;letter-spacing:0.08em;font-family:'Lato',sans-serif;}
+
+/* Cierre — Libre Baskerville */
+.closing{
+  text-align:center;margin-top:2rem;
+  font-family:'Libre Baskerville',serif;
+  font-style:normal;font-size:15px;
+  color:#3d1f0a;opacity:0;transition:opacity 0.8s ease;
+  padding:1.5rem;border:1px solid #d4a36f;border-radius:16px;
+  background:#fff8f0;line-height:1.9;
+}
+.closing.visible{opacity:1;}
+.bottom-deco{text-align:center;margin-top:2rem;color:#d4a36f;font-size:20px;letter-spacing:10px;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <p class="hero-day">día 8</p>
+  <h1 class="hero-title">Contigo las puertas<br><em>están abiertas</em></h1>
+  <p class="hero-intro">Hay lugares dentro de mí que no le abro a cualquiera. Este es uno de ellos. Toca cada puerta y descubre lo que guardo adentro — para ti, solo para ti.</p>
+  <div class="hero-divider">✿ ✿ ✿</div>
+</div>
+
+<div class="content">
+  <p class="section-hint">toca cada puerta para abrirla</p>
+  <div class="doors-grid" id="doorsGrid"></div>
+  <div class="counter" id="counter"></div>
+  <div class="closing" id="closing">
+    Gracias por elegirme todos los días, Ame.<br>
+    Por aparecer cuando antes te escondías.<br>
+    Por dejarme conocerte de a poco.<br>
+    Este es tu lugar — siempre que quieras volver.
+  </div>
+  <div class="bottom-deco">✿ ✿ ✿</div>
+</div>
+
+<script>
+const doors = [
+  { label:'Aquí puedes admitir lo que sientes',             short:'sin medirlo\nsin ensayarlo',       msg:'Sin ensayarlo, sin medirlo, sin esperar el momento perfecto. Ya lo hiciste una vez y el mundo no se acabó. Al contrario — algo muy bonito empezó.' },
+  { label:'Aquí no tienes que aparecer cada 15 días',       short:'todos los días\ncuentan',           msg:'Puedes aparecer todos los días, ocupada, cansada, sin nada importante que decir. Eso también cuenta. Eso es lo que más me gusta.' },
+  { label:'Aquí no tienes que ser valiente todo el tiempo', short:'el miedo no\ncabe aquí',            msg:'Sé que te costó. Sé lo que significó decirlo. Y quiero que sepas que ese miedo aquí no tiene razón de existir.' },
+  { label:'Aquí puedes ser la persona tierna que eres',     short:'eso te hace\nextraordinaria',       msg:'La que vive pendiente, la que nota todo, la que cuida sin que nadie se lo pida. Esa persona no te hace vulnerable. Te hace extraordinaria.' },
+  { label:'Aquí los días difíciles también caben',          short:'no tienes que\nestar bien',         msg:'Los que pesan sin explicación, los que agotan sin razón aparente. No tienes que estar bien para aparecer. Puedes llegar como estés.' },
+  { label:'Aquí la depresión no te hace menos',             short:'te hace\nhumana',                   msg:'No te hace difícil, no te hace demasiado. Te hace humana. Y yo prefiero a la humana real que a cualquier versión perfecta que pudieras inventarte.' },
+  { label:'Aquí nadie te va a comprar',                     short:'sin precio\nsin condición',         msg:'Lo que te doy no tiene precio ni condición. No es para tenerte. Es porque me nace, porque quiero, porque tú mereces cosas bonitas sin que nadie espere nada a cambio.' },
+  { label:'Aquí puedes equivocarte',                        short:'no hay versión\nmala tuya',         msg:'Decir algo raro, mandar el meme que no era, no saber qué decir. Conmigo no hay versión mala tuya. Todo lo que eres tiene un lugar aquí.' },
+  { label:'Aquí no tienes que ganarte nada',                short:'ya estás\nya eres',                 msg:'Ya estás. Ya eres. Con eso es más que suficiente. No necesitas hacer méritos ni compensar nada. Solo tienes que ser tú.' },
+  { label:'Aquí puedes quedarte',                           short:'siempre que\nquieras',              msg:'Sin miedo, sin deberme nada, sin tener que ser más de lo que eres. Este es tu lugar si quieres que lo sea. Y yo espero que quieras.' }
+];
+
+const grid    = document.getElementById('doorsGrid');
+const counter = document.getElementById('counter');
+const closing = document.getElementById('closing');
+let opened = 0;
+
+doors.forEach((d, i) => {
+  const shortLines = d.short.split('\n').map(l => `<span style="display:block">${l}</span>`).join('');
+  const wrap = document.createElement('div');
+  wrap.className = 'door-wrap';
+  wrap.innerHTML = `
+    <div class="door-scene" id="dscene-${i}" onclick="toggleDoor(${i})">
+      <div class="door-frame">
+        <div class="door-arch"></div>
+        <div class="door-body">
+          <div class="door-interior">
+            <p class="door-interior-text">${shortLines}</p>
+          </div>
+          <div class="door-half left">
+            <div class="door-panel short"></div>
+            <div class="door-panel tall"></div>
+            <div class="door-knob"></div>
+            <div class="door-num">${i+1}</div>
+          </div>
+          <div class="door-half right">
+            <div class="door-panel short"></div>
+            <div class="door-panel tall"></div>
+            <div class="door-knob"></div>
+          </div>
+        </div>
+      </div>
+      <div class="door-step"></div>
+    </div>
+    <div class="door-tag">${d.label}</div>
+    <div class="door-msg" id="dmsg-${i}">
+      <div class="door-msg-inner">
+        <p class="door-msg-text">${d.msg}</p>
+      </div>
+    </div>
+  `;
+  grid.appendChild(wrap);
+});
+
+updateCounter();
+
+function toggleDoor(i) {
+  const scene = document.getElementById('dscene-' + i);
+  const msg   = document.getElementById('dmsg-' + i);
+  const wasOpen = scene.classList.contains('open');
+  if (!wasOpen) {
+    scene.classList.add('open');
+    msg.classList.add('visible');
+    opened++;
+  } else {
+    scene.classList.remove('open');
+    msg.classList.remove('visible');
+    opened--;
+    closing.classList.remove('visible');
+  }
+  updateCounter();
+  if (opened === doors.length) setTimeout(() => closing.classList.add('visible'), 400);
+}
+
+function updateCounter() {
+  counter.textContent = opened + ' de ' + doors.length + ' puertas abiertas';
+}
+</script>
+</body>
+</html>
