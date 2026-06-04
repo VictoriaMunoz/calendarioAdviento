@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>✨ Bikini Bottom Stats · Ame ✨</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&family=Bubblegum+Sans&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --ocean:    #00b4d8;
+  --ocean-d:  #0077b6;
+  --ocean-dk: #023e8a;
+  --sand:     #ffd166;
+  --sand-d:   #f4a522;
+  --coral:    #ef233c;
+  --coral-l:  #ff758f;
+  --kelp:     #2dc653;
+  --kelp-d:   #1a7a31;
+  --bubble:   rgba(255,255,255,0.55);
+  --foam:     #e0f7fa;
+  --night:    #03045e;
+  --gary:     #9d4edd;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+body {
+  min-height:100vh;
+  background: #006994;
+  background-image:
+    radial-gradient(ellipse 80% 60% at 50% 0%,   #00b4d8 0%,  transparent 65%),
+    radial-gradient(ellipse 60% 40% at 20% 80%,  #0096c7 0%,  transparent 50%),
+    radial-gradient(ellipse 50% 35% at 85% 70%,  #023e8a 0%,  transparent 55%);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:2rem 1rem 5rem;
+  font-family:'Nunito',sans-serif;
+  overflow-x:hidden;
+  position:relative;
+}
+
+/* ── FONDO OCÉANO con rayas de luz ─────────────────────── */
+body::before {
+  content:'';
+  position:fixed;
+  inset:0;
+  background: repeating-linear-gradient(
+    170deg,
+    transparent 0px,
+    transparent 60px,
+    rgba(255,255,255,0.04) 60px,
+    rgba(255,255,255,0.04) 62px
+  );
+  pointer-events:none;
+  z-index:0;
+}
+
+/* ── BURBUJAS DE FONDO ─────────────────────────────────── */
+#bubbles{position:fixed;inset:0;pointer-events:none;z-index:0}
+.bub{
+  position:absolute;
+  border-radius:50%;
+  background:radial-gradient(circle at 30% 25%, rgba(255,255,255,0.8), rgba(255,255,255,0.1));
+  border:1.5px solid rgba(255,255,255,0.5);
+  bottom:-80px;
+  animation:rise var(--d) ease-in infinite;
+  animation-delay:var(--delay);
+}
+@keyframes rise{
+  0%  {transform:translateY(0)   translateX(0)      scale(0.8);opacity:0}
+  8%  {opacity:.7}
+  90% {opacity:.3}
+  100%{transform:translateY(-110vh) translateX(var(--tx)) scale(1.1);opacity:0}
+}
+
+/* ── PLANTAS / ALGAS decorativas ───────────────────────── */
+.seaweed{
+  position:fixed;bottom:0;pointer-events:none;z-index:0;opacity:.55;
+}
+.seaweed svg path{animation:sway 4s ease-in-out infinite alternate}
+.seaweed-r{right:2%;animation-delay:-2s}
+.seaweed-l{left:2%}
+@keyframes sway{
+  0%  {transform:skewX(-6deg) scaleY(1)}
+  100%{transform:skewX(8deg)  scaleY(1.05)}
+}
+
+/* ── PIEDRAS DEL FONDO ─────────────────────────────────── */
+.rocks{position:fixed;bottom:0;left:0;right:0;pointer-events:none;z-index:0;opacity:.45}
+
+/* ── HEADER ─────────────────────────────────────────────── */
+.hdr{text-align:center;position:relative;z-index:2;margin-bottom:1.8rem;animation:splashIn .9s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes splashIn{
+  0%  {opacity:0;transform:scale(.7) translateY(-20px)}
+  100%{opacity:1;transform:scale(1)  translateY(0)}
+}
+.hdr-label{
+  display:inline-block;
+  font-family:'Fredoka One',cursive;
+  font-size:.8rem;letter-spacing:3px;
+  color:var(--night);
+  background:var(--sand);
+  border:3px solid var(--night);
+  border-radius:999px;
+  padding:.2rem 1.1rem;
+  margin-bottom:.6rem;
+  box-shadow:3px 3px 0 var(--night);
+}
+.hdr-title{
+  font-family:'Fredoka One',cursive;
+  font-size:clamp(2rem,6vw,3rem);
+  color:#fff;
+  -webkit-text-stroke:2.5px var(--night);
+  text-shadow:4px 4px 0 var(--night);
+  line-height:1;
+}
+.hdr-sub{
+  font-family:'Bubblegum Sans',cursive;
+  font-size:.95rem;
+  color:#fff;
+  margin-top:.5rem;
+  background:rgba(0,0,0,.25);
+  display:inline-block;
+  padding:.25rem 1rem;
+  border-radius:20px;
+}
+
+/* ── ESCENA FLIP (ALTO DE LA ESTRUCTURA FIJADO EN 740X) ── */
+.scene{
+  width:min(440px,96vw);
+  height: 740px; 
+  perspective:1400px;
+  position:relative;z-index:2;
+  animation:splashIn .9s .2s cubic-bezier(.34,1.56,.64,1) both;
+}
+.flip{
+  width:100%;
+  height:100%;
+  position:relative;
+  transform-style:preserve-3d;
+  transition:transform 1s cubic-bezier(.4,.2,.2,1);
+}
+.flip.flipped{transform:rotateY(180deg)}
+
+.face{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+  border-radius:28px;
+  border:4px solid var(--night);
+  box-shadow:6px 6px 0 var(--night),0 16px 50px rgba(0,0,0,.3);
+  overflow: hidden;
+}
+
+.face-front{
+  background:#e0f7fa;
+  display: flex;
+  flex-direction: column;
+}
+
+.face-back{
+  transform:rotateY(180deg);
+  background:#fff9e6;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:space-between;
+  text-align:center;
+  padding:2.2rem 2rem 1.8rem; 
+}
+
+/* ── CABECERA CARD ── */
+.ch{
+  background:var(--ocean);
+  padding:1.6rem 1.6rem 1.2rem;
+  text-align:center;
+  border-bottom:4px dashed var(--night);
+  position:relative;
+  overflow:hidden;
+}
+.ch::before{
+  content:'';
+  position:absolute;inset:0;
+  background: repeating-linear-gradient(
+    45deg, transparent 0,transparent 12px,
+    rgba(255,255,255,.07) 12px,rgba(255,255,255,.07) 14px
+  );
+}
+.ch-badge{
+  display:inline-flex;align-items:center;gap:.4rem;
+  background:var(--sand);
+  color:var(--night);
+  font-family:'Fredoka One',cursive;
+  font-size:.78rem;letter-spacing:1px;
+  padding:.3rem 1rem;border-radius:999px;
+  border:2.5px solid var(--night);
+  box-shadow:3px 3px 0 var(--night);
+  margin-bottom:.6rem;position:relative;
+}
+.ch-name{
+  font-family:'Fredoka One',cursive;
+  font-size:2.6rem;color:#fff;
+  -webkit-text-stroke:2px var(--night);
+  text-shadow:3px 3px 0 var(--night);
+  position:relative;line-height:1;
+}
+.ch-title{
+  font-size:.8rem;color:#fff;
+  font-weight:800;letter-spacing:2px;
+  text-transform:uppercase;margin-top:.35rem;
+  position:relative;opacity:.9;
+}
+.ch-divs{display:flex;gap:.5rem;justify-content:center;margin-top:.5rem;position:relative}
+.ch-div{width:8px;height:8px;border-radius:50%;background:#fff;opacity:.6}
+
+/* ── SECCIÓN STATS ── */
+.ss{
+  padding:1.5rem 1.6rem; 
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.ss-label{
+  text-align:center;
+  font-family:'Fredoka One',cursive;
+  font-size:.78rem;letter-spacing:2.5px;
+  color:var(--ocean-d);text-transform:uppercase;
+  margin-bottom:0.5rem;opacity:.85;
+}
+
+/* ── FILA STAT ── */
+.sr{position:relative;margin-bottom:0px} 
+.sr-top{display:flex;align-items:center;gap:.55rem;margin-bottom:.35rem}
+.sr-icon{
+  width:36px;height:36px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;flex-shrink:0;
+  border:2.5px solid var(--night);
+  box-shadow:2px 2px 0 var(--night);
+  transition:transform .2s ease;
+  overflow: hidden;
+  background: white;
+}
+.sr-icon img {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+}
+.sr:hover .sr-icon{transform:scale(1.2) rotate(-8deg)}
+.sr-name{font-weight:900;font-size:.88rem;color:var(--night);flex:1;line-height:1.2}
+.sr-val{
+  font-family:'Fredoka One',cursive;font-size:1.05rem;
+  white-space:nowrap;
+}
+
+/* Barra */
+.bar-track{
+  height:13px;border-radius:999px;
+  background:rgba(0,0,0,.1);
+  border:2px solid var(--night);overflow:hidden;
+}
+.bar-fill{
+  height:100%;border-radius:999px;
+  width:0;transition:width 1.5s cubic-bezier(.4,0,.2,1);
+}
+
+/* Colores por stat */
+.s0 .sr-icon{background:#ffb3c6}
+.s0 .sr-val {color:var(--coral)}
+.s0 .bar-fill{background:linear-gradient(90deg,#ff758f,#ef233c)}
+
+.s1 .sr-icon{background:#ffe8a3}
+.s1 .sr-val {color:#c77700}
+.s1 .bar-fill{background:linear-gradient(90deg,#ffd166,#f4a522)}
+
+.s2 .sr-icon{background:#b7f0c5}
+.s2 .sr-val {color:var(--kelp-d)}
+.s2 .bar-fill{background:linear-gradient(90deg,#2dc653,#1a7a31)}
+
+.s3 .sr-icon{background:#c0e8ff}
+.s3 .sr-val {color:var(--ocean-dk)}
+.s3 .bar-fill{background:linear-gradient(90deg,#48cae4,#023e8a)}
+
+.s4 .sr-icon{background:#e0d0ff}
+.s4 .sr-val {color:#5a189a}
+.s4 .bar-fill{background:linear-gradient(90deg,#9d4edd,#5a189a)}
+
+.s5 .sr-icon{background:#ffd6a5}
+.s5 .sr-val {color:#7f4f00}
+.s5 .bar-fill{background:linear-gradient(90deg,#ffb347,#7f4f00)}
+
+/* Tooltip ────────────────────────────────────────────────── */
+.tip{
+  position:absolute;bottom:calc(100% + 12px);left:50%;
+  transform:translateX(-50%) translateY(8px);
+  background:#fff;color:var(--night);
+  border-radius:16px;padding:.75rem 1rem;
+  font-size:.8rem;line-height:1.55;
+  width:270px;max-width:88vw;
+  pointer-events:none;opacity:0;
+  transition:opacity .22s,transform .22s;
+  z-index:20;
+  border:3px solid var(--night);
+  box-shadow:4px 4px 0 var(--night);
+}
+.tip::after{
+  content:'';position:absolute;top:100%;left:50%;
+  transform:translateX(-50%);
+  border:8px solid transparent;
+  border-top-color:#fff;
+}
+.tip::before{
+  content:'';position:absolute;top:100%;left:50%;
+  transform:translateX(-50%);
+  border:11px solid transparent;
+  border-top-color:var(--night);z-index:-1;
+}
+.tip strong{
+  display:block;
+  font-family:'Nunito', sans-serif;
+  font-weight:700;
+  font-size:.85rem;color:#2dc653;margin-bottom:.25rem;
+}
+.sr:hover .tip{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── PIE DE CARD ── */
+.cf{
+  padding:1rem 1.4rem;
+  border-top:4px dashed var(--night);
+  background:rgba(0,180,216,.12);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.cf-tag{
+  font-family:'Fredoka One',cursive;font-size:0.75rem;
+  letter-spacing:1px;color:var(--ocean-d);opacity:.8;
+}
+.flip-hint{
+  display:inline-flex;align-items:center;gap:.3rem;
+  background:var(--coral-l);color:#fff;
+  font-family:'Fredoka One',cursive;font-size:.75rem;
+  padding:.3rem .9rem;border-radius:999px;
+  border:2.5px solid var(--night);
+  box-shadow:2px 2px 0 var(--night);
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{
+  0%,100%{transform:scale(1)}
+  50%    {transform:scale(1.06)}
+}
+
+/* ── REVERSO ELEMENTOS ── */
+.back-shell{font-size:3.2rem;animation:float 3s ease-in-out infinite;margin-bottom:.3rem;display:flex;justify-content:center;align-items:center;}
+.back-shell img { width:65px; height:65px; object-fit:contain; }
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+.back-day{
+  font-family:'Fredoka One',cursive;font-size:.85rem;
+  letter-spacing:2.5px;color:#2dc653;text-transform:uppercase;margin-bottom:.4rem;
+}
+.back-title{
+  font-family:'Fredoka One',cursive;font-size:1.75rem;
+  color:var(--ocean-dk);line-height:1.2;margin-bottom:0.8rem;
+  text-shadow:1px 1px 0 #fff;
+}
+.back-msg{
+  font-size:.88rem;color:#1a1a2e;line-height:1.65;
+  max-width:360px;text-align:justify;
+}
+.back-p {
+  margin-bottom: 0.8rem;
+  text-indent: 0px;
+}
+.back-msg em{color:#2dc653;font-style:normal;font-weight:800}
+
+.back-sig{font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--ocean-d);margin-top:0.4rem;}
+.back-hearts{margin-top:.1rem;font-size:1.4rem;letter-spacing:4px;animation:hb 1.8s ease-in-out infinite}
+@keyframes hb{0%,100%{transform:scale(1)}30%{transform:scale(1.12)}60%{transform:scale(.96)}}
+.back-return{margin-top:0.6rem;font-size:.72rem;color:var(--ocean-d);opacity:.65;font-weight:700}
+
+/* BURBUJAS POP en click ─────────────────────────────────── */
+.bpop{
+  position:fixed;pointer-events:none;
+  width:12px;height:12px;border-radius:50%;
+  background:rgba(255,255,255,.6);
+  border:1.5px solid rgba(255,255,255,.9);
+  animation:bscatter .9s ease forwards;z-index:999;
+}
+@keyframes bscatter{
+  0%   {opacity:1;transform:translate(0,0) scale(.4)}
+  100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.6)}
+}
+
+/* Bob esponja decol ──────────────────────────────────────── */
+.deco-sponge{
+  position:fixed;pointer-events:none;z-index:1;
+  opacity:.18;font-size:6rem;
+  animation:wobble 8s ease-in-out infinite alternate;
+  display:flex;align-items:center;justify-content:center;
+}
+.deco-sponge img { width:120px; height:120px; object-fit:contain; }
+@keyframes wobble{
+  0%   {transform:rotate(-8deg) scale(1)}
+  100%{transform:rotate(6deg)  scale(1.05)}
+}
+</style>
+</head>
+<body>
+
+<div class="deco-sponge" style="bottom:12%;left:-1%">🧽</div>
+<div class="deco-sponge" style="top:10%;right:-1%;animation-delay:-4s;font-size:4rem">🦀</div>
+<div class="deco-sponge" style="bottom:20%;right:2%;animation-delay:-2s;font-size:3.5rem">🐙</div>
+<div class="deco-sponge" style="top:30%;left:1%;font-size:3rem;animation-delay:-6s">🐚</div>
+
+<div id="bubbles"></div>
+
+<div class="seaweed seaweed-l">
+  <svg width="60" height="220" viewBox="0 0 60 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M30,220 Q10,190 25,165 Q40,140 20,115 Q5,90 22,65 Q38,40 28,10" stroke="#2dc653" stroke-width="7" stroke-linecap="round" fill="none"/>
+    <path d="M30,220 Q50,185 35,160 Q20,135 40,110 Q55,85 38,60 Q22,35 32,10" stroke="#1a7a31" stroke-width="5" stroke-linecap="round" fill="none" opacity=".7"/>
+    <ellipse cx="25" cy="165" rx="16" ry="8" fill="#2dc653" opacity=".6" transform="rotate(-30 25 165)"/>
+    <ellipse cx="22" cy="115" rx="14" ry="7" fill="#1a7a31" opacity=".6" transform="rotate(25 22 115)"/>
+    <ellipse cx="22" cy="65"  rx="13" ry="7" fill="#2dc653" opacity=".5" transform="rotate(-20 22 65)"/>
+    <ellipse cx="38" cy="110" rx="12" ry="6" fill="#52b788" opacity=".5" transform="rotate(30 38 110)"/>
+  </svg>
+</div>
+
+<div class="seaweed seaweed-r">
+  <svg width="60" height="260" viewBox="0 0 60 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M30,260 Q50,225 35,195 Q20,165 38,135 Q55,105 40,75 Q25,45 35,10" stroke="#2dc653" stroke-width="7" stroke-linecap="round" fill="none"/>
+    <path d="M30,260 Q12,220 28,192 Q44,164 26,132 Q10,102 24,72 Q38,42 27,10" stroke="#1a7a31" stroke-width="5" stroke-linecap="round" fill="none" opacity=".7"/>
+    <ellipse cx="35" cy="195" rx="16" ry="8" fill="#2dc653" opacity=".6" transform="rotate(25 35 195)"/>
+    <ellipse cx="38" cy="135" rx="14" ry="7" fill="#1a7a31" opacity=".6" transform="rotate(-25 38 135)"/>
+    <ellipse cx="40" cy="75"  rx="13" ry="6" fill="#2dc653" opacity=".5" transform="rotate(20 40 75)"/>
+    <ellipse cx="26" cy="132" rx="12" ry="6" fill="#52b788" opacity=".5" transform="rotate(-30 26 132)"/>
+  </svg>
+</div>
+
+<div class="rocks">
+  <svg width="100%" height="90" viewBox="0 0 800 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="80"  cy="75" rx="70"  ry="22" fill="#5e503f"/>
+    <ellipse cx="220" cy="80" rx="100" ry="18" fill="#4a3f35"/>
+    <ellipse cx="400" cy="72" rx="85"  ry="24" fill="#6b5044"/>
+    <ellipse cx="570" cy="78" rx="90"  ry="20" fill="#523d32"/>
+    <ellipse cx="720" cy="74" rx="75"  ry="22" fill="#5e503f"/>
+    <rect x="0" y="78" width="800" height="12" rx="0" fill="#c9a84c" opacity=".6"/>
+    <circle cx="150" cy="68" r="7" fill="#ef233c" opacity=".5"/>
+    <circle cx="155" cy="62" r="5" fill="#ff758f" opacity=".5"/>
+    <circle cx="480" cy="65" r="8" fill="#ef233c" opacity=".45"/>
+    <circle cx="488" cy="59" r="5" fill="#ff758f" opacity=".4"/>
+    <circle cx="310" cy="70" r="6" fill="#ffd166" opacity=".5"/>
+    <circle cx="640" cy="67" r="7" fill="#ef233c" opacity=".4"/>
+  </svg>
+</div>
+
+<header class="hdr">
+  <div class="hdr-label">✨ CARTA LEGENDARIA ✨</div>
+  <h1 class="hdr-title">Ficha de Personaje</h1>
+  <p class="hdr-sub">Edición Exclusiva · Día 05 🫧</p>
+</header>
+
+<div class="scene">
+  <div class="flip" id="card">
+
+    <div class="face face-front">
+      <div class="ch">
+        <div class="ch-badge">💖 ALMA PURA Y BRILLANTE 💖</div>
+        <div class="ch-name">Ame</div>
+        <div class="ch-title">Esencia Única del Océano · Level ∞</div>
+        <div class="ch-divs">
+          <div class="ch-div"></div><div class="ch-div"></div><div class="ch-div"></div>
+          <div class="ch-div"></div><div class="ch-div"></div>
+        </div>
+      </div>
+
+      <div class="ss">
+        <div class="ss-label">— atributos mágicos de su ser —</div>
+
+        <div class="sr s0">
+          <div class="sr-top">
+            <div class="sr-icon">🎵</div>
+            <div class="sr-name">Voz Melodiosa & Cantadita</div>
+            <div class="sr-val">MAX ∞</div>
+          </div>
+          <div class="bar-track"><div class="bar-fill" data-w="100"></div></div>
+          <div class="tip">
+            <strong>✦ Habilidad Pasiva Permanente</strong>
+            Escuchar sus notas de voz genera una calma infinita que abraza el alma. Su manera tan bonita y dulce de expresarse tiene un magnetismo tierno que alegra cualquier instante del día. Incluye el uso constante de "preciosa".
+          </div>
+        </div>
+
+        <div class="sr s1">
+          <div class="sr-top">
+            <div class="sr-icon">🌼</div>
+            <div class="sr-name">Ternura Sincera y Protegida</div>
+            <div class="sr-val">100 / 100</div>
+          </div>
+          <div class="bar-track"><div class="bar-fill" data-w="100"></div></div>
+          <div class="tip">
+            <strong>✦ Regalo de Acceso Exclusivo</strong>
+            El lado más dulce, limpio y transparente de todo su ser. Es un espacio íntimo y vulnerable que resguarda con timidez; una vez que te permite conocerlo, descubres el rincón más noble y honesto que pueda existir.
+          </div>
+        </div>
+
+        <div class="sr s2">
+          <div class="sr-top">
+            <div class="sr-icon">🔥</div>
+            <div class="sr-name">Pasión Surreal & Amor al Trabajo</div>
+            <div class="sr-val">∞ / ∞</div>
+          </div>
+          <div class="bar-track"><div class="bar-fill" data-w="100"></div></div>
+          <div class="tip">
+            <strong>✦ Aura de Inspiración Pura</strong>
+            La hermosa energía que transmite al platicar sobre lo que hace. Se percibe de inmediato un brillo único y un compromiso sincero con su labor, haciendo evidente que ama su profesión con el corazón. Inspira por completo.
+          </div>
+        </div>
+
+        <div class="sr s3">
+          <div class="sr-top">
+            <div class="sr-icon">🌊</div>
+            <div class="sr-name">Sabiduría & Comodidad Total</div>
+            <div class="sr-val">INVUL.</div>
+          </div>
+          <div class="bar-track"><div class="bar-fill" data-w="100"></div></div>
+          <div class="tip">
+            <strong>✦ Efecto de Entorno Confortable</strong>
+            Madurez y entendimiento profundo sobre la vida. Facilita un espacio seguro tan transparente donde es hermoso conversar de absolutamente todo con total fluidez. Su perrita y su familia son su pilar de paz.
+          </div>
+        </div>
+
+        <div class="sr s4">
+          <div class="sr-top">
+            <div class="sr-icon">🛡️</div>
+            <div class="sr-name">Campamento de Valentía (con Miedo)</div>
+            <div class="sr-val">100 / 100</div>
+          </div>
+          <div class="bar-track"><div class="bar-fill" data-w="100"></div></div>
+          <div class="tip">
+            <strong>✦ Modificador de Afecto Noble</strong>
+            Aunque recibir muestras intensas de cariño le cause timidez y existan miedos lógicos a causa de heridas pasadas, posee una fuerza inmensa para mantenerse presente, queriendo de la forma más bonita desde la distancia.
+          </div>
+        </div>
+
+        <div class="sr s5">
+          <div class="sr-top">
+            <div class="sr-icon">🌟</div>
+            <div class="sr-name">Felicidad por tus Logros</div>
+            <div class="sr-val">ÚNICO</div>
+          </div>
+          <div class="bar-track"><div class="bar-fill" data-w="100"></div></div>
+          <div class="tip">
+            <strong>✦ Bendición del Refugio Seguro</strong>
+            Le emociona con todo el corazón que te vaya bonito en la vida. Es un sentimiento real y libre de egoísmo; celebra tus alegrías con una ilusión tan sincera que se siente en la calidez de cada uno de sus mensajes.
+          </div>
+        </div>
+
+      </div>
+
+      <div class="cf">
+        <span class="cf-tag">CARTA LEGENDARIA · ED. EXCLUSIVA</span>
+        <div class="flip-hint">🫧 voltear</div>
+      </div>
+    </div>
+    <div class="face face-back">
+      <div class="back-shell">🐚</div>
+      <div class="back-day">✦ día 05 ✦</div>
+      <h2 class="back-title">¡Feliz día cinco, mi vida!</h2>
+      <div class="back-msg">
+        <p class="back-p">Hoy me puse <em>muy creativa</em> y analicé con todo el cuidado del universo a mi personaje favorito de todo Bikini Bottom: <em>tú</em>. 🤭</p>
+        <p class="back-p">Quería plasmar lo que eres en una carta legendaria que tuviera tu esencia: la manera en que tus palabras me transmiten tanta paz, la ternura que me fuiste regalando poco a poco, y esa pasión tan surreal y bonita cuando hablas de lo que amas. Soy completamente consciente de la cantidad de cosas enormes que manejas en tu día a día, y me vuela la cabeza ver cómo logras hacer absolutamente todas a la perfección. Es admirable ver todo tu esfuerzo. Me hace muy feliz escucharte hablar de tu familia y de tu perrita. <em>Cuídate mucho, preciosa.</em></p>
+        <p class="back-p">Sé bien que a veces da nervios recibir tanto cariño o que da un poquito de miedo el pasado, pero me alegra inmensamente que estés aquí, queriéndome desde lejos de una forma tan limpia. Me emociona tanto que te vaya bonito en la vida, de verdad. Gracias por existir. 💖</p>
+      </div>
+      <div class="back-sig">Con todo mi cariño</div>
+      <div class="back-hearts">🫧 💜 🫧</div>
+      <div class="back-return">← toca para volver a tus stats</div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const bf=document.getElementById('bubbles');
+for(let i=0;i<24;i++){
+  const b=document.createElement('div');
+  b.className='bub';
+  const s=Math.random()*18+6;
+  b.style.cssText=`left:${Math.random()*100}vw;width:${s}px;height:${s}px;--d:${(Math.random()*5+6).toFixed(1)}s;--delay:-${(Math.random()*8).toFixed(1)}s;--tx:${(Math.random()*60-30).toFixed(0)}px`;
+  bf.appendChild(b);
+}
+
+window.addEventListener('load',()=>{
+  document.querySelectorAll('.bar-fill').forEach((b,i)=>{
+    setTimeout(()=>{ b.style.width=b.dataset.w+'%' }, 500+i*200);
+  });
+});
+
+const card = document.getElementById('card');
+
+// Escucha clicks en toda la pantalla
+document.addEventListener('click', e => {
+  // Lanza el efecto visual de las burbujas en las coordenadas del click
+  pop(e.clientX, e.clientY);
+  
+  // Verifica si el click ocurrió dentro de la tarjeta
+  const clickedInsideCard = e.target.closest('.scene');
+  
+  if (clickedInsideCard) {
+    // Si fue dentro de la tarjeta, se activa el giro
+    card.classList.toggle('flipped');
+  }
+});
+
+function pop(cx,cy){
+  for(let i=0;i<12;i++){
+    const el=document.createElement('div');
+    el.className='bpop';
+    const a=(i/12)*Math.PI*2;
+    const d=45+Math.random()*55;
+    el.style.cssText=`left:${cx}px;top:${cy}px;--dx:${(Math.cos(a)*d).toFixed(0)}px;--dy:${(Math.sin(a)*d).toFixed(0)}px;width:${(Math.random()*8+6).toFixed(0)}px;height:${(Math.random()*8+6).toFixed(0)}px`;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),950);
+  }
+}
+</script>
+</body>
+</html>
