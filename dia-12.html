@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>🎨 Día 12 · Tu lienzo · Ame</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Caveat:wght@500;700&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{background:#fdf8f2;font-family:'Caveat',cursive;display:flex;flex-direction:column;align-items:center;user-select:none}
+
+.back-btn{position:fixed;top:.7rem;left:.8rem;z-index:10;display:inline-flex;align-items:center;gap:.4rem;background:rgba(255,255,255,.9);color:#b8a898;font-family:'Fredoka One',cursive;font-size:.68rem;letter-spacing:1.5px;text-transform:uppercase;padding:.35rem .9rem;border-radius:999px;border:1.5px solid #f0e8e0;text-decoration:none;transition:color .2s,border-color .2s;backdrop-filter:blur(8px)}
+.back-btn:hover{color:#e07898;border-color:#f4a8c0}
+
+.hdr{text-align:center;padding:.8rem 1rem .4rem;position:relative;z-index:2;flex-shrink:0}
+.hdr-day{font-family:'Fredoka One',cursive;font-size:.7rem;letter-spacing:3px;text-transform:uppercase;color:#b8a898;margin-bottom:.2rem}
+.hdr-title{font-family:'Fredoka One',cursive;font-size:clamp(1.2rem,3.5vw,1.7rem);color:#3a2e28;line-height:1.1}
+.hdr-title em{color:#e07898;font-style:normal}
+.hdr-sub{font-size:.85rem;color:#a09080;margin-top:.2rem}
+
+.toolbar{display:flex;align-items:center;gap:.5rem;padding:.5rem .8rem;background:#fff;border-radius:999px;box-shadow:0 4px 20px rgba(0,0,0,.08);border:2px solid #f0e8e0;flex-wrap:wrap;justify-content:center;flex-shrink:0;margin-bottom:.5rem;max-width:98vw}
+.colors{display:flex;gap:.35rem;align-items:center;flex-wrap:wrap;justify-content:center}
+.color-btn{width:26px;height:26px;border-radius:50%;border:2.5px solid transparent;cursor:pointer;transition:transform .15s,border-color .15s;flex-shrink:0}
+.color-btn:hover{transform:scale(1.2)}
+.color-btn.active{border-color:#3a2e28;transform:scale(1.15)}
+.sep{width:1px;height:28px;background:#f0e0d8;flex-shrink:0}
+.size-wrap{display:flex;align-items:center;gap:.4rem}
+.size-label{font-size:.75rem;color:#b8a898;white-space:nowrap}
+.size-slider{-webkit-appearance:none;width:70px;height:4px;border-radius:2px;background:#f0e0d8;outline:none;cursor:pointer}
+.size-slider::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#e07898;cursor:pointer}
+.action-btn{background:none;border:none;cursor:pointer;font-size:1.1rem;padding:.2rem .3rem;border-radius:8px;transition:background .15s,transform .15s;flex-shrink:0}
+.action-btn:hover{background:#fdf0f4;transform:scale(1.1)}
+.action-btn.eraser-active{background:#fde8f0}
+.save-btn{background:linear-gradient(135deg,#ff9ab5,#e07898);color:#fff;border:none;cursor:pointer;font-family:'Fredoka One',cursive;font-size:.85rem;padding:.4rem 1rem;border-radius:999px;box-shadow:0 3px 12px rgba(224,120,152,.35);transition:transform .15s,box-shadow .15s;white-space:nowrap;flex-shrink:0}
+.save-btn:hover{transform:translateY(-2px);box-shadow:0 5px 18px rgba(224,120,152,.45)}
+.save-btn:active{transform:translateY(0)}
+
+.canvas-wrap{position:relative;flex:1;width:100%;display:flex;align-items:center;justify-content:center;padding:0 .5rem .5rem;min-height:0}
+#paintCanvas{border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.1);cursor:crosshair;touch-action:none;display:block;max-width:100%;max-height:100%}
+
+#cursorDot{position:fixed;pointer-events:none;border-radius:50%;border:2px solid rgba(0,0,0,.2);transform:translate(-50%,-50%);z-index:100;transition:width .1s,height .1s;display:none}
+
+.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(20px);background:#3a2e28;color:#fff;font-family:'Fredoka One',cursive;font-size:.85rem;padding:.5rem 1.4rem;border-radius:999px;opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;z-index:50;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+
+<a class="back-btn" href="index.html">← volver</a>
+
+<header class="hdr">
+  <div class="hdr-day">día 12</div>
+  <div class="hdr-title">Hoy el lienzo es tuyo, <em>preciosa</em></div>
+  <div class="hdr-sub">pinta lo que quieras · sin reglas · solo tú</div>
+</header>
+
+<div class="toolbar">
+  <div class="colors" id="colorPalette"></div>
+  <div class="sep"></div>
+  <div class="size-wrap">
+    <span class="size-label">tamaño</span>
+    <input type="range" class="size-slider" id="sizeSlider" min="2" max="60" value="12"/>
+  </div>
+  <div class="sep"></div>
+  <button class="action-btn" id="eraserBtn" title="Borrador">🧹</button>
+  <button class="action-btn" id="clearBtn" title="Limpiar todo">🗑️</button>
+  <div class="sep"></div>
+  <button class="save-btn" id="saveBtn">guardar mi obra 🎨</button>
+</div>
+
+<div class="canvas-wrap" id="canvasWrap">
+  <canvas id="paintCanvas"></canvas>
+</div>
+
+<div id="cursorDot"></div>
+<div class="toast" id="toast">¡Tu obra fue guardada! 🌸</div>
+
+<script>
+const COLORS=[
+  '#FF6B9D','#FF8C42','#FFD166','#06D6A0','#118AB2',
+  '#9B5DE5','#F15BB5','#FEE440','#00BBF9','#00F5D4',
+  '#FF4D6D','#C77DFF','#4CC9F0','#F72585','#7FD1AE',
+  '#FF9F1C','#CBFF8C','#E9FF70','#FF6B6B','#A8DADC',
+  '#ffffff','#c0c0c0','#888888','#333333','#1a1a1a',
+];
+
+const palette=document.getElementById('colorPalette');
+let currentColor=COLORS[0];
+let isEraser=false;
+
+COLORS.forEach((c,i)=>{
+  const btn=document.createElement('button');
+  btn.className='color-btn'+(i===0?' active':'');
+  btn.style.background=c;
+  if(c==='#ffffff')btn.style.border='2.5px solid #ddd';
+  btn.addEventListener('click',()=>{
+    currentColor=c;isEraser=false;
+    document.querySelectorAll('.color-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    eraserBtn.classList.remove('eraser-active');
+  });
+  palette.appendChild(btn);
+});
+
+const canvasWrap=document.getElementById('canvasWrap');
+const canvas=document.getElementById('paintCanvas');
+const ctx=canvas.getContext('2d');
+const sizeSlider=document.getElementById('sizeSlider');
+const eraserBtn=document.getElementById('eraserBtn');
+const clearBtn=document.getElementById('clearBtn');
+const saveBtn=document.getElementById('saveBtn');
+const cursorDot=document.getElementById('cursorDot');
+const toast=document.getElementById('toast');
+
+function resizeCanvas(){
+  const wrap=canvasWrap.getBoundingClientRect();
+  const W=Math.floor(wrap.width-16);
+  const H=Math.floor(wrap.height-8);
+  if(W<=0||H<=0)return;
+  if(canvas.width>0&&canvas.height>0){
+    const tmp=document.createElement('canvas');
+    tmp.width=canvas.width;tmp.height=canvas.height;
+    tmp.getContext('2d').drawImage(canvas,0,0);
+    canvas.width=W;canvas.height=H;
+    ctx.fillStyle='#fffdf9';ctx.fillRect(0,0,W,H);
+    ctx.drawImage(tmp,0,0);
+  } else {
+    canvas.width=W;canvas.height=H;
+    ctx.fillStyle='#fffdf9';ctx.fillRect(0,0,W,H);
+  }
+}
+window.addEventListener('resize',resizeCanvas);
+setTimeout(resizeCanvas,80);
+
+let drawing=false,lastX=0,lastY=0;
+
+function getPos(e){
+  const r=canvas.getBoundingClientRect();
+  if(e.touches)return{x:e.touches[0].clientX-r.left,y:e.touches[0].clientY-r.top};
+  return{x:e.clientX-r.left,y:e.clientY-r.top};
+}
+
+function startDraw(e){
+  e.preventDefault();drawing=true;
+  const{x,y}=getPos(e);lastX=x;lastY=y;
+  ctx.beginPath();ctx.arc(x,y,sizeSlider.value/2,0,Math.PI*2);
+  ctx.fillStyle=isEraser?'#fffdf9':currentColor;ctx.fill();
+}
+function draw(e){
+  e.preventDefault();if(!drawing)return;
+  const{x,y}=getPos(e);
+  ctx.beginPath();ctx.moveTo(lastX,lastY);ctx.lineTo(x,y);
+  ctx.strokeStyle=isEraser?'#fffdf9':currentColor;
+  ctx.lineWidth=sizeSlider.value;ctx.lineCap='round';ctx.lineJoin='round';ctx.stroke();
+  lastX=x;lastY=y;
+}
+function stopDraw(){drawing=false}
+
+canvas.addEventListener('mousedown',startDraw);
+canvas.addEventListener('mousemove',draw);
+canvas.addEventListener('mouseup',stopDraw);
+canvas.addEventListener('mouseleave',stopDraw);
+canvas.addEventListener('touchstart',startDraw,{passive:false});
+canvas.addEventListener('touchmove',draw,{passive:false});
+canvas.addEventListener('touchend',stopDraw);
+
+canvas.addEventListener('mousemove',e=>{
+  const sz=parseInt(sizeSlider.value);
+  cursorDot.style.display='block';
+  cursorDot.style.width=sz+'px';cursorDot.style.height=sz+'px';
+  cursorDot.style.left=e.clientX+'px';cursorDot.style.top=e.clientY+'px';
+  cursorDot.style.background=isEraser?'rgba(255,255,255,.6)':(currentColor+'44');
+  cursorDot.style.borderColor=isEraser?'#ccc':currentColor;
+});
+canvas.addEventListener('mouseleave',()=>cursorDot.style.display='none');
+
+eraserBtn.addEventListener('click',()=>{
+  isEraser=!isEraser;
+  eraserBtn.classList.toggle('eraser-active',isEraser);
+  eraserBtn.textContent=isEraser?'✏️':'🧹';
+  document.querySelectorAll('.color-btn').forEach(b=>b.classList.remove('active'));
+});
+
+clearBtn.addEventListener('click',()=>{
+  ctx.fillStyle='#fffdf9';ctx.fillRect(0,0,canvas.width,canvas.height);
+});
+
+saveBtn.addEventListener('click',()=>{
+  const link=document.createElement('a');
+  link.download='mi-obra-dia-12.png';
+  link.href=canvas.toDataURL('image/png');
+  link.click();
+  toast.classList.add('show');
+  setTimeout(()=>toast.classList.remove('show'),2800);
+});
+</script>
+</body>
+</html>
