@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Día 15 — A veces pienso en...</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Libre+Baskerville:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#0a0e18;min-height:100vh;font-family:'Lato',sans-serif;overflow-x:hidden;}
+
+#stars{position:fixed;inset:0;pointer-events:none;z-index:0;}
+.star{position:absolute;border-radius:50%;background:#fff;animation:twinkle var(--d,3s) ease-in-out infinite alternate;}
+@keyframes twinkle{0%{opacity:var(--o,.4);transform:scale(1);}100%{opacity:calc(var(--o,.4)*0.2);transform:scale(0.6);}}
+
+.hero{position:relative;z-index:2;padding:4rem 2rem 3rem;text-align:center;}
+.hero-day{font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#9FE1CB;margin-bottom:0.75rem;}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,5vw,2.8rem);color:#f5f0e8;font-weight:400;line-height:1.2;margin-bottom:0.4rem;}
+.hero-title em{font-style:italic;color:#f5c98a;}
+.hero-sub{font-size:13px;color:rgba(245,240,232,0.45);line-height:1.8;max-width:420px;margin:0.75rem auto 0;font-weight:300;}
+.hero-divider{margin:1.5rem auto 0;color:rgba(245,201,138,0.3);font-size:16px;letter-spacing:8px;}
+
+.thoughts{max-width:660px;margin:0 auto;padding:2rem 1.5rem 6rem;position:relative;z-index:2;}
+
+.thought{
+  margin-bottom:5rem;
+  opacity:0;transform:translateY(24px);
+  transition:opacity 0.8s ease, transform 0.8s ease;
+}
+.thought.visible{opacity:1;transform:translateY(0);}
+
+/* Escena SVG */
+.scene-wrap{
+  border-radius:24px;border:1px solid rgba(255,255,255,0.08);
+  overflow:hidden;margin-bottom:1.5rem;position:relative;
+  cursor:pointer;background:#0d1220;
+  transition:border-color 0.3s;
+}
+.scene-wrap:hover{border-color:rgba(245,201,138,0.3);}
+.scene-svg{width:100%;display:block;}
+
+.scene-hint{
+  position:absolute;bottom:12px;right:14px;
+  font-size:10px;letter-spacing:0.15em;text-transform:uppercase;
+  color:rgba(245,201,138,0.4);transition:opacity 0.3s;
+}
+.scene-wrap.done .scene-hint{opacity:0;}
+
+/* Elementos SVG animados */
+.svg-el{
+  opacity:0;
+  transition:opacity 0.6s ease, transform 0.6s ease;
+  transform-origin:center;
+}
+.svg-el.show{opacity:1;}
+.svg-el.pop{animation:svgPop 0.5s cubic-bezier(0.175,0.885,0.32,1.275) forwards;}
+@keyframes svgPop{0%{opacity:0;transform:scale(0);}60%{transform:scale(1.15);}100%{opacity:1;transform:scale(1);}}
+
+.thought-intro{font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#f5c98a;margin-bottom:0.6rem;}
+.thought-text{font-family:'Libre Baskerville',serif;font-size:15px;color:#f5f0e8;line-height:1.9;font-weight:400;}
+.thought-note{font-family:'Playfair Display',serif;font-style:italic;font-size:14px;color:rgba(245,240,232,0.38);margin-top:0.75rem;line-height:1.7;}
+
+.closing{max-width:660px;margin:0 auto;padding:0 1.5rem 5rem;text-align:center;position:relative;z-index:2;opacity:0;transition:opacity 1s ease;}
+.closing.visible{opacity:1;}
+.closing-text{font-family:'Playfair Display',serif;font-size:16px;color:#f5c98a;line-height:1.9;margin-bottom:1.5rem;}
+.closing-note{font-size:13px;color:rgba(245,240,232,0.3);font-weight:300;letter-spacing:0.04em;}
+.bottom-deco{color:rgba(245,201,138,0.3);font-size:18px;letter-spacing:10px;margin-top:2rem;}
+</style>
+</head>
+<body>
+
+<div id="stars"></div>
+
+<div class="hero">
+  <p class="hero-day">día 15</p>
+  <h1 class="hero-title">A veces<br><em>pienso en...</em></h1>
+  <p class="hero-sub">No son planes. No son promesas. Son imágenes que guardo — de nosotras — en un lugar donde las cosas no necesitan fecha para ser reales.</p>
+  <div class="hero-divider">✦ ✦ ✦</div>
+</div>
+
+<div class="thoughts">
+
+  <!-- ESCENA 1: ESTRELLAS -->
+  <div class="thought" id="t0">
+    <div class="scene-wrap" id="sw0" onclick="buildScene(0)">
+      <svg class="scene-svg" viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg">
+        <!-- Fondo cielo -->
+        <rect width="600" height="220" fill="#08101e"/>
+        <!-- Montañas -->
+        <polygon id="s0e0" class="svg-el" points="0,220 120,120 240,220" fill="#0d1a28"/>
+        <polygon id="s0e1" class="svg-el" points="180,220 320,90 460,220" fill="#0a1520"/>
+        <polygon id="s0e2" class="svg-el" points="380,220 500,130 600,220" fill="#0d1a28"/>
+        <!-- Estrellas -->
+        <circle id="s0e3" class="svg-el" cx="80"  cy="30"  r="1.5" fill="#fff" opacity="0.9"/>
+        <circle id="s0e3" class="svg-el" cx="150" cy="50"  r="1"   fill="#fff" opacity="0.7"/>
+        <circle id="s0e3" class="svg-el" cx="220" cy="20"  r="2"   fill="#f5c98a" opacity="0.9"/>
+        <circle id="s0e3" class="svg-el" cx="300" cy="40"  r="1.5" fill="#fff" opacity="0.8"/>
+        <circle id="s0e3" class="svg-el" cx="380" cy="25"  r="1"   fill="#9FE1CB" opacity="0.9"/>
+        <circle id="s0e3" class="svg-el" cx="450" cy="55"  r="2"   fill="#fff" opacity="0.7"/>
+        <circle id="s0e3" class="svg-el" cx="520" cy="30"  r="1.5" fill="#fff" opacity="0.8"/>
+        <circle id="s0e3" class="svg-el" cx="560" cy="60"  r="1"   fill="#f5c98a" opacity="0.9"/>
+        <circle id="s0e3" class="svg-el" cx="120" cy="70"  r="1"   fill="#fff" opacity="0.6"/>
+        <circle id="s0e3" class="svg-el" cx="340" cy="65"  r="1.5" fill="#fff" opacity="0.7"/>
+        <!-- Telescopio SVG -->
+        <g id="s0e4" class="svg-el" transform="translate(270,130)">
+          <rect x="-4" y="0" width="8" height="50" rx="2" fill="#2a4060"/>
+          <rect x="-3" y="-5" width="30" height="10" rx="3" fill="#3a5070" transform="rotate(-30)"/>
+          <rect x="12" y="-7" width="14" height="6" rx="2" fill="#2a4060" transform="rotate(-30)"/>
+          <line x1="0" y1="50" x2="-20" y2="60" stroke="#2a4060" stroke-width="4" stroke-linecap="round"/>
+          <line x1="0" y1="50" x2="20"  y2="60" stroke="#2a4060" stroke-width="4" stroke-linecap="round"/>
+        </g>
+        <!-- Dos siluetas -->
+        <g id="s0e5" class="svg-el">
+          <ellipse cx="220" cy="195" rx="12" ry="20" fill="#1a2840"/>
+          <circle  cx="220" cy="168" r="10" fill="#1a2840"/>
+          <ellipse cx="260" cy="197" rx="11" ry="18" fill="#1e2e48"/>
+          <circle  cx="260" cy="172" r="9"  fill="#1e2e48"/>
+        </g>
+        <!-- Línea de constelación -->
+        <g id="s0e6" class="svg-el" opacity="0.5">
+          <line x1="80" y1="30" x2="150" y2="50" stroke="#9FE1CB" stroke-width="0.8" stroke-dasharray="3,3"/>
+          <line x1="150" y1="50" x2="220" y2="20" stroke="#9FE1CB" stroke-width="0.8" stroke-dasharray="3,3"/>
+          <line x1="220" y1="20" x2="300" y2="40" stroke="#9FE1CB" stroke-width="0.8" stroke-dasharray="3,3"/>
+          <line x1="300" y1="40" x2="380" y2="25" stroke="#9FE1CB" stroke-width="0.8" stroke-dasharray="3,3"/>
+        </g>
+        <!-- Luna -->
+        <circle id="s0e7" class="svg-el" cx="500" cy="45" r="22" fill="#1a2840"/>
+        <circle id="s0e7" class="svg-el" cx="512" cy="38" r="19" fill="#08101e"/>
+      </svg>
+      <span class="scene-hint">toca para construir la escena</span>
+    </div>
+    <p class="thought-intro">a veces pienso en</p>
+    <p class="thought-text">Llevarte a ver estrellas. A algún desierto, lejos de las luces, donde el cielo sea todo. Quedarnos calladas mirando hacia arriba y que ninguna de las dos necesite decir nada — porque lo que estamos viendo ya lo dice todo.</p>
+    <p class="thought-note">Aquí en Bogotá está Maloka. Allá en México seguro hay algo igual de bonito. No sé cuándo. No importa cuándo.</p>
+  </div>
+
+  <!-- ESCENA 2: LIBRO -->
+  <div class="thought" id="t1">
+    <div class="scene-wrap" id="sw1" onclick="buildScene(1)">
+      <svg class="scene-svg" viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg">
+        <rect width="600" height="220" fill="#0e0a18"/>
+        <!-- Ventana -->
+        <g id="s1e0" class="svg-el">
+          <rect x="30" y="20" width="120" height="160" rx="4" fill="#1a1428"/>
+          <rect x="34" y="24" width="112" height="72" rx="2" fill="#0d0a20"/>
+          <rect x="34" y="100" width="112" height="76" rx="2" fill="#0d0a20"/>
+          <line x1="90" y1="24" x2="90" y2="176" stroke="#251e38" stroke-width="2"/>
+          <line x1="34" y1="98" x2="146" y2="98" stroke="#251e38" stroke-width="2"/>
+          <!-- Luz de luna en ventana -->
+          <ellipse cx="90" cy="60" rx="30" ry="35" fill="#1a2030" opacity="0.8"/>
+          <circle  cx="90" cy="55" r="18" fill="#202838" opacity="0.9"/>
+        </g>
+        <!-- Lámpara -->
+        <g id="s1e1" class="svg-el">
+          <line x1="400" y1="0" x2="400" y2="60" stroke="#2a2040" stroke-width="3"/>
+          <polygon points="370,60 430,60 415,100 385,100" fill="#3a3050"/>
+          <ellipse cx="400" cy="102" rx="18" ry="5" fill="#f5c98a" opacity="0.3"/>
+          <ellipse cx="400" cy="80"  rx="40" ry="40" fill="#f5c98a" opacity="0.06"/>
+        </g>
+        <!-- Mesa y libro -->
+        <g id="s1e2" class="svg-el">
+          <rect x="280" y="140" width="240" height="12" rx="3" fill="#2a2040"/>
+          <rect x="260" y="152" width="10"  height="60" rx="2" fill="#1e1830"/>
+          <rect x="510" y="152" width="10"  height="60" rx="2" fill="#1e1830"/>
+          <!-- Libro abierto -->
+          <path d="M330,110 Q370,100 400,110 Q430,100 470,110 L470,145 Q430,135 400,145 Q370,135 330,145 Z" fill="#3a2850"/>
+          <line x1="400" y1="110" x2="400" y2="145" stroke="#251e38" stroke-width="1.5"/>
+          <!-- Líneas de texto -->
+          <line x1="340" y1="122" x2="392" y2="120" stroke="#9FE1CB" stroke-width="1" opacity="0.4"/>
+          <line x1="340" y1="128" x2="388" y2="126" stroke="#9FE1CB" stroke-width="1" opacity="0.3"/>
+          <line x1="340" y1="134" x2="390" y2="132" stroke="#9FE1CB" stroke-width="1" opacity="0.4"/>
+          <line x1="408" y1="122" x2="460" y2="120" stroke="#f5c98a" stroke-width="1" opacity="0.4"/>
+          <line x1="408" y1="128" x2="455" y2="126" stroke="#f5c98a" stroke-width="1" opacity="0.3"/>
+          <line x1="408" y1="134" x2="458" y2="132" stroke="#f5c98a" stroke-width="1" opacity="0.4"/>
+        </g>
+        <!-- Dos siluetas leyendo -->
+        <g id="s1e3" class="svg-el">
+          <ellipse cx="355" cy="140" rx="16" ry="28" fill="#1e1830"/>
+          <circle  cx="355" cy="106" r="13"  fill="#1e1830"/>
+          <ellipse cx="445" cy="140" rx="16" ry="28" fill="#241e3a"/>
+          <circle  cx="445" cy="106" r="13"  fill="#241e3a"/>
+        </g>
+        <!-- Título del libro flotando -->
+        <g id="s1e4" class="svg-el">
+          <text x="300" y="78" font-family="serif" font-size="9" fill="#f5c98a" opacity="0.7" text-anchor="middle">La lógica inexplicable</text>
+          <text x="300" y="90" font-family="serif" font-size="9" fill="#f5c98a" opacity="0.7" text-anchor="middle">de mi vida</text>
+        </g>
+      </svg>
+      <span class="scene-hint">toca para construir la escena</span>
+    </div>
+    <p class="thought-intro">a veces pienso en</p>
+    <p class="thought-text">Leerle en voz alta. Hay un apartado de mi libro favorito — "La lógica inexplicable de mi vida" — que quiero que escuches de mi voz, no de tus ojos. Creo que lo sentiría diferente así. Creo que tú también.</p>
+    <p class="thought-note">No sé en qué momento. Solo sé que quiero que seas tú quien lo escuche primero.</p>
+  </div>
+
+  <!-- ESCENA 3: COMIDA EN MEXICO -->
+  <div class="thought" id="t2">
+    <div class="scene-wrap" id="sw2" onclick="buildScene(2)">
+      <svg class="scene-svg" viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg">
+        <rect width="600" height="220" fill="#0e1408"/>
+        <!-- Fondo calle -->
+        <g id="s2e0" class="svg-el">
+          <rect x="0" y="130" width="600" height="90" fill="#0a0e06"/>
+          <rect x="0" y="125" width="600" height="10" fill="#141a0c"/>
+          <!-- Farolillos -->
+          <line x1="100" y1="0"  x2="100" y2="60"  stroke="#2a3018" stroke-width="2"/>
+          <ellipse cx="100" cy="65" rx="15" ry="20" fill="#3a4020"/>
+          <ellipse cx="100" cy="65" rx="12" ry="17" fill="#f5c98a" opacity="0.15"/>
+          <line x1="350" y1="0"  x2="350" y2="60"  stroke="#2a3018" stroke-width="2"/>
+          <ellipse cx="350" cy="65" rx="15" ry="20" fill="#3a4020"/>
+          <ellipse cx="350" cy="65" rx="12" ry="17" fill="#f5c98a" opacity="0.15"/>
+          <line x1="500" y1="0"  x2="500" y2="50"  stroke="#2a3018" stroke-width="2"/>
+          <ellipse cx="500" cy="55" rx="12" ry="16" fill="#3a4020"/>
+          <ellipse cx="500" cy="55" rx="10" ry="13" fill="#f5c98a" opacity="0.12"/>
+        </g>
+        <!-- Mesa -->
+        <g id="s2e1" class="svg-el">
+          <ellipse cx="300" cy="155" rx="90" ry="18" fill="#2a2010"/>
+          <rect x="270" y="155" width="8" height="50" rx="2" fill="#201808"/>
+          <rect x="322" y="155" width="8" height="50" rx="2" fill="#201808"/>
+        </g>
+        <!-- Comida -->
+        <g id="s2e2" class="svg-el">
+          <ellipse cx="260" cy="148" rx="22" ry="8"  fill="#4a3010"/>
+          <ellipse cx="260" cy="144" rx="18" ry="6"  fill="#c87830"/>
+          <ellipse cx="340" cy="148" rx="20" ry="7"  fill="#3a2810"/>
+          <ellipse cx="340" cy="144" rx="16" ry="5"  fill="#d09040"/>
+          <!-- Vapor -->
+          <path d="M255,138 Q258,130 255,122" stroke="#fff" stroke-width="1.5" fill="none" opacity="0.2" stroke-linecap="round"/>
+          <path d="M265,136 Q268,128 265,120" stroke="#fff" stroke-width="1.5" fill="none" opacity="0.15" stroke-linecap="round"/>
+        </g>
+        <!-- Dos siluetas sentadas -->
+        <g id="s2e3" class="svg-el">
+          <ellipse cx="210" cy="158" rx="20" ry="32" fill="#1a2010"/>
+          <circle  cx="210" cy="120" r="16"  fill="#1a2010"/>
+          <ellipse cx="390" cy="158" rx="20" ry="32" fill="#1e2814"/>
+          <circle  cx="390" cy="120" r="16"  fill="#1e2814"/>
+        </g>
+        <!-- Texto Mexico -->
+        <g id="s2e4" class="svg-el">
+          <text x="300" y="30" font-family="serif" font-size="11" fill="#f5c98a" opacity="0.5" text-anchor="middle">Ciudad de México</text>
+        </g>
+      </svg>
+      <span class="scene-hint">toca para construir la escena</span>
+    </div>
+    <p class="thought-intro">a veces pienso en</p>
+    <p class="thought-text">Ir a comer algo contigo en México. No sé dónde, no sé qué — pero contigo seguro todo sabe mejor. Imagino que me recomiendas algo, que me dices que confíe en ti, y que tengo razón en hacerlo.</p>
+    <p class="thought-note">Y si hay un mercado de comida callejera cerca, mejor todavía.</p>
+  </div>
+
+  <!-- ESCENA 4: MUSEO -->
+  <div class="thought" id="t3">
+    <div class="scene-wrap" id="sw3" onclick="buildScene(3)">
+      <svg class="scene-svg" viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg">
+        <rect width="600" height="220" fill="#0c0c18"/>
+        <!-- Paredes museo -->
+        <g id="s3e0" class="svg-el">
+          <rect x="0"   y="0"   width="600" height="220" fill="#0c0c18"/>
+          <rect x="0"   y="180" width="600" height="40"  fill="#100e20"/>
+          <rect x="0"   y="175" width="600" height="8"   fill="#181630"/>
+        </g>
+        <!-- Cuadros en pared -->
+        <g id="s3e1" class="svg-el">
+          <rect x="60"  y="30" width="90"  height="100" rx="2" fill="#1a1830"/>
+          <rect x="64"  y="34" width="82"  height="92"  rx="1" fill="#241e3a"/>
+          <rect x="220" y="20" width="120" height="110" rx="2" fill="#1a1830"/>
+          <rect x="224" y="24" width="112" height="102" rx="1" fill="#201c38"/>
+          <rect x="400" y="35" width="80"  height="90"  rx="2" fill="#1a1830"/>
+          <rect x="404" y="39" width="72"  height="82"  rx="1" fill="#241e3a"/>
+          <rect x="500" y="25" width="75"  height="100" rx="2" fill="#1a1830"/>
+          <rect x="504" y="29" width="67"  height="92"  rx="1" fill="#201c38"/>
+        </g>
+        <!-- Arte en los cuadros -->
+        <g id="s3e2" class="svg-el">
+          <!-- Cuadro 1: espiral -->
+          <circle cx="105" cy="80" r="25" fill="none" stroke="#9FE1CB" stroke-width="1.5" opacity="0.6"/>
+          <circle cx="105" cy="80" r="15" fill="none" stroke="#9FE1CB" stroke-width="1" opacity="0.4"/>
+          <circle cx="105" cy="80" r="5"  fill="#9FE1CB" opacity="0.5"/>
+          <!-- Cuadro 2: paisaje abstracto -->
+          <rect x="224" y="24"  width="112" height="50" fill="#1a3040"/>
+          <ellipse cx="280" cy="60" rx="35" ry="25" fill="#0a2030" opacity="0.8"/>
+          <rect x="224" y="74"  width="112" height="52" fill="#2a1830"/>
+          <ellipse cx="250" cy="95" rx="15" ry="10" fill="#3a1020" opacity="0.7"/>
+          <ellipse cx="310" cy="100" rx="20" ry="12" fill="#2a1828" opacity="0.7"/>
+          <!-- Cuadro 3: puntos -->
+          <circle cx="440" cy="65" r="4" fill="#f5c98a" opacity="0.7"/>
+          <circle cx="455" cy="55" r="3" fill="#f5c98a" opacity="0.5"/>
+          <circle cx="460" cy="75" r="5" fill="#f5c98a" opacity="0.6"/>
+          <circle cx="430" cy="80" r="3" fill="#f5c98a" opacity="0.4"/>
+          <circle cx="448" cy="88" r="4" fill="#f5c98a" opacity="0.5"/>
+          <!-- Cuadro 4: líneas -->
+          <line x1="510" y1="40" x2="565" y2="40" stroke="#e8b4d2" stroke-width="2" opacity="0.6"/>
+          <line x1="510" y1="55" x2="555" y2="55" stroke="#e8b4d2" stroke-width="2" opacity="0.4"/>
+          <line x1="510" y1="70" x2="560" y2="70" stroke="#e8b4d2" stroke-width="2" opacity="0.6"/>
+          <line x1="510" y1="85" x2="550" y2="85" stroke="#e8b4d2" stroke-width="2" opacity="0.3"/>
+          <line x1="510" y1="100" x2="558" y2="100" stroke="#e8b4d2" stroke-width="2" opacity="0.5"/>
+        </g>
+        <!-- Iluminación cuadros -->
+        <g id="s3e3" class="svg-el" opacity="0.15">
+          <ellipse cx="105" cy="30" rx="20" ry="8" fill="#f5c98a"/>
+          <ellipse cx="280" cy="20" rx="28" ry="8" fill="#f5c98a"/>
+          <ellipse cx="440" cy="35" rx="18" ry="7" fill="#f5c98a"/>
+          <ellipse cx="537" cy="25" rx="18" ry="7" fill="#f5c98a"/>
+        </g>
+        <!-- Dos siluetas mirando -->
+        <g id="s3e4" class="svg-el">
+          <ellipse cx="260" cy="190" rx="16" ry="26" fill="#181630"/>
+          <circle  cx="260" cy="158" r="13"  fill="#181630"/>
+          <ellipse cx="300" cy="192" rx="15" ry="24" fill="#1c1a38"/>
+          <circle  cx="300" cy="162" r="12"  fill="#1c1a38"/>
+        </g>
+      </svg>
+      <span class="scene-hint">toca para construir la escena</span>
+    </div>
+    <p class="thought-intro">a veces pienso en</p>
+    <p class="thought-text">Recorrer un museo contigo. Caminar despacio, parar donde tú pares, escucharte explicar algo con esa pasión que tienes. Ya sé que cuando hablas de algo que te gusta — te brillan los ojos. Quiero verlo en persona.</p>
+    <p class="thought-note">No importa el museo. Importa que seas tú quien me lo cuente.</p>
+  </div>
+
+  <!-- ESCENA 5: DIA SIN PLAN -->
+  <div class="thought" id="t4">
+    <div class="scene-wrap" id="sw4" onclick="buildScene(4)">
+      <svg class="scene-svg" viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg">
+        <rect width="600" height="220" fill="#0a0e14"/>
+        <!-- Ventana con lluvia -->
+        <g id="s4e0" class="svg-el">
+          <rect x="20" y="10" width="160" height="180" rx="6" fill="#121828"/>
+          <rect x="26" y="16" width="148" height="168" rx="4" fill="#0a1020"/>
+          <line x1="100" y1="16" x2="100" y2="184" stroke="#1a2438" stroke-width="2"/>
+          <line x1="26"  y1="100" x2="174" y2="100" stroke="#1a2438" stroke-width="2"/>
+          <!-- Lluvia suave -->
+          <line x1="50"  y1="20"  x2="46"  y2="45"  stroke="#9FE1CB" stroke-width="0.8" opacity="0.2"/>
+          <line x1="80"  y1="30"  x2="76"  y2="55"  stroke="#9FE1CB" stroke-width="0.8" opacity="0.15"/>
+          <line x1="120" y1="20"  x2="116" y2="45"  stroke="#9FE1CB" stroke-width="0.8" opacity="0.2"/>
+          <line x1="150" y1="30"  x2="146" y2="55"  stroke="#9FE1CB" stroke-width="0.8" opacity="0.15"/>
+          <line x1="60"  y1="110" x2="56"  y2="135" stroke="#9FE1CB" stroke-width="0.8" opacity="0.2"/>
+          <line x1="90"  y1="120" x2="86"  y2="145" stroke="#9FE1CB" stroke-width="0.8" opacity="0.15"/>
+          <line x1="130" y1="110" x2="126" y2="135" stroke="#9FE1CB" stroke-width="0.8" opacity="0.2"/>
+          <line x1="160" y1="120" x2="156" y2="145" stroke="#9FE1CB" stroke-width="0.8" opacity="0.15"/>
+        </g>
+        <!-- Sofá -->
+        <g id="s4e1" class="svg-el">
+          <rect x="220" y="130" width="340" height="70"  rx="12" fill="#1e1830"/>
+          <rect x="220" y="110" width="340" height="30"  rx="8"  fill="#241e3a"/>
+          <rect x="220" y="110" width="50"  height="90"  rx="8"  fill="#1a1630"/>
+          <rect x="510" y="110" width="50"  height="90"  rx="8"  fill="#1a1630"/>
+        </g>
+        <!-- Cobija -->
+        <g id="s4e2" class="svg-el">
+          <path d="M280,140 Q340,120 400,140 Q440,125 500,138 L500,180 Q440,168 400,180 Q340,165 280,180 Z" fill="#2a2048" opacity="0.9"/>
+          <path d="M280,140 Q340,128 400,140" fill="none" stroke="#3a2a60" stroke-width="2" opacity="0.6"/>
+        </g>
+        <!-- Tazas -->
+        <g id="s4e3" class="svg-el">
+          <rect x="370" y="115" width="22" height="18" rx="3" fill="#3a2850"/>
+          <path d="M392,121 Q400,121 400,126 Q400,131 392,131" fill="none" stroke="#3a2850" stroke-width="3"/>
+          <path d="M372,113 Q375,106 372,100" stroke="#fff" stroke-width="1.2" fill="none" opacity="0.2" stroke-linecap="round"/>
+          <rect x="400" y="115" width="20" height="16" rx="3" fill="#3a3020"/>
+          <path d="M372,113 Q375,106 372,100" stroke="#fff" stroke-width="1.2" fill="none" opacity="0.15" stroke-linecap="round"/>
+        </g>
+        <!-- Dos siluetas en sofá -->
+        <g id="s4e4" class="svg-el">
+          <ellipse cx="310" cy="145" rx="20" ry="22" fill="#14101e"/>
+          <circle  cx="310" cy="118" r="14"  fill="#14101e"/>
+          <ellipse cx="360" cy="147" rx="18" ry="20" fill="#181428"/>
+          <circle  cx="360" cy="122" r="13"  fill="#181428"/>
+        </g>
+        <!-- Música nota -->
+        <g id="s4e5" class="svg-el" opacity="0.3">
+          <text x="480" y="80" font-size="28" fill="#f5c98a">♪</text>
+          <text x="520" y="60" font-size="18" fill="#9FE1CB">♫</text>
+        </g>
+      </svg>
+      <span class="scene-hint">toca para construir la escena</span>
+    </div>
+    <p class="thought-intro">a veces pienso en</p>
+    <p class="thought-text">Un día sin hacer nada especial. Sin plan, sin itinerario. Solo existir en el mismo espacio, cerca, con música de fondo y sin ningún lugar a donde ir. Cobijadas, con algo caliente, sin agenda. Eso también es algo que imagino y que ya se siente como un recuerdo.</p>
+    <p class="thought-note">Las cosas más bonitas no siempre tienen nombre.</p>
+  </div>
+
+</div>
+
+<div class="closing" id="closing">
+  <p class="closing-text">
+    No son planes, Ame.<br>
+    Son imágenes que viven en mi cabeza<br>
+    y que no necesitan fecha para ser reales.<br>
+    Solo necesitan que existas tú.
+  </p>
+  <p class="closing-note">y sigues existiendo. así que ya están casi completas.</p>
+  <div class="bottom-deco">✦ ✦ ✦</div>
+</div>
+
+<script>
+// Estrellas de fondo
+const starsContainer = document.getElementById('stars');
+for (let i = 0; i < 120; i++) {
+  const s = document.createElement('div');
+  s.className = 'star';
+  const size = Math.random() * 2 + 0.5;
+  s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;width:${size}px;height:${size}px;--o:${Math.random()*0.5+0.1};--d:${Math.random()*4+2}s;animation-delay:${Math.random()*4}s;`;
+  starsContainer.appendChild(s);
+}
+
+// Grupos de elementos por escena
+const sceneGroups = [
+  ['s0e0','s0e1','s0e2','s0e3','s0e4','s0e5','s0e6','s0e7'],
+  ['s1e0','s1e1','s1e2','s1e3','s1e4'],
+  ['s2e0','s2e1','s2e2','s2e3','s2e4'],
+  ['s3e0','s3e1','s3e2','s3e3','s3e4'],
+  ['s4e0','s4e1','s4e2','s4e3','s4e4','s4e5'],
+];
+
+const sceneState = [0,0,0,0,0];
+
+function buildScene(i) {
+  const groups = sceneGroups[i];
+  const step   = sceneState[i];
+  if (step >= groups.length) return;
+
+  const id = groups[step];
+  const els = document.querySelectorAll('#' + id);
+  els.forEach(el => {
+    el.classList.add('show','pop');
+  });
+
+  sceneState[i]++;
+
+  if (sceneState[i] >= groups.length) {
+    document.getElementById('sw' + i).classList.add('done');
+  }
+}
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.thought').forEach(t => observer.observe(t));
+
+const lastThought = document.getElementById('t4');
+const closingObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      setTimeout(() => document.getElementById('closing').classList.add('visible'), 500);
+      closingObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.7 });
+closingObs.observe(lastThought);
+</script>
+</body>
+</html>
