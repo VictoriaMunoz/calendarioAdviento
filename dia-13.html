@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Día 13 — Esto es lo que veo cuando me llamas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Libre+Baskerville:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#fdf6ee;min-height:100vh;font-family:'Lato',sans-serif;color:#3a2010;}
+
+.hero{
+  padding:4rem 2rem 3rem;text-align:center;position:relative;overflow:hidden;
+  background:linear-gradient(160deg,#f5c98a 0%,#f0a96a 40%,#e8845a 100%);
+}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(255,240,200,0.3),transparent 65%);pointer-events:none;}
+
+.hero-day{font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(58,32,16,0.6);margin-bottom:0.75rem;}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,5vw,2.8rem);color:#3a2010;font-weight:400;line-height:1.2;margin-bottom:0.4rem;}
+.hero-title em{font-style:italic;color:#fff8ee;}
+.hero-sub{font-size:13px;color:rgba(58,32,16,0.6);line-height:1.8;max-width:420px;margin:0.75rem auto 0;font-weight:300;}
+
+.call-screen{
+  width:120px;height:120px;border-radius:50%;
+  border:2px solid rgba(255,255,255,0.5);
+  background:radial-gradient(circle,#f5c98a,#e8845a);
+  margin:2rem auto 0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:3rem;position:relative;
+  box-shadow:0 0 0 0 rgba(255,255,255,0.5);
+  animation:callPulse 2.5s ease-in-out infinite;
+}
+@keyframes callPulse{
+  0%{box-shadow:0 0 0 0 rgba(255,255,255,0.5);}
+  50%{box-shadow:0 0 0 22px rgba(255,255,255,0);}
+  100%{box-shadow:0 0 0 0 rgba(255,255,255,0);}
+}
+.call-name{font-family:'Playfair Display',serif;font-size:14px;color:#3a2010;margin-top:0.75rem;letter-spacing:0.06em;opacity:0.8;}
+.hero-divider{margin:2rem auto 0;color:rgba(58,32,16,0.3);font-size:16px;letter-spacing:8px;}
+
+.content{max-width:580px;margin:0 auto;padding:2.5rem 1.5rem 5rem;}
+.hint{text-align:center;font-size:13px;color:#c4916a;margin-bottom:2.5rem;letter-spacing:0.04em;}
+
+.moments{display:flex;flex-direction:column;gap:0;}
+
+.moment{
+  display:flex;gap:16px;align-items:flex-start;
+  padding:1.5rem 0;border-bottom:1px solid #f0e0d0;
+  opacity:0;transform:translateY(16px);
+  transition:opacity 0.6s ease, transform 0.6s ease;
+}
+.moment.visible{opacity:1;transform:translateY(0);}
+.moment:last-child{border-bottom:none;}
+
+.moment-icon{
+  width:42px;height:42px;border-radius:50%;
+  background:#fef0e0;border:1.5px solid #f5c98a;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.2rem;flex-shrink:0;margin-top:2px;
+  box-shadow:0 2px 8px rgba(245,201,138,0.3);
+}
+
+.moment-body{flex:1;}
+.moment-label{font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#d4845a;margin-bottom:0.4rem;}
+.moment-text{font-family:'Libre Baskerville',serif;font-size:15px;color:#3a2010;line-height:1.85;font-weight:400;}
+
+.closing{margin-top:3rem;text-align:center;opacity:0;transition:opacity 1s ease;}
+.closing.visible{opacity:1;}
+
+.closing-line{
+  font-family:'Playfair Display',serif;
+  font-size:16px;color:#c4714a;line-height:1.9;margin-bottom:2rem;
+}
+
+.call-btn{
+  display:inline-flex;align-items:center;gap:10px;
+  background:linear-gradient(135deg,#f5a96a,#e8744a);
+  color:#fff;border:none;border-radius:999px;
+  padding:14px 32px;font-size:15px;
+  font-family:'Lato',sans-serif;font-weight:400;
+  cursor:pointer;letter-spacing:0.04em;
+  box-shadow:0 8px 24px rgba(232,116,74,0.35);
+  transition:all 0.25s ease;
+  animation:btnGlow 3s ease-in-out infinite alternate;
+}
+.call-btn:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(232,116,74,0.5);}
+@keyframes btnGlow{
+  0%{box-shadow:0 8px 24px rgba(232,116,74,0.3);}
+  100%{box-shadow:0 8px 32px rgba(232,116,74,0.6);}
+}
+.call-btn-note{font-size:11px;color:#c4916a;margin-top:0.75rem;letter-spacing:0.04em;}
+
+.bottom-deco{text-align:center;margin-top:2rem;color:#f5c98a;font-size:20px;letter-spacing:10px;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <p class="hero-day">día 13</p>
+  <h1 class="hero-title">Esto es lo que veo<br><em>cuando me llamas</em></h1>
+  <p class="hero-sub">Hay cosas que no te he dicho porque mientras las pienso ya estás haciéndolas. Hoy las escribo.</p>
+  <div class="call-screen">🌸</div>
+  <p class="call-name">América</p>
+  <div class="hero-divider">✦ ✦ ✦</div>
+</div>
+
+<div class="content">
+  <p class="hint">desplázate para descubrir</p>
+  <div class="moments" id="momentsContainer"></div>
+  <div class="closing" id="closing">
+    <p class="closing-line">
+      Ya sabes lo que veo.<br>
+      Ya sabes lo que siento cuando apareces en pantalla.<br>
+      Ahora quiero verte sonreír de verdad.<br>
+      ¿Me llamas?
+    </p>
+    <button class="call-btn" onclick="this.textContent='📞 ya voy...'">📞 llamar</button>
+    <p class="call-btn-note">* este botón no hace nada. pero tú sí puedes. 🌿</p>
+  </div>
+  <div class="bottom-deco">✦ ✦ ✦</div>
+</div>
+
+<script>
+const moments = [
+  { icon:'✨', label:'lo primero', text:'Apareces en pantalla y lo primero que noto son tus ojos. Se te achinan cuando sonríes — no sé si lo sabes, pero eso me desordena completamente. Cada vez.' },
+  { icon:'🌸', label:'tu sonrisa', text:'Tu risa es deslumbrante. No es exageración — es que literalmente me deja sin palabras. Me quedo mirándote y pienso que no es justo lo bonita que eres cuando te ríes.' },
+  { icon:'🥺', label:'cuando te dan nervios', text:'Hay un momento en cada llamada que me mata: cuando te pongo nerviosa y sonríes mordiéndote la lengua. No sé si lo haces a propósito. Pero si lo haces, deberías saber que funciona.' },
+  { icon:'🌙', label:'lo que no digo', text:'Hay veces que me quedo callada unos segundos solo para verte. No porque no tenga nada que decir — sino porque lo que estoy viendo merece un momento de silencio.' },
+  { icon:'💫', label:'lo que pienso', text:'Cada vez que cuelgo pienso lo mismo: ojalá hubiera durado más. No porque la llamada haya sido corta — sino porque contigo el tiempo hace trampa.' },
+  { icon:'🌿', label:'lo que quiero que sepas', text:'Que cada vez que apareces en pantalla, algo en mí se acomoda. Como si el día estuviera esperando ese momento para estar completo. Así de simple y así de enorme.' }
+];
+
+const container = document.getElementById('momentsContainer');
+const closing   = document.getElementById('closing');
+
+moments.forEach((m, i) => {
+  const div = document.createElement('div');
+  div.className = 'moment';
+  div.id = 'moment-' + i;
+  div.innerHTML = `
+    <div class="moment-icon">${m.icon}</div>
+    <div class="moment-body">
+      <div class="moment-label">${m.label}</div>
+      <p class="moment-text">${m.text}</p>
+    </div>
+  `;
+  container.appendChild(div);
+});
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+  });
+}, { threshold: 0.2 });
+document.querySelectorAll('.moment').forEach(m => observer.observe(m));
+
+const lastMoment = document.getElementById('moment-' + (moments.length - 1));
+const closingObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { setTimeout(() => closing.classList.add('visible'), 600); closingObserver.unobserve(e.target); }
+  });
+}, { threshold: 0.8 });
+closingObserver.observe(lastMoment);
+</script>
+</body>
+</html>
