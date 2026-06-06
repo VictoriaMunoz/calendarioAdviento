@@ -1,1 +1,387 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Día 18 — El Periódico del Futuro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#f5f0e8;font-family:'Libre Baskerville',serif;overflow-x:hidden;}
 
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;opacity:0.5;
+}
+
+.newspaper-head{
+  background:#f5f0e8;border-bottom:4px double #1a1208;
+  padding:1.5rem 2rem 1rem;text-align:center;position:relative;z-index:2;
+}
+.head-meta{
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:10px;letter-spacing:0.1em;color:#5a4a2a;
+  font-family:'Lato',sans-serif;margin-bottom:0.5rem;
+  border-bottom:1px solid #1a1208;padding-bottom:0.5rem;
+}
+.newspaper-name{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2.5rem,8vw,5rem);font-weight:900;
+  color:#1a1208;line-height:1;letter-spacing:-0.02em;margin:0.5rem 0 0.25rem;
+}
+.newspaper-tagline{
+  font-family:'Libre Baskerville',serif;font-style:italic;font-size:13px;
+  color:#5a4a2a;letter-spacing:0.08em;
+  border-top:1px solid #1a1208;border-bottom:1px solid #1a1208;
+  padding:4px 0;margin-top:0.5rem;
+}
+
+.paper{max-width:900px;margin:0 auto;padding:2rem 1.5rem 4rem;position:relative;z-index:2;}
+
+/* ── INSTRUCCIÓN ── */
+.instruction{
+  text-align:center;margin-bottom:1.5rem;
+  font-family:'Lato',sans-serif;font-size:12px;
+  letter-spacing:0.08em;color:#8a6a2a;
+  background:#ede8d8;border:1px solid #c8a840;
+  border-radius:4px;padding:8px 16px;display:inline-block;
+  width:100%;
+}
+
+/* ── TITULAR PRINCIPAL ── */
+.main-story{border-bottom:3px solid #1a1208;padding-bottom:1.5rem;margin-bottom:1.5rem;}
+.main-label{
+  font-family:'Lato',sans-serif;font-size:9px;letter-spacing:0.25em;text-transform:uppercase;
+  color:#8a6a2a;background:#e8d8a0;padding:2px 8px;border-radius:2px;
+  display:inline-block;margin-bottom:0.75rem;
+}
+.main-headline{
+  font-family:'Playfair Display',serif;font-size:clamp(1.6rem,4vw,2.8rem);
+  font-weight:700;color:#1a1208;line-height:1.15;margin-bottom:0.75rem;letter-spacing:-0.01em;
+}
+.main-deck{
+  font-family:'Libre Baskerville',serif;font-style:italic;font-size:15px;
+  color:#3a2a10;line-height:1.7;border-left:3px solid #c8a840;
+  padding-left:1rem;margin-bottom:1rem;
+}
+.main-body{column-count:2;column-gap:2rem;font-size:14px;color:#2a1e0a;line-height:1.8;}
+.main-body p{margin-bottom:0.75rem;}
+.main-body p:first-child::first-letter{
+  font-family:'Playfair Display',serif;font-size:3.5rem;font-weight:700;
+  float:left;line-height:0.8;margin-right:4px;margin-top:6px;color:#1a1208;
+}
+
+/* Botones del titular */
+.main-vote{display:flex;gap:10px;margin-top:1rem;}
+.vote-btn{
+  padding:7px 20px;border-radius:4px;border:1.5px solid #1a1208;
+  font-family:'Lato',sans-serif;font-size:11px;letter-spacing:0.1em;
+  text-transform:uppercase;cursor:pointer;background:transparent;
+  color:#1a1208;transition:all 0.2s;
+}
+.vote-btn:hover{background:#1a1208;color:#f5f0e8;}
+.vote-btn.verdadero.selected{background:#2a6a3a;border-color:#2a6a3a;color:#fff;}
+.vote-btn.ojala.selected{background:#c8a840;border-color:#c8a840;color:#fff;}
+
+.divider{display:flex;align-items:center;gap:12px;margin:1.5rem 0;color:#1a1208;font-size:14px;}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:#1a1208;}
+
+/* ── GRID ── */
+.stories-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;}
+
+.story{
+  padding:1rem 1.25rem;
+  border-right:1px solid #1a1208;border-bottom:1px solid #1a1208;
+  position:relative;
+}
+.story:nth-child(3n){border-right:none;}
+.story:nth-last-child(-n+3){border-bottom:none;}
+
+.story-label{font-family:'Lato',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:#8a6a2a;margin-bottom:0.4rem;}
+.story-headline{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:#1a1208;line-height:1.25;margin-bottom:0.5rem;}
+.story-body{font-size:12px;color:#3a2a10;line-height:1.7;margin-bottom:0.75rem;}
+
+/* Botones de noticia */
+.story-vote{display:flex;gap:6px;margin-top:auto;}
+.svote{
+  flex:1;padding:5px 8px;border-radius:3px;border:1px solid #1a1208;
+  font-family:'Lato',sans-serif;font-size:10px;letter-spacing:0.08em;
+  text-transform:uppercase;cursor:pointer;background:transparent;
+  color:#1a1208;transition:all 0.2s;text-align:center;
+}
+.svote:hover{background:#1a1208;color:#f5f0e8;}
+.svote.verdadero.selected{background:#2a6a3a;border-color:#2a6a3a;color:#fff;}
+.svote.ojala.selected{background:#c8a840;border-color:#c8a840;color:#fff;}
+
+/* Tick de votado */
+.voted-badge{
+  position:absolute;top:8px;right:8px;
+  width:18px;height:18px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;opacity:0;transition:opacity 0.3s;
+}
+.voted-badge.show{opacity:1;}
+.verdadero-badge{background:#2a6a3a;color:#fff;}
+.ojala-badge{background:#c8a840;color:#fff;}
+
+/* ── COLUMNA ESPECIAL ── */
+.special-col{
+  margin-top:1.5rem;border:2px solid #1a1208;padding:1.25rem;
+  background:#ede8d8;position:relative;
+}
+.special-col::before{
+  content:'EDITORIAL';position:absolute;top:-10px;left:50%;transform:translateX(-50%);
+  font-family:'Lato',sans-serif;font-size:9px;letter-spacing:0.2em;
+  background:#ede8d8;padding:0 8px;color:#8a6a2a;
+}
+.special-headline{
+  font-family:'Playfair Display',serif;font-size:clamp(1.1rem,3vw,1.6rem);
+  font-weight:700;color:#1a1208;line-height:1.2;margin-bottom:0.75rem;text-align:center;
+}
+.special-body{font-size:14px;color:#2a1e0a;line-height:1.8;text-align:center;font-style:italic;}
+
+/* ── PROGRESO ── */
+.progress-bar-wrap{
+  margin:1.5rem 0 0.5rem;
+  background:#d8d0b8;border-radius:999px;height:6px;overflow:hidden;
+}
+.progress-bar{
+  height:100%;background:linear-gradient(90deg,#2a6a3a,#c8a840);
+  border-radius:999px;width:0%;transition:width 0.5s ease;
+}
+.progress-text{
+  text-align:center;font-family:'Lato',sans-serif;font-size:11px;
+  letter-spacing:0.12em;color:#8a6a2a;text-transform:uppercase;margin-bottom:1rem;
+}
+
+/* ── MENSAJE FINAL ── */
+.final-msg{
+  margin-top:1.5rem;background:#fff8ec;
+  border:2px solid #c8a840;border-radius:4px;
+  padding:1.5rem;text-align:center;
+  opacity:0;transition:opacity 0.8s ease;pointer-events:none;
+}
+.final-msg.visible{opacity:1;pointer-events:all;}
+.final-title{
+  font-family:'Playfair Display',serif;font-size:20px;
+  font-weight:700;color:#1a1208;margin-bottom:0.75rem;
+}
+.final-text{
+  font-family:'Libre Baskerville',serif;font-style:italic;
+  font-size:14px;color:#3a2a10;line-height:1.85;margin-bottom:1rem;
+}
+.final-stamp{
+  display:inline-block;border:2px solid #c8a840;border-radius:4px;
+  padding:6px 20px;font-family:'Playfair Display',serif;
+  font-size:16px;color:#8a6a2a;letter-spacing:3px;
+  transform:rotate(-2deg);
+}
+
+.paper-footer{
+  border-top:4px double #1a1208;margin-top:2rem;padding-top:1rem;
+  text-align:center;font-family:'Lato',sans-serif;
+  font-size:10px;letter-spacing:0.15em;color:#8a6a2a;position:relative;z-index:2;
+}
+
+@media(max-width:600px){
+  .stories-grid{grid-template-columns:1fr;}
+  .story{border-right:none;}
+  .story:nth-last-child(-n+3){border-bottom:1px solid #1a1208;}
+  .story:last-child{border-bottom:none;}
+  .main-body{column-count:1;}
+  .main-vote{flex-wrap:wrap;}
+}
+</style>
+</head>
+<body>
+
+<div class="newspaper-head">
+  <div class="head-meta">
+    <span>Vol. I, No. 1</span>
+    <span>Diciembre 2026 — Edición del Futuro</span>
+    <span>Precio: un abrazo largo</span>
+  </div>
+  <h1 class="newspaper-name">El Porvenir</h1>
+  <p class="newspaper-tagline">Todo lo que todavía no ha pasado — pero va a pasar</p>
+</div>
+
+<div class="paper">
+
+  <p class="instruction">Vota cada noticia: ¿Verdadero o Ojalá? — cuando termines aparece algo especial</p>
+
+  <!-- Titular principal -->
+  <div class="main-story">
+    <span class="main-label">Noticia principal</span>
+    <h2 class="main-headline">Colombiana y mexicana se conocen en persona por primera vez — testigos reportan que ninguna supo qué decir durante los primeros 30 segundos</h2>
+    <p class="main-deck">"El shock fue mutuo, bilateral y completamente inevitable", confirman fuentes cercanas al suceso.</p>
+    <div class="main-body">
+      <p>El encuentro, largamente anticipado y meticulosamente ignorado en cuanto a fechas concretas, tuvo lugar en circunstancias que los analistas describen como "perfectamente imperfectas". Ninguna de las dos había ensayado lo suficiente. Ambas lo sabían.</p>
+      <p>Según los primeros reportes, los segundos inmediatamente posteriores al encuentro estuvieron marcados por una parálisis emocional sin precedentes, durante la cual ninguna de las partes involucradas logró articular palabra coherente. Los expertos coinciden en que esto era lo mejor que podía ocurrir.</p>
+    </div>
+    <div class="main-vote">
+      <button class="vote-btn verdadero" onclick="voteMain('verdadero')">Verdadero</button>
+      <button class="vote-btn ojala" onclick="voteMain('ojala')">Ojalá</button>
+    </div>
+  </div>
+
+  <div class="divider">✦</div>
+
+  <!-- Barra de progreso -->
+  <div class="progress-text" id="progressText">0 de 7 noticias votadas</div>
+  <div class="progress-bar-wrap"><div class="progress-bar" id="progressBar"></div></div>
+
+  <!-- Grid -->
+  <div class="stories-grid">
+
+    <div class="story" id="s0">
+      <div class="voted-badge" id="b0"></div>
+      <p class="story-label">Cultura y ciencia</p>
+      <h3 class="story-headline">Museo de ciencias registra su visita más larga de la historia</h3>
+      <p class="story-body">Dos visitantes llegaron a las 10am y olvidaron que existía el tiempo. El personal reporta haberlas escuchado debatir horas sobre astronomía. Nadie las interrumpió.</p>
+      <div class="story-vote">
+        <button class="svote verdadero" onclick="voteStory(0,'verdadero')">Verdadero</button>
+        <button class="svote ojala" onclick="voteStory(0,'ojala')">Ojalá</button>
+      </div>
+    </div>
+
+    <div class="story" id="s1">
+      <div class="voted-badge" id="b1"></div>
+      <p class="story-label">Sociedad</p>
+      <h3 class="story-headline">Expertos confirman: el abrazo duró considerablemente más de lo planeado</h3>
+      <p class="story-body">Ninguna de las partes estableció un tiempo límite. Ninguna lo hará. El abrazo fue descrito como "de los que aprietan un poco más cuando ya era suficiente — porque no era suficiente".</p>
+      <div class="story-vote">
+        <button class="svote verdadero" onclick="voteStory(1,'verdadero')">Verdadero</button>
+        <button class="svote ojala" onclick="voteStory(1,'ojala')">Ojalá</button>
+      </div>
+    </div>
+
+    <div class="story" id="s2">
+      <div class="voted-badge" id="b2"></div>
+      <p class="story-label">Crónica</p>
+      <h3 class="story-headline">V.M. llevaba semanas practicando qué decir. No sirvió de nada. Fue mejor así</h3>
+      <p class="story-body">La acusada había preparado al menos tres versiones de lo que diría al momento del encuentro. Ninguna fue utilizada. Lo que salió fue mejor que cualquier borrador.</p>
+      <div class="story-vote">
+        <button class="svote verdadero" onclick="voteStory(2,'verdadero')">Verdadero</button>
+        <button class="svote ojala" onclick="voteStory(2,'ojala')">Ojalá</button>
+      </div>
+    </div>
+
+    <div class="story" id="s3">
+      <div class="voted-badge" id="b3"></div>
+      <p class="story-label">Internacional</p>
+      <h3 class="story-headline">Primer día juntas: sin agenda, sin plan, sin necesidad de ninguno de los dos</h3>
+      <p class="story-body">El día transcurrió sin itinerario y fue, según testigos, el mejor registrado hasta la fecha. Ninguna lo planeó. Ambas lo sabían desde antes.</p>
+      <div class="story-vote">
+        <button class="svote verdadero" onclick="voteStory(3,'verdadero')">Verdadero</button>
+        <button class="svote ojala" onclick="voteStory(3,'ojala')">Ojalá</button>
+      </div>
+    </div>
+
+    <div class="story" id="s4">
+      <div class="voted-badge" id="b4"></div>
+      <p class="story-label">Ciencia</p>
+      <h3 class="story-headline">Científicas aficionadas debaten horas sobre astronomía — admiten que solo querían seguir hablando</h3>
+      <p class="story-body">La investigación, iniciada bajo pretexto académico, derivó en lo que los expertos denominan "excusa para no terminar la noche". El universo fue testigo.</p>
+      <div class="story-vote">
+        <button class="svote verdadero" onclick="voteStory(4,'verdadero')">Verdadero</button>
+        <button class="svote ojala" onclick="voteStory(4,'ojala')">Ojalá</button>
+      </div>
+    </div>
+
+    <div class="story" id="s5">
+      <div class="voted-badge" id="b5"></div>
+      <p class="story-label">Año en cifras</p>
+      <h3 class="story-headline">2027: la distancia entre Colombia y México sigue igual. Ellas, no</h3>
+      <p class="story-body">Los 4.300 kilómetros que separan Bogotá de Ciudad de México permanecen invariables. Sin embargo, dicha distancia ha dejado de ser relevante para las partes involucradas.</p>
+      <div class="story-vote">
+        <button class="svote verdadero" onclick="voteStory(5,'verdadero')">Verdadero</button>
+        <button class="svote ojala" onclick="voteStory(5,'ojala')">Ojalá</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Editorial -->
+  <div class="special-col">
+    <h3 class="special-headline">Editorial: sobre las cosas que pasan cuando dejan de ser planes y se vuelven reales</h3>
+    <p class="special-body">Todo lo que contiene esta edición todavía no ha ocurrido. Pero va a ocurrir. Y cuando ocurra, ninguna de las dos va a recordar exactamente cómo fue — solo que fue exactamente como tenía que ser.</p>
+  </div>
+
+  <!-- Mensaje final -->
+  <div class="final-msg" id="finalMsg">
+    <div class="final-title">Veredicto de esta redacción</div>
+    <div class="final-text" id="finalText"></div>
+    <div class="final-stamp">Para publicar pronto</div>
+  </div>
+
+</div>
+
+<div class="paper-footer">
+  <p>El Porvenir · Editado con amor desde Bogotá · Para América, con todo</p>
+  <p style="margin-top:4px;opacity:0.5;">día 18 · calendario de adviento · 2026</p>
+</div>
+
+<script>
+const total = 7;
+let voted = 0;
+let verdaderoCount = 0;
+const votes = new Array(total).fill(null);
+
+function updateProgress() {
+  document.getElementById('progressText').textContent = voted + ' de ' + total + ' noticias votadas';
+  document.getElementById('progressBar').style.width = (voted / total * 100) + '%';
+  if (voted === total) setTimeout(showFinal, 600);
+}
+
+function voteMain(v) {
+  if (votes[6] !== null) return;
+  votes[6] = v;
+  voted++;
+  if (v === 'verdadero') verdaderoCount++;
+  document.querySelectorAll('.main-vote .vote-btn').forEach(b => {
+    b.classList.remove('selected');
+    if (b.classList.contains(v)) b.classList.add('selected');
+  });
+  updateProgress();
+}
+
+function voteStory(i, v) {
+  if (votes[i] !== null) return;
+  votes[i] = v;
+  voted++;
+  if (v === 'verdadero') verdaderoCount++;
+
+  const story = document.getElementById('s' + i);
+  story.querySelectorAll('.svote').forEach(b => {
+    b.classList.remove('selected');
+    if (b.classList.contains(v)) b.classList.add('selected');
+  });
+
+  const badge = document.getElementById('b' + i);
+  badge.textContent = v === 'verdadero' ? '✓' : '✦';
+  badge.className = 'voted-badge show ' + (v === 'verdadero' ? 'verdadero-badge' : 'ojala-badge');
+
+  updateProgress();
+}
+
+function showFinal() {
+  const msg = document.getElementById('finalMsg');
+  const text = document.getElementById('finalText');
+  msg.classList.add('visible');
+
+  if (verdaderoCount >= 6) {
+    text.textContent = 'La redacción toma nota: la jueza votó casi todo como verdadero. Esto no es optimismo — es que en el fondo ya lo sabes. Todo esto va a pasar. Y cuando pase, espero que te acuerdes de este periódico.';
+  } else if (verdaderoCount >= 4) {
+    text.textContent = 'Mitad verdadero, mitad ojalá. La redacción lo interpreta como: sabes que va a pasar pero te da cosita decirlo en voz alta. Está bien. Aquí lo digo yo por ti.';
+  } else {
+    text.textContent = 'La redacción discrepa respetuosamente con el voto. Todo esto va a pasar — con o sin tu permiso. El futuro ya tiene fecha aunque tú no lo sepas aún.';
+  }
+
+  msg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+</script>
+</body>
+</html>
