@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Día 19 — Para siempre no asusta cuando es contigo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+
+body{
+  min-height:100vh;
+  font-family:'Lato',sans-serif;
+  overflow-x:hidden;
+  background:#f9f5ee;
+}
+
+/* ── FONDO ANIMADO ── */
+.bg{
+  position:fixed;inset:0;z-index:0;
+  background:linear-gradient(160deg,#f9f5ee,#f0ebe0);
+  overflow:hidden;
+}
+.bg-circle{
+  position:absolute;border-radius:50%;
+  opacity:0.12;filter:blur(70px);
+  animation:drift var(--d,20s) ease-in-out infinite alternate;
+}
+@keyframes drift{
+  0%{transform:translate(0,0);}
+  100%{transform:translate(var(--tx,30px),var(--ty,-20px));}
+}
+
+/* ── HERO ── */
+.hero{
+  position:relative;z-index:2;
+  padding:5rem 2rem 3rem;text-align:center;
+}
+.hero-day{
+  font-size:11px;letter-spacing:0.25em;text-transform:uppercase;
+  color:#a07848;margin-bottom:1rem;
+}
+.hero-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2rem,6vw,4rem);
+  font-weight:300;color:#1a1008;line-height:1.15;
+  margin-bottom:0.5rem;
+}
+.hero-title em{font-style:italic;color:#c4844a;}
+.hero-sub{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;font-size:17px;
+  color:rgba(26,16,8,0.45);line-height:1.75;
+  max-width:420px;margin:0.75rem auto 0;font-weight:300;
+}
+.hero-ornament{
+  margin:2rem auto 0;
+  width:120px;height:1px;
+  background:linear-gradient(90deg,transparent,#c4844a,transparent);
+  position:relative;
+}
+.hero-ornament::before{
+  content:'◆';position:absolute;
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  color:#c4844a;font-size:10px;background:#f9f5ee;padding:0 6px;
+}
+
+/* ── DEFINICIONES ── */
+.definitions{
+  max-width:620px;margin:0 auto;
+  padding:3rem 2rem 2rem;
+  position:relative;z-index:2;
+}
+
+.def-intro{
+  font-family:'Cormorant Garamond',serif;
+  font-size:17px;font-style:italic;
+  color:rgba(26,16,8,0.5);text-align:center;
+  margin-bottom:2.5rem;line-height:1.7;
+}
+
+.definition{
+  margin-bottom:1rem;
+  border:1px solid rgba(196,132,74,0.2);
+  border-radius:16px;background:#fff;
+  overflow:hidden;
+  box-shadow:0 2px 12px rgba(196,132,74,0.06);
+  opacity:0;transform:translateY(16px);
+  transition:opacity 0.7s ease, transform 0.7s ease;
+}
+.definition.visible{opacity:1;transform:translateY(0);}
+
+.def-header{
+  padding:1.25rem 1.5rem;cursor:pointer;
+  display:flex;align-items:center;gap:14px;
+  transition:background 0.2s;
+}
+.def-header:hover{background:#fdf8f2;}
+
+.def-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:2.5rem;font-weight:300;
+  color:rgba(196,132,74,0.2);
+  line-height:1;flex-shrink:0;
+  width:40px;text-align:center;
+}
+
+.def-word{
+  font-family:'Cormorant Garamond',serif;
+  font-size:20px;font-weight:500;
+  color:#1a1008;flex:1;line-height:1.3;
+}
+
+.def-arrow{
+  font-size:20px;color:rgba(196,132,74,0.4);
+  transition:transform 0.3s, color 0.3s;flex-shrink:0;
+}
+.definition.open .def-arrow{transform:rotate(90deg);color:#c4844a;}
+
+.def-body{
+  max-height:0;overflow:hidden;
+  transition:max-height 0.5s ease, opacity 0.4s ease;
+  opacity:0;
+}
+.definition.open .def-body{max-height:200px;opacity:1;}
+
+.def-text{
+  font-family:'Cormorant Garamond',serif;
+  font-size:17px;font-weight:300;
+  color:rgba(26,16,8,0.7);line-height:1.9;
+  padding:0 1.5rem 1.25rem 4.5rem;
+}
+
+/* Color accent por definición */
+.definition:nth-child(1) .def-num{color:rgba(232,116,74,0.25);}
+.definition:nth-child(1).open .def-header{background:#fff8f3;}
+.definition:nth-child(2) .def-num{color:rgba(74,138,96,0.25);}
+.definition:nth-child(2).open .def-header{background:#f3fff7;}
+.definition:nth-child(3) .def-num{color:rgba(116,74,196,0.2);}
+.definition:nth-child(3).open .def-header{background:#f8f3ff;}
+.definition:nth-child(4) .def-num{color:rgba(196,164,74,0.25);}
+.definition:nth-child(4).open .def-header{background:#fffcf3;}
+.definition:nth-child(5) .def-num{color:rgba(74,116,196,0.2);}
+.definition:nth-child(5).open .def-header{background:#f3f6ff;}
+.definition:nth-child(6) .def-num{color:rgba(196,74,116,0.2);}
+.definition:nth-child(6).open .def-header{background:#fff3f7;}
+.definition:nth-child(7) .def-num{color:rgba(74,196,164,0.2);}
+.definition:nth-child(7).open .def-header{background:#f3fffc;}
+
+/* ── CONTADOR ── */
+.counter{
+  text-align:center;margin-top:1.5rem;
+  font-size:11px;letter-spacing:0.15em;text-transform:uppercase;
+  color:#a07848;font-family:'Lato',sans-serif;
+}
+
+/* ── CIERRE ── */
+.closing{
+  max-width:560px;margin:2.5rem auto 0;
+  padding:0 2rem 6rem;text-align:center;
+  position:relative;z-index:2;
+  opacity:0;transition:opacity 1s ease;
+}
+.closing.visible{opacity:1;}
+
+.closing-ornament{
+  width:80px;height:1px;
+  background:linear-gradient(90deg,transparent,#c4844a,transparent);
+  margin:0 auto 2rem;position:relative;
+}
+.closing-ornament::before{
+  content:'◆';position:absolute;
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  color:#c4844a;font-size:10px;background:#f9f5ee;padding:0 6px;
+}
+
+.closing-text{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.3rem,3.5vw,1.9rem);
+  font-weight:300;color:#1a1008;
+  line-height:1.9;margin-bottom:1.5rem;
+  font-style:italic;
+}
+.closing-firma{
+  font-family:'Cormorant Garamond',serif;
+  font-size:14px;font-weight:300;
+  color:rgba(26,16,8,0.3);letter-spacing:0.08em;
+}
+</style>
+</head>
+<body>
+
+<div class="bg">
+  <div class="bg-circle" style="width:500px;height:500px;background:#f5a96a;top:-150px;left:-150px;--d:18s;--tx:40px;--ty:30px;"></div>
+  <div class="bg-circle" style="width:400px;height:400px;background:#9FE1CB;top:30%;right:-100px;--d:14s;--tx:-30px;--ty:50px;"></div>
+  <div class="bg-circle" style="width:350px;height:350px;background:#e8b4d2;bottom:10%;left:10%;--d:20s;--tx:50px;--ty:-30px;"></div>
+  <div class="bg-circle" style="width:300px;height:300px;background:#f5c98a;bottom:30%;right:5%;--d:16s;--tx:-20px;--ty:40px;"></div>
+</div>
+
+<header class="hero">
+  <p class="hero-day">día 19</p>
+  <h1 class="hero-title">Para siempre no asusta<br><em>cuando es contigo</em></h1>
+  <p class="hero-sub">Una pequeña redefinición de las palabras que dan miedo</p>
+  <div class="hero-ornament"></div>
+</header>
+
+<div class="definitions" id="definitions">
+  <p class="def-intro">Toca cada definición para leerla</p>
+
+  <div class="definition" id="d0">
+    <div class="def-header" onclick="toggleDef(0)">
+      <span class="def-num">1</span>
+      <span class="def-word">Para siempre</span>
+      <span class="def-arrow">›</span>
+    </div>
+    <div class="def-body">
+      <p class="def-text">No es algo eterno e intimidante. Es estar en las buenas, en las malas y en las peores — sin condiciones. Es que mañana también estés ahí. Y pasado. Y cuando ni siquiera se quiere existir. Eso es para siempre. Y contigo no da miedo.</p>
+    </div>
+  </div>
+
+  <div class="definition" id="d1">
+    <div class="def-header" onclick="toggleDef(1)">
+      <span class="def-num">2</span>
+      <span class="def-word">Querer</span>
+      <span class="def-arrow">›</span>
+    </div>
+    <div class="def-body">
+      <p class="def-text">No tiene que doler. No tiene que llegar arrasando ni cobrar precio. Querer puede ser suave — puede ser aparecer, escuchar, quedarse. Contigo aprendí eso. Contigo el querer se siente diferente.</p>
+    </div>
+  </div>
+
+  <div class="definition" id="d2">
+    <div class="def-header" onclick="toggleDef(2)">
+      <span class="def-num">3</span>
+      <span class="def-word">Miedo</span>
+      <span class="def-arrow">›</span>
+    </div>
+    <div class="def-body">
+      <p class="def-text">A veces el miedo no es señal de que algo está mal — es señal de que algo importa demasiado. Y lo que hay entre nosotras importa. Eso no lo hace peligroso. Lo hace real.</p>
+    </div>
+  </div>
+
+  <div class="definition" id="d3">
+    <div class="def-header" onclick="toggleDef(3)">
+      <span class="def-num">4</span>
+      <span class="def-word">Compartir</span>
+      <span class="def-arrow">›</span>
+    </div>
+    <div class="def-body">
+      <p class="def-text">Sin miedo, sin problema, sin tener que medir lo que se dice. Poder llegar como se está — alegre, rota, cansada, emocionada — y que haya espacio para todo. Eso es lo que quiero que tengamos. Eso es lo que creo que ya tenemos.</p>
+    </div>
+  </div>
+
+  <div class="definition" id="d4">
+    <div class="def-header" onclick="toggleDef(4)">
+      <span class="def-num">5</span>
+      <span class="def-word">Quedarse</span>
+      <span class="def-arrow">›</span>
+    </div>
+    <div class="def-body">
+      <p class="def-text">No por obligación, no por costumbre. Quedarse porque se elige. Porque cada día que apareces es una decisión tuya — y esa decisión me importa más de lo que sé decirte.</p>
+    </div>
+  </div>
+
+  <div class="definition" id="d5">
+    <div class="def-header" onclick="toggleDef(5)">
+      <span class="def-num">6</span>
+      <span class="def-word">Bonito</span>
+      <span class="def-arrow">›</span>
+    </div>
+    <div class="def-body">
+      <p class="def-text">Puede salir algo bonito de todo esto. No perfecto — bonito. Con sus días difíciles y sus silencios y sus momentos raros. Bonito de verdad, no de postal. Y creo que contigo ya está saliendo.</p>
+    </div>
+  </div>
+
+  <div class="definition" id="d6">
+    <div class="def-header" onclick="toggleDef(6)">
+      <span class="def-num">7</span>
+      <span class="def-word">Nosotras</span>
+      <span class="def-arrow">›</span>
+    </div>
+    <div class="def-body">
+      <p class="def-text">Una palabra que todavía estamos construyendo. Que no tiene forma fija ni fecha de vencimiento. Que puede ser lo que queramos que sea — sin prisa, sin miedo, sin tener que caber en ningún molde. Solo nosotras.</p>
+    </div>
+  </div>
+
+  <div class="counter" id="counter">0 de 7 definiciones abiertas</div>
+</div>
+
+<div class="closing" id="closing">
+  <div class="closing-ornament"></div>
+  <p class="closing-text">
+    No te pido que no tengas miedo.<br>
+    El miedo que sientes tiene sentido — y está bien que esté ahí.<br>
+    Solo quiero que sepas que aquí puedes traerlo contigo.<br>
+    Que no tienes que resolverlo sola antes de quedarte.<br>
+    Que lo que hay entre nosotras tiene espacio para todo —<br>
+    incluso para eso.<br>
+    Y que puede ser bonito de todas formas.
+  </p>
+  <p class="closing-firma">con todo — Victoria</p>
+</div>
+
+<script>
+const total = 7;
+let opened = new Set();
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.definition').forEach(d => observer.observe(d));
+
+function toggleDef(i) {
+  const def = document.getElementById('d' + i);
+  const isOpen = def.classList.contains('open');
+  def.classList.toggle('open');
+  if (!isOpen) opened.add(i);
+  updateCounter();
+}
+
+function updateCounter() {
+  const count = opened.size;
+  document.getElementById('counter').textContent = count + ' de ' + total + ' definiciones abiertas';
+  if (count === total) {
+    setTimeout(() => {
+      document.getElementById('closing').classList.add('visible');
+      document.getElementById('closing').scrollIntoView({ behavior:'smooth', block:'center' });
+    }, 500);
+  }
+}
+</script>
+</body>
+</html>
