@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Dia 16 - Tu dia perfecto - Ame</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Cinzel:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;background:#ffffff;font-family:'Cormorant Garamond',serif;overflow-x:hidden;padding-bottom:4rem;position:relative}
+canvas#bg{position:fixed;inset:0;z-index:0;pointer-events:none}
+.back-btn{position:fixed;top:1rem;left:1rem;z-index:10;background:#fff;color:#3a6a20;font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;padding:.4rem 1rem;border-radius:999px;border:1.5px solid #88c060;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.07);transition:all .2s}
+.back-btn:hover{background:#f0f8e8;color:#1a4a08}
+.hdr{text-align:center;padding:3rem 1rem 1.2rem;position:relative;z-index:2}
+.hdr-tag{display:inline-block;background:#f0f8e8;border:1.5px solid #88c060;border-radius:999px;padding:.25rem 1.1rem;margin-bottom:.6rem;font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:#3a6a20}
+.hdr-title{font-family:'Cinzel',serif;font-size:clamp(1.5rem,4.5vw,2.2rem);color:#1a2a10;font-weight:400;letter-spacing:2px;line-height:1.2}
+.hdr-title em{color:#3a6a20;font-style:italic;font-family:'Cormorant Garamond',serif;font-size:1.2em}
+.hdr-sub{font-family:'Cormorant Garamond',serif;font-size:.98rem;color:#6a8a50;margin-top:.4rem;font-style:italic}
+.prog-wrap{max-width:520px;margin:.7rem auto 0;padding:0 1.2rem;position:relative;z-index:2}
+.prog-track{height:3px;background:#d0e8b8;border-radius:2px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,#3a6a20,#88c060);border-radius:2px;width:0%;transition:width .6s cubic-bezier(.4,0,.2,1)}
+.prog-info{display:flex;justify-content:space-between;margin-top:.35rem;font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:2px;text-transform:uppercase;color:#88a870}
+.steps{max-width:520px;margin:1.2rem auto 0;padding:0 1rem;display:flex;flex-direction:column;gap:.9rem;position:relative;z-index:2}
+.step{background:rgba(255,255,255,.92);border:2px solid #c8e0a8;border-radius:20px;padding:1.5rem 1.4rem 1.3rem;box-shadow:0 4px 20px rgba(58,106,32,.08);opacity:0;transform:translateY(18px);transition:opacity .5s ease,transform .5s ease,border-color .3s,background .3s;backdrop-filter:blur(4px)}
+.step.visible{opacity:1;transform:translateY(0)}
+.step.done{border-color:#5a9a38;background:rgba(240,252,228,.95)}
+.step-num{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:3px;text-transform:uppercase;color:#a8d080;margin-bottom:.35rem}
+.step-q{font-family:'Cinzel',serif;font-size:.85rem;color:#1a2a10;letter-spacing:1px;margin-bottom:.9rem}
+.step-reaction{font-family:'Cormorant Garamond',serif;font-size:.95rem;color:#3a6a20;font-style:italic;margin-top:.7rem;min-height:1.3rem;opacity:0;transition:opacity .4s ease}
+.step-reaction.show{opacity:1}
+.options{display:flex;flex-wrap:wrap;gap:.5rem}
+.opt{background:#f0f8e8;border:2px solid #88c060;border-radius:12px;padding:.58rem 1.1rem;font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.8px;color:#1a4a08;cursor:pointer;transition:all .22s cubic-bezier(.34,1.56,.64,1);box-shadow:0 2px 8px rgba(58,106,32,.08)}
+.opt:hover{border-color:#3a6a20;background:#e0f5c8;color:#0a2a00;transform:translateY(-3px);box-shadow:0 6px 18px rgba(58,106,32,.18)}
+.opt.selected{background:#d0f0a8;border-color:#2a5a10;color:#0a2a00;font-weight:600;transform:translateY(-2px);box-shadow:0 6px 18px rgba(58,106,32,.22)}
+#result{max-width:520px;margin:0 auto;padding:0 1rem 2rem;opacity:0;transition:opacity 1.2s ease;position:relative;z-index:2}
+#result.show{opacity:1}
+.result-card{background:rgba(255,255,255,.95);border:2px solid #88c060;border-radius:24px;padding:2.2rem 1.8rem;text-align:center;box-shadow:0 12px 40px rgba(58,106,32,.12);position:relative;overflow:hidden;backdrop-filter:blur(4px)}
+.result-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#88c060,#3a6a20,#88c060)}
+.result-leaf{font-size:2.5rem;display:block;margin-bottom:.6rem;animation:floatL 3s ease-in-out infinite}
+@keyframes floatL{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.result-orn{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:5px;color:#88c060;margin-bottom:.7rem;text-transform:uppercase}
+.result-title{font-family:'Cinzel',serif;font-size:1.05rem;color:#2a5a10;margin-bottom:1.3rem;font-weight:400;letter-spacing:2px}
+.result-text{font-family:'Cormorant Garamond',serif;font-size:1.08rem;color:#1a2a10;line-height:2;text-align:left;font-style:italic}
+.result-text p{margin-bottom:1rem}
+.result-text .closing{font-style:normal;font-family:'Cinzel',serif;font-size:.82rem;color:#3a6a20;letter-spacing:1px;text-align:center;margin-top:.8rem;display:block}
+.result-sig{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:3px;text-transform:uppercase;color:#a0c880;margin-top:1.2rem}
+.restart-btn{display:inline-block;margin:1rem auto 0;background:none;border:1.5px solid #88c060;color:#3a6a20;font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;padding:.45rem 1.3rem;border-radius:999px;cursor:pointer;transition:all .2s}
+.restart-btn:hover{background:#f0f8e8;border-color:#3a6a20;color:#1a4a08}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+<a class="back-btn" href="index.html">volver al calendario</a>
+<header class="hdr">
+  <div class="hdr-tag">dia 16</div>
+  <h1 class="hdr-title">Disena tu <em>dia perfecto</em></h1>
+  <p class="hdr-sub">elige lo que mas te llame · yo te cuento como se veria</p>
+</header>
+<div class="prog-wrap">
+  <div class="prog-track"><div class="prog-fill" id="pf"></div></div>
+  <div class="prog-info"><span id="pl">0 de 6</span><span id="pp">0%</span></div>
+</div>
+<div class="steps" id="sw"></div>
+<div id="result">
+  <div class="result-card">
+    <span class="result-leaf">🌿</span>
+    <div class="result-orn">tu dia perfecto</div>
+    <div class="result-title">Asi se veria</div>
+    <div class="result-text" id="rt"></div>
+    <div class="result-sig">imaginado con amor · dia 16</div>
+    <button class="restart-btn" id="rb">volver a disenar</button>
+  </div>
+</div>
+<script>
+var canvas = document.getElementById('bg');
+var ctx = canvas.getContext('2d');
+var W, H;
+var blobs = [];
+
+function initCanvas() {
+  W = canvas.width = innerWidth;
+  H = canvas.height = innerHeight;
+  blobs = [];
+  var alphas = [0.05, 0.04, 0.06, 0.03, 0.05, 0.04];
+  var rxs = [180, 140, 200, 120, 160, 190];
+  var rys = [120, 100, 140, 80, 110, 130];
+  for (var i = 0; i < 12; i++) {
+    var a = alphas[i % alphas.length] + Math.random() * 0.02;
+    blobs.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      rx: rxs[i % rxs.length] + Math.random() * 40,
+      ry: rys[i % rys.length] + Math.random() * 30,
+      rot: Math.random() * Math.PI,
+      alpha: a,
+      sp: Math.random() * 0.006 + 0.002,
+      off: Math.random() * Math.PI * 2,
+      ox: Math.random() * 30 - 15,
+      oy: Math.random() * 30 - 15
+    });
+  }
+  var chars = ['leaf1', 'leaf2', 'leaf3'];
+  for (var j = 0; j < 18; j++) {
+    var ch = j % 3 === 0 ? '🍃' : j % 3 === 1 ? '🌿' : '🌱';
+    blobs.push({
+      type: 'leaf',
+      x: Math.random() * W,
+      y: Math.random() * H,
+      size: Math.random() * 14 + 6,
+      sx: (Math.random() - 0.4) * 0.5,
+      sy: -(Math.random() * 0.4 + 0.1),
+      rot: Math.random() * Math.PI * 2,
+      rs: (Math.random() - 0.5) * 0.025,
+      op: Math.random() * 0.08 + 0.03,
+      wob: Math.random() * Math.PI * 2,
+      ws: Math.random() * 0.015 + 0.006,
+      ch: ch
+    });
+  }
+}
+
+var t = 0;
+function frame() {
+  ctx.clearRect(0, 0, W, H);
+  t += 0.005;
+  for (var i = 0; i < blobs.length; i++) {
+    var b = blobs[i];
+    if (b.type === 'leaf') {
+      b.wob += b.ws;
+      b.x += b.sx + Math.sin(b.wob) * 0.3;
+      b.y += b.sy;
+      b.rot += b.rs;
+      if (b.y < -30) { b.y = H + 20; b.x = Math.random() * W; }
+      if (b.x < -20) b.x = W + 10;
+      if (b.x > W + 20) b.x = -10;
+      ctx.save();
+      ctx.globalAlpha = b.op;
+      ctx.translate(b.x, b.y);
+      ctx.rotate(b.rot);
+      ctx.font = b.size + 'px serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(b.ch, 0, 0);
+      ctx.restore();
+    } else {
+      var pulse = Math.sin(t * b.sp * 60 + b.off);
+      var rx = b.rx * (1 + pulse * 0.06);
+      var ry = b.ry * (1 + pulse * 0.04);
+      var bx = b.x + Math.sin(t * b.sp * 30 + b.off) * b.ox;
+      var by = b.y + Math.cos(t * b.sp * 25 + b.off) * b.oy;
+      ctx.save();
+      ctx.translate(bx, by);
+      ctx.rotate(b.rot + pulse * 0.02);
+      for (var l = 0; l < 4; l++) {
+        var scale = 1 - l * 0.12;
+        var grad = ctx.createRadialGradient(0, 0, 0, 0, 0, rx * scale);
+        var a1 = b.alpha;
+        var a2 = b.alpha * 0.5;
+        grad.addColorStop(0, 'rgba(140,200,80,' + a1 + ')');
+        grad.addColorStop(0.6, 'rgba(140,200,80,' + a2 + ')');
+        grad.addColorStop(1, 'rgba(255,255,255,0)');
+        ctx.beginPath();
+        ctx.ellipse(0, 0, rx * scale, ry * scale, 0, 0, Math.PI * 2);
+        ctx.fillStyle = grad;
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+  }
+  requestAnimationFrame(frame);
+}
+initCanvas();
+frame();
+addEventListener('resize', initCanvas);
+
+var QS = [
+  {
+    id: 'morning', q: 'Como empieza tu manana',
+    opts: [
+      {l: 'cafe tranquila y despacito', v: 'cafe'},
+      {l: 'dormida hasta tardecito', v: 'dormir'},
+      {l: 'mi perrita me despierta', v: 'perrita'},
+      {l: 'lluvia de fondo y cobija', v: 'lluvia'}
+    ],
+    rx: {
+      cafe: 'Me encanta. Un cafe contigo suena perfecto.',
+      dormir: 'El descanso tambien es sagrado.',
+      perrita: 'Ella sabe que eres su persona favorita.',
+      lluvia: 'Hay algo muy tuyo en ese tipo de mananas.'
+    }
+  },
+  {
+    id: 'vibe', q: 'Que clima tiene ese dia',
+    opts: [
+      {l: 'soleado y calientito', v: 'sol'},
+      {l: 'nublado y fresco', v: 'nublado'},
+      {l: 'lluvia suavecita', v: 'lluvia'},
+      {l: 'frio pero acogedor', v: 'frio'}
+    ],
+    rx: {
+      sol: 'El sol te queda bien.',
+      nublado: 'Esos dias tienen magia.',
+      lluvia: 'La lluvia y tu se llevan bien.',
+      frio: 'Frio y cobija, perfecto.'
+    }
+  },
+  {
+    id: 'activity', q: 'Que haces ese dia',
+    opts: [
+      {l: 'ir a mis talleres', v: 'talleres'},
+      {l: 'series y no hacer nada', v: 'series'},
+      {l: 'salir a caminar', v: 'caminar'},
+      {l: 'leer y descansar', v: 'leer'}
+    ],
+    rx: {
+      talleres: 'Ahi es donde mas brillas.',
+      series: 'A veces no hacer nada es lo mas necesario.',
+      caminar: 'Me imagino que vas con audifonos y todo.',
+      leer: 'Leer es un lujo que mereces mas seguido.'
+    }
+  },
+  {
+    id: 'company', q: 'Con quien estas',
+    opts: [
+      {l: 'solo con mi perrita', v: 'perrita'},
+      {l: 'con mi familia', v: 'familia'},
+      {l: 'completamente sola', v: 'sola'},
+      {l: 'con alguien especial', v: 'especial'}
+    ],
+    rx: {
+      perrita: 'La mejor companera del mundo.',
+      familia: 'Ese calorcito de casa no tiene precio.',
+      sola: 'A veces una lo necesita y esta bien.',
+      especial: 'Me alegra que tengas a alguien asi.'
+    }
+  },
+  {
+    id: 'food', q: 'Que comes ese dia',
+    opts: [
+      {l: 'comida mexicana rica', v: 'mexicana'},
+      {l: 'cafe y algo dulce', v: 'cafe'},
+      {l: 'algo casero y calentito', v: 'casero'},
+      {l: 'lo que sea sin culpa', v: 'libre'}
+    ],
+    rx: {
+      mexicana: 'Ahora se me antojo tambien.',
+      cafe: 'Cafe y algo dulce es un plan perfecto.',
+      casero: 'Lo casero siempre abraza diferente.',
+      libre: 'La mejor eleccion posible.'
+    }
+  },
+  {
+    id: 'night', q: 'Como termina tu noche',
+    opts: [
+      {l: 'un bano largo y rico', v: 'bano'},
+      {l: 'dormida tempranito', v: 'dormir'},
+      {l: 'musica y calma total', v: 'musica'},
+      {l: 'hablando con alguien', v: 'hablar'}
+    ],
+    rx: {
+      bano: 'Mereces ese bano mas seguido.',
+      dormir: 'El descanso es tuyo, completamente.',
+      musica: 'Musica y silencio y tu. Perfecto.',
+      hablar: 'Ojala esa persona te haga reir.'
+    }
+  }
+];
+
+var answers = {};
+var sw = document.getElementById('sw');
+var rd = document.getElementById('result');
+var rt = document.getElementById('rt');
+var pf = document.getElementById('pf');
+var pl = document.getElementById('pl');
+var pp = document.getElementById('pp');
+
+for (var qi = 0; qi < QS.length; qi++) {
+  (function(qi) {
+    var q = QS[qi];
+    var s = document.createElement('div');
+    s.className = 'step';
+    s.id = 's' + qi;
+    var num = qi + 1 < 10 ? '0' + (qi + 1) : '' + (qi + 1);
+    var optsHtml = '';
+    for (var oi = 0; oi < q.opts.length; oi++) {
+      optsHtml += '<button class="opt" data-qi="' + qi + '" data-v="' + q.opts[oi].v + '">' + q.opts[oi].l + '</button>';
+    }
+    s.innerHTML = '<div class="step-num">' + num + '</div><div class="step-q">' + q.q + '</div><div class="options">' + optsHtml + '</div><div class="step-reaction" id="r' + qi + '"></div>';
+    sw.appendChild(s);
+    setTimeout(function() { s.classList.add('visible'); }, 150 + qi * 110);
+  })(qi);
+}
+
+sw.addEventListener('click', function(e) {
+  var b = e.target.closest('.opt');
+  if (!b) return;
+  var qi = parseInt(b.dataset.qi);
+  var v = b.dataset.v;
+  var step = document.getElementById('s' + qi);
+  var opts = step.querySelectorAll('.opt');
+  for (var i = 0; i < opts.length; i++) opts[i].classList.remove('selected');
+  b.classList.add('selected');
+  step.classList.add('done');
+  answers[QS[qi].id] = v;
+  var rx = document.getElementById('r' + qi);
+  rx.textContent = QS[qi].rx[v];
+  rx.classList.add('show');
+  var n = Object.keys(answers).length;
+  var pct = Math.round(n / QS.length * 100);
+  pf.style.width = pct + '%';
+  pl.textContent = n + ' de 6';
+  pp.textContent = pct + '%';
+  if (n === QS.length) setTimeout(show, 600);
+});
+
+function show() {
+  var m = answers.morning, v = answers.vibe, a = answers.activity, c = answers.company, f = answers.food, n = answers.night;
+  var MT = {
+    cafe: 'Me imagino que tu dia empieza despacito, con las manos alrededor de algo caliente, sin prisa, sin alarmas que griten.',
+    dormir: 'Me imagino que tu dia empieza con el lujo de no tener que levantarte. Abrazada a tu cobija, en tu cama con los cuadritos de fondo, con esa sensacion de que el tiempo es completamente tuyo.',
+    perrita: 'Me imagino que tu dia empieza con ella encima tuyo, moviendose y diciendote que ya es hora. No hay mejor despertador en el mundo.',
+    lluvia: 'Me imagino que tu dia empieza escuchando la lluvia de fondo, calentita entre tu cobija, sin querer salir de la cama todavia.'
+  };
+  var VT = {
+    sol: 'El sol entra por tu ventana y todo se siente mas liviano, mas posible.',
+    nublado: 'El cielo esta nublado y fresco, ese tipo de dia que invita a quedarse dentro y estar contigo misma.',
+    lluvia: 'Afuera llueve suavecito, ese sonido de fondo que hace que todo lo de adentro se sienta mas calido.',
+    frio: 'Hace frio pero del bueno, del que te da excusa para estar envuelta en algo suave todo el dia.'
+  };
+  var AT = {
+    talleres: 'En algun momento del dia te vas a tus talleres, haciendo lo que amas, en ese espacio que es completamente tuyo.',
+    series: 'No tienes que hacer nada. Absolutamente nada. Series, cobija, y el mundo puede esperar.',
+    caminar: 'Sales a caminar sin destino fijo, dejando que el aire te despeje y la naturaleza te recuerde que existen cosas bellas.',
+    leer: 'Agarras ese libro pendiente y lees sin culpa, sin reloj, sin tener que rendirle cuentas a nadie.'
+  };
+  var CT = {
+    perrita: 'Tu perrita esta ahi, siendo la mejor compania del mundo sin decir una sola palabra.',
+    familia: 'Tu familia alrededor, ese ruido de fondo que en realidad es lo mas calido que existe.',
+    sola: 'Estas sola y se siente bien. A veces la mejor compania eres tu misma.',
+    especial: 'Hay alguien especial contigo, y eso hace que todo brille un poco mas.'
+  };
+  var FT = {
+    mexicana: 'Comes algo rico, mexicano, de esos sabores que te abrazan por dentro y saben a casa.',
+    cafe: 'Cafe y algo dulce. Simple. Perfecto. Sin mas.',
+    casero: 'Algo casero y caliente, de esos platos que saben a descanso y a hogar.',
+    libre: 'Comes lo que se te antoja, sin calcularlo, sin culpa. Porque ese dia es completamente tuyo.'
+  };
+  var NT = {
+    bano: 'La noche la cierras con un bano largo, de esos que hacen que todo lo del dia se vaya.',
+    dormir: 'Te duermes tempranito, bien cobijada, con esa satisfaccion silenciosa de un dia que valio la pena.',
+    musica: 'Pones musica, apagas las luces, y te quedas en ese silencio calido que es completamente tuyo.',
+    hablar: 'La noche la cierras hablando con alguien, de las cosas importantes o de las que no lo son.'
+  };
+  rt.innerHTML = '<p>' + MT[m] + '</p><p>' + VT[v] + ' ' + AT[a] + '</p><p>' + CT[c] + ' ' + FT[f] + '</p><p>' + NT[n] + '</p><p class="closing">Ese dia existe, preciosa. Y te lo mereces mas de lo que crees.</p>';
+  rd.classList.add('show');
+  rd.scrollIntoView({behavior: 'smooth', block: 'start'});
+}
+
+document.getElementById('rb').addEventListener('click', function() {
+  answers = {};
+  var opts = document.querySelectorAll('.opt');
+  for (var i = 0; i < opts.length; i++) opts[i].classList.remove('selected');
+  var steps = document.querySelectorAll('.step');
+  for (var i = 0; i < steps.length; i++) steps[i].classList.remove('done');
+  var rxs = document.querySelectorAll('.step-reaction');
+  for (var i = 0; i < rxs.length; i++) { rxs[i].classList.remove('show'); rxs[i].textContent = ''; }
+  pf.style.width = '0%';
+  pl.textContent = '0 de 6';
+  pp.textContent = '0%';
+  rd.classList.remove('show');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+});
+</script>
+</body>
+</html>
