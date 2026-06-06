@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Dia 21 - Cosas que aprendi de ti - Ame</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Cinzel:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;background:#faf7f2;font-family:'Cormorant Garamond',serif;overflow-x:hidden;position:relative;padding-bottom:5rem}
+canvas#bg{position:fixed;inset:0;z-index:0;pointer-events:none}
+.back-btn{position:fixed;top:.9rem;left:.9rem;z-index:10;background:#fff;color:#8a6a48;font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;padding:.38rem 1rem;border-radius:999px;border:1.5px solid #d8c8a8;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.06);transition:all .2s}
+.back-btn:hover{color:#5a3a18;background:#f8f0e4}
+.hdr{text-align:center;padding:3rem 1rem 0;position:relative;z-index:2}
+.hdr-day{font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:4px;text-transform:uppercase;color:#c0a880;margin-bottom:.5rem}
+.hdr-title{font-family:'Cinzel',serif;font-size:clamp(1.4rem,4vw,2rem);color:#2a1e10;font-weight:400;letter-spacing:2px;line-height:1.2}
+.hdr-title em{color:#8a6a48;font-style:italic;font-family:'Cormorant Garamond',serif;font-size:1.15em}
+.hdr-sub{font-family:'Cormorant Garamond',serif;font-size:.95rem;color:#a08860;margin-top:.4rem;font-style:italic}
+.hdr-hint{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:#c8a878;margin-top:1rem;opacity:.7}
+.grid{max-width:580px;margin:2rem auto 0;padding:0 1rem;display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;position:relative;z-index:2}
+.envelope-wrap{position:relative;cursor:pointer}
+.envelope{position:relative;width:100%;padding-top:75%;border-radius:14px;overflow:hidden;box-shadow:0 4px 18px rgba(0,0,0,.08);transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s}
+.envelope-wrap:not(.opened):hover .envelope{transform:translateY(-5px) rotate(-1deg);box-shadow:0 10px 28px rgba(140,100,60,.15)}
+.env-body{position:absolute;inset:0;border-radius:14px;border:1.5px solid;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.25rem;transition:all .3s;padding:.5rem}
+.env-num{font-family:'Cinzel',serif;font-size:1.3rem;font-weight:600;transition:all .3s;line-height:1}
+.env-label{font-family:'Cinzel',serif;font-size:.46rem;letter-spacing:1px;text-transform:uppercase;opacity:.7;transition:all .3s;text-align:center;line-height:1.4}
+.env-seal{font-size:.9rem;margin-top:.15rem;animation:sealPulse 2.5s ease-in-out infinite alternate}
+@keyframes sealPulse{0%{transform:scale(1)}100%{transform:scale(1.12)}}
+.envelope-wrap.opened .env-seal{display:none}
+.envelope-wrap.opened .env-num{opacity:.3;font-size:1rem}
+.envelope-wrap.opened .env-label{opacity:.4}
+.env-check{position:absolute;top:.4rem;right:.5rem;font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.5px;opacity:0;transition:opacity .3s}
+.envelope-wrap.opened .env-check{opacity:1}
+.overlay{position:fixed;inset:0;z-index:50;background:rgba(42,30,16,.4);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(4px);padding:1rem}
+.overlay.show{opacity:1;pointer-events:all}
+.letter{background:#fffdf8;border:1.5px solid #e0cca8;border-radius:20px;padding:2rem 1.8rem;max-width:400px;width:100%;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.2);transform:scale(.88) translateY(20px);transition:transform .35s cubic-bezier(.34,1.56,.64,1);max-height:85vh;overflow-y:auto}
+.overlay.show .letter{transform:scale(1) translateY(0)}
+.letter-top{display:flex;align-items:center;gap:.5rem;margin-bottom:1rem}
+.letter-num{font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:#c0a060}
+.letter-line{flex:1;height:1px;background:#e8d8b0}
+.letter-label{font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:2px;text-transform:uppercase;color:#8a6a38;margin-bottom:.8rem}
+.letter-text{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:#2a1e10;line-height:1.9;font-style:italic}
+.letter-text em{font-style:normal;color:#8a5a28;font-family:'Cinzel',serif;font-size:.88em;letter-spacing:.5px}
+.letter-close{position:absolute;top:.8rem;right:.9rem;background:none;border:none;cursor:pointer;font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:1px;text-transform:uppercase;color:#b09060;transition:color .2s;padding:.2rem .5rem}
+.letter-close:hover{color:#5a3a10}
+.letter-deco{font-size:1.5rem;display:block;text-align:center;margin-bottom:.5rem}
+.finale{max-width:500px;margin:1.5rem auto 0;padding:0 1.2rem 2rem;text-align:center;position:relative;z-index:2;opacity:0;transform:translateY(16px);transition:opacity 1s ease,transform 1s ease}
+.finale.show{opacity:1;transform:translateY(0)}
+.finale-line{width:60px;height:1px;background:#d8c8a8;margin:0 auto 1.2rem}
+.finale-text{font-family:'Cormorant Garamond',serif;font-size:1.06rem;color:#4a3820;line-height:2;font-style:italic}
+.finale-text em{color:#8a5a28;font-style:normal;font-family:'Cinzel',serif;font-size:.88em;letter-spacing:1px}
+.finale-sig{font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:#c0a880;margin-top:.8rem}
+.progress{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:#c8b890;margin-top:1rem;position:relative;z-index:2;text-align:center}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+<a class="back-btn" href="index.html">volver al calendario</a>
+<header class="hdr">
+  <div class="hdr-day">dia 21</div>
+  <h1 class="hdr-title">Cosas que <em>aprendi de ti</em></h1>
+  <p class="hdr-sub">no lo que siento · sino lo que cambie</p>
+  <p class="hdr-hint">toca cada sobre para abrirlo</p>
+</header>
+<div class="progress" id="prog">0 de 9 abiertos</div>
+<div class="grid" id="grid"></div>
+<div class="finale" id="finale">
+  <div class="finale-line"></div>
+  <p class="finale-text">
+    Antes de conocerte ya era yo.<br>
+    Pero desde que estas, soy una version mia<br>
+    que quiere mas bonito, mas limpio, mas real.<br>
+    <em>Eso tambien eres tu, preciosa.</em>
+  </p>
+  <div class="finale-sig">con todo mi amor · dia 21</div>
+</div>
+<div class="overlay" id="overlay">
+  <div class="letter" id="letter">
+    <button class="letter-close" id="lClose">cerrar</button>
+    <span class="letter-deco" id="lDeco"></span>
+    <div class="letter-top">
+      <div class="letter-num" id="lNum"></div>
+      <div class="letter-line"></div>
+    </div>
+    <div class="letter-label" id="lLabel"></div>
+    <div class="letter-text" id="lText"></div>
+  </div>
+</div>
+<script>
+var canvas=document.getElementById('bg'),ctx=canvas.getContext('2d'),W,H,pts=[];
+function initC(){
+  W=canvas.width=innerWidth;H=canvas.height=innerHeight;pts=[];
+  for(var i=0;i<100;i++)pts.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.1+.2,a:Math.random()*.1+.03,sp:Math.random()*.008+.002,off:Math.random()*Math.PI*2,warm:Math.random()>.5});
+}
+var t=0;
+function frame(){
+  ctx.clearRect(0,0,W,H);t+=.005;
+  pts.forEach(function(p){
+    var a=p.a*(.5+.5*Math.sin(t*p.sp*60+p.off));
+    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle=p.warm?'rgba(180,140,80,'+a+')':'rgba(160,130,90,'+a+')';
+    ctx.fill();
+  });
+  requestAnimationFrame(frame);
+}
+initC();frame();addEventListener('resize',initC);
+
+var ITEMS=[
+  {label:'sobre el amor',deco:'🤍',text:'Que el amor no tiene por que doler. Puede dar miedo, si. Puede hacernos temblar. Pero cuando es real, <em>reconforta</em>. Me ensenaste que amar y sentirse amada no son cosas que se contradicen.'},
+  {label:'sobre la espera',deco:'🕰',text:'Que esperar es parte del proceso de amar. Que no todo tiene que ser inmediato. Que hay algo muy bonito en saber que alguien vale la pena <em>aunque el tiempo no siempre este de tu lado</em>.'},
+  {label:'sobre los silencios',deco:'🌙',text:'Que no siempre se puede hablar, y que eso esta bien. Lo importante no es la frecuencia sino la disposicion. <em>Siempre nos encontramos</em>, aunque sea en un micro espacio entre todo lo que tenemos que hacer.'},
+  {label:'sobre querer sin poseer',deco:'🌿',text:'Que querer de verdad es querer que la otra persona <em>quiera estar</em>, no obligarla a estarlo. Que el amor que controla no es amor. Que el que libera, permanece.'},
+  {label:'sobre la distancia',deco:'✨',text:'Que el amor a distancia no siempre es malo. Que puede ser una <em>etapa de aprendizaje constante</em>. Que la distancia ensenaa escuchar mejor, a valorar mas, a no dar nada por sentado.'},
+  {label:'sobre la atencion',deco:'🌸',text:'Que amar tambien es prestar atencion a los detalles. Guardar lo que la otra dice. <em>Tener en cuenta mas adelante</em> lo que hoy parece pequeno. Eso es presencia, aunque no haya cercania fisica.'},
+  {label:'sobre querer bonito',deco:'💛',text:'Que se puede querer con miedo y aun asi querer limpio. Que el amor puro y sincero no necesita condiciones. <em>Con miedo, pero sin limite</em>. Eso lo aprendi contigo.'},
+  {label:'sobre la empatia',deco:'🫧',text:'Que es muy valioso tener presente la percepcion de vida de los demas. Colocarse en sus zapatos para entender su realidad. No consumirse en ese personaje, pero si <em>ser lo suficientemente empatica</em> para acompanar sin juzgar.'},
+  {label:'sobre recibirme',deco:'🫀',text:'Que dejarme querer tambien es un acto de valentia. Que no siempre hay que tener todo resuelto para merecer afecto. Me ensenaste que <em>ser recibida con ternura</em> no es debilidad. Es de las cosas mas bonitas que pueden pasarle a una persona.'},
+];
+
+var PALETTES=[
+  {bg:'#fef3e8',border:'#e8c898',num:'#d4a060',text:'#5a3810'},
+  {bg:'#f0f8e8',border:'#b8d898',num:'#6a9848',text:'#2a4810'},
+  {bg:'#f0eef8',border:'#c8b8e8',num:'#7868a8',text:'#2a1848'},
+  {bg:'#f8f0ee',border:'#e0b8b0',num:'#c07868',text:'#481818'},
+  {bg:'#eef6f8',border:'#a8d0d8',num:'#489898',text:'#184848'},
+  {bg:'#f8f8e8',border:'#d8d898',num:'#989840',text:'#484810'},
+  {bg:'#f8eef4',border:'#e0b0d0',num:'#b07098',text:'#481030'},
+  {bg:'#eef8f0',border:'#a8d8b8',num:'#488858',text:'#183820'},
+  {bg:'#fdf4ec',border:'#e8c8a8',num:'#c89060',text:'#482810'},
+];
+
+var opened=0;
+var grid=document.getElementById('grid');
+var overlay=document.getElementById('overlay');
+var finale=document.getElementById('finale');
+var prog=document.getElementById('prog');
+
+ITEMS.forEach(function(item,i){
+  var p=PALETTES[i];
+  var wrap=document.createElement('div');
+  wrap.className='envelope-wrap';
+  var num=i+1<10?'0'+(i+1):''+(i+1);
+  wrap.innerHTML='<div class="envelope"><div class="env-body" style="background:'+p.bg+';border-color:'+p.border+'"><div class="env-num" style="color:'+p.num+'">'+num+'</div><div class="env-label" style="color:'+p.text+'">'+item.label+'</div><div class="env-seal" style="color:'+p.num+'">✦</div></div></div><div class="env-check" style="color:'+p.num+'">✓ abierto</div>';
+  wrap.addEventListener('click',function(){openLetter(i,wrap);});
+  grid.appendChild(wrap);
+});
+
+function openLetter(i,wrap){
+  if(!wrap.classList.contains('opened')){
+    wrap.classList.add('opened');
+    opened++;
+    prog.textContent=opened+' de 9 abiertos';
+    if(opened===ITEMS.length)setTimeout(function(){finale.classList.add('show');},500);
+  }
+  var p=PALETTES[i];
+  var item=ITEMS[i];
+  var num=i+1<10?'0'+(i+1):''+(i+1);
+  document.getElementById('lDeco').textContent=item.deco;
+  document.getElementById('lNum').textContent=num;
+  var lLabel=document.getElementById('lLabel');
+  lLabel.textContent=item.label;lLabel.style.color=p.num;
+  document.getElementById('lText').innerHTML=item.text;
+  overlay.classList.add('show');
+}
+
+function closeLetter(){overlay.classList.remove('show');}
+document.getElementById('lClose').addEventListener('click',closeLetter);
+overlay.addEventListener('click',function(e){if(e.target===overlay)closeLetter();});
+</script>
+</body>
+</html>
