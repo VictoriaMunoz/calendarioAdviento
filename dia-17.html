@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Día 17 — Gracias</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+
+body{
+  min-height:100vh;font-family:'Lato',sans-serif;
+  overflow-x:hidden;
+  transition:background-color 1.2s ease;
+  background-color:#faf7f2;
+}
+
+/* ── BLOBS ── */
+.bg-blob{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.blob{
+  position:absolute;border-radius:50%;filter:blur(90px);
+  opacity:0.15;transition:background 1.2s ease;
+  animation:blobMove var(--d,12s) ease-in-out infinite alternate;
+}
+@keyframes blobMove{
+  0%{transform:translate(0,0) scale(1);}
+  100%{transform:translate(var(--tx,30px),var(--ty,-20px)) scale(1.08);}
+}
+
+/* ── HERO ── */
+.hero{position:relative;z-index:2;padding:5rem 2rem 3.5rem;text-align:center;}
+.hero-day{font-size:11px;letter-spacing:0.28em;text-transform:uppercase;color:#c4714a;margin-bottom:1rem;font-weight:400;}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,8vw,5.5rem);font-weight:300;color:#1a0a04;line-height:1.05;margin-bottom:0.5rem;letter-spacing:-0.01em;}
+.hero-title em{font-style:italic;background:linear-gradient(135deg,#e8744a,#f5a96a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-sub{font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;color:rgba(26,10,4,0.45);line-height:1.7;max-width:400px;margin:1rem auto 0;font-weight:300;}
+.hero-line{width:60px;height:1px;background:linear-gradient(90deg,transparent,#e8744a,transparent);margin:2rem auto 0;}
+
+/* ── CONTENEDOR ── */
+.content{max-width:680px;margin:0 auto;padding:3rem 2rem 4rem;position:relative;z-index:2;}
+
+/* ── GRATITUDES ── */
+.gratitude{
+  display:none;
+  padding:3rem 0 2rem;
+  border-bottom:1px solid rgba(26,10,4,0.06);
+  animation:fadeUp 0.8s ease forwards;
+}
+.gratitude:last-of-type{border-bottom:none;}
+.gratitude.shown{display:block;}
+
+@keyframes fadeUp{
+  0%{opacity:0;transform:translateY(24px);}
+  100%{opacity:1;transform:translateY(0);}
+}
+
+.g-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:6rem;font-weight:300;line-height:1;
+  opacity:0.07;color:#1a0a04;
+  pointer-events:none;user-select:none;
+  display:block;margin-bottom:-2rem;margin-left:-0.5rem;
+}
+.g-label{
+  font-size:10px;letter-spacing:0.22em;text-transform:uppercase;
+  margin-bottom:1rem;font-weight:400;
+  display:inline-block;padding:3px 12px;border-radius:999px;
+  transition:background 0.5s, color 0.5s;
+}
+.g-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.6rem,4vw,2.4rem);font-weight:400;
+  line-height:1.2;margin-bottom:1.25rem;
+  letter-spacing:-0.01em;
+  transition:color 0.5s;
+}
+.g-text{
+  font-family:'Cormorant Garamond',serif;
+  font-size:19px;font-weight:300;
+  color:rgba(26,10,4,0.75);line-height:1.95;
+  max-width:560px;
+}
+
+/* ── BOTÓN ── */
+.btn-wrap{text-align:center;margin-top:2.5rem;position:relative;z-index:2;}
+.btn-next{
+  font-family:'Cormorant Garamond',serif;
+  font-size:18px;font-weight:400;font-style:italic;
+  color:#1a0a04;background:transparent;
+  border:1px solid rgba(26,10,4,0.2);
+  border-radius:999px;padding:12px 36px;
+  cursor:pointer;letter-spacing:0.04em;
+  transition:all 0.3s ease;
+}
+.btn-next:hover{border-color:rgba(26,10,4,0.5);background:rgba(26,10,4,0.04);}
+.btn-next:disabled{opacity:0.3;cursor:default;}
+
+.btn-counter{
+  font-size:11px;letter-spacing:0.15em;text-transform:uppercase;
+  color:rgba(26,10,4,0.3);margin-top:0.75rem;
+  font-family:'Lato',sans-serif;
+}
+
+/* ── CIERRE ── */
+.closing{
+  max-width:680px;margin:0 auto;
+  padding:2rem 2rem 6rem;text-align:center;
+  position:relative;z-index:2;
+  display:none;animation:fadeUp 1s ease forwards;
+}
+.closing.shown{display:block;}
+.closing-line{width:80px;height:1px;background:linear-gradient(90deg,transparent,#e8744a,transparent);margin:0 auto 2.5rem;}
+.closing-text{font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,3.5vw,1.9rem);font-weight:300;color:#1a0a04;line-height:1.85;margin-bottom:1.5rem;font-style:italic;}
+.closing-firma{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:300;color:rgba(26,10,4,0.35);letter-spacing:0.06em;}
+</style>
+</head>
+<body>
+
+<div class="bg-blob">
+  <div class="blob" id="blob1" style="width:500px;height:500px;background:#f5a96a;top:-100px;left:-150px;--d:14s;--tx:40px;--ty:30px;"></div>
+  <div class="blob" id="blob2" style="width:400px;height:400px;background:#9FE1CB;top:30%;right:-100px;--d:11s;--tx:-30px;--ty:40px;"></div>
+  <div class="blob" id="blob3" style="width:350px;height:350px;background:#c4a8e0;bottom:20%;left:5%;--d:16s;--tx:50px;--ty:-30px;"></div>
+</div>
+
+<header class="hero">
+  <p class="hero-day">día 17</p>
+  <h1 class="hero-title">Gracias,<br><em>Ame</em></h1>
+  <p class="hero-sub">por todo lo que me diste sin saber que lo estabas dando</p>
+  <div class="hero-line"></div>
+</header>
+
+<div class="content" id="content">
+
+  <div class="gratitude" id="g0">
+    <span class="g-num">1</span>
+    <span class="g-label">lo más pequeño</span>
+    <h2 class="g-title">Gracias por notar lo pequeño</h2>
+    <p class="g-text">Por quedarte con cosas que yo dije de pasada, sin saber que importaban. Por traerlas de vuelta en el momento exacto. Nadie me había escuchado así — como si cada palabra mía valiera la pena ser guardada. Eso no se olvida.</p>
+  </div>
+
+  <div class="gratitude" id="g1">
+    <span class="g-num">2</span>
+    <span class="g-label">lo que devolviste</span>
+    <h2 class="g-title">Gracias por devolverme las ganas</h2>
+    <p class="g-text">No de algo en específico — de todo. De querer, de imaginar, de esperar cosas. Tú no sabes que hiciste eso. Pero lo hiciste. Y es de las cosas más grandes que alguien me ha dado sin siquiera proponérselo.</p>
+  </div>
+
+  <div class="gratitude" id="g2">
+    <span class="g-num">3</span>
+    <span class="g-label">lo que creé</span>
+    <h2 class="g-title">Gracias por hacerme querer crear</h2>
+    <p class="g-text">Por ti quise programar, diseñar, construir algo bonito con mis manos. Quise volver a escribir poemas. A encontrar canciones que te definieran. Cosas que tenía guardadas y que pensé que ya no volvían — volvieron por ti.</p>
+  </div>
+
+  <div class="gratitude" id="g3">
+    <span class="g-num">4</span>
+    <span class="g-label">lo que aprendí</span>
+    <h2 class="g-title">Gracias por hacerme querer escuchar</h2>
+    <p class="g-text">Las llamadas largas no son algo que me salga fácil. Pero contigo quiero quedarme. Quiero verte, que me veas, estar presente de una forma que antes me costaba demasiado. Contigo eso no me cuesta — me nace.</p>
+  </div>
+
+  <div class="gratitude" id="g4">
+    <span class="g-num">5</span>
+    <span class="g-label">lo que sanó</span>
+    <h2 class="g-title">Gracias por hacerme reír cuando la inseguridad pesa</h2>
+    <p class="g-text">Hay días en que todo adentro es ruido. Y entonces apareces tú — y algo se acomoda. Me río. Y en ese momento el ruido para. Eso no lo hace cualquier persona. Eso lo haces tú.</p>
+  </div>
+
+  <div class="gratitude" id="g5">
+    <span class="g-num">6</span>
+    <span class="g-label">lo que cambió</span>
+    <h2 class="g-title">Gracias por devolverme el color</h2>
+    <p class="g-text">Hubo meses en que el mundo se veía gris. De esos grises sin explicación, sin fondo. Y entonces llegaste. Y desde ese día la vida tiene más color — literalmente. No sé cómo explicarlo mejor que eso. Pero tú lo cambiaste todo.</p>
+  </div>
+
+  <div class="gratitude" id="g6">
+    <span class="g-num">7</span>
+    <span class="g-label">lo que me diste</span>
+    <h2 class="g-title">Gracias por quererme con cuidado</h2>
+    <p class="g-text">Por pensar en no hacerme daño antes de pensar en lo que sientes. Eso no lo hace cualquiera. Eso dice todo de quién eres. Y ese cuidado tuyo me enseñó que el amor también puede ser suave, que no tiene que llegar arrasando para ser verdadero.</p>
+  </div>
+
+  <div class="gratitude" id="g7">
+    <span class="g-num">8</span>
+    <span class="g-label">lo más grande</span>
+    <h2 class="g-title">Gracias por ser suficiente</h2>
+    <p class="g-text">Antes necesitaba otras cosas para sentirme viva. Cosas que no eran buenas para mí. Ahora solo necesito saber que existes. Que estás ahí. Que mañana vas a escribirme. Con eso es suficiente. Contigo es suficiente. Tú eres suficiente.</p>
+  </div>
+
+</div>
+
+<div class="btn-wrap" id="btnWrap">
+  <button class="btn-next" id="btnNext" onclick="showNext()">leer el primero</button>
+  <p class="btn-counter" id="btnCounter"></p>
+</div>
+
+<div class="closing" id="closing">
+  <div class="closing-line"></div>
+  <p class="closing-text">
+    No sé si alguna vez voy a poder decirte todo esto<br>
+    en voz alta sin que se me trabe.<br>
+    Pero quería que lo supieras.<br>
+    Que lo leyeras. Que lo sintieras.<br>
+    Que sepas que cambiaste algo en mí<br>
+    que yo ya creía permanente.
+  </p>
+  <p class="closing-firma">con todo — Victoria</p>
+</div>
+
+<script>
+const colors = [
+  { bg:'#fef5ee', b1:'#f5a96a', b2:'#f7c98a', b3:'#f0b070', label:'#fff0ea', labelTxt:'#e8744a', title:'#c4500a' },
+  { bg:'#f2faf6', b1:'#7aad8a', b2:'#9FE1CB', b3:'#5a9a6a', label:'#eaf5f0', labelTxt:'#2a8a60', title:'#1a6a48' },
+  { bg:'#f5f0ff', b1:'#c4a8e0', b2:'#a888d0', b3:'#e0c8f8', label:'#f0eaff', labelTxt:'#7a4aaa', title:'#5a2a8a' },
+  { bg:'#fffaee', b1:'#f5c98a', b2:'#e8a84a', b3:'#f0d8a0', label:'#fff5e0', labelTxt:'#c4914a', title:'#a07030' },
+  { bg:'#f0f4ff', b1:'#8aa8e0', b2:'#6888d0', b3:'#b0c8f8', label:'#eaf0ff', labelTxt:'#4a6aaa', title:'#2a4a8a' },
+  { bg:'#fff0f5', b1:'#e8a4b8', b2:'#d08090', b3:'#f8c8d8', label:'#ffeaf0', labelTxt:'#aa4a6a', title:'#8a2a4a' },
+  { bg:'#f0fff8', b1:'#7ae0b8', b2:'#5ac898', b3:'#a0f0d8', label:'#eafff5', labelTxt:'#2a9a70', title:'#1a7a50' },
+  { bg:'#fff0f8', b1:'#e8a0c8', b2:'#d070a8', b3:'#f8c8e8', label:'#fff0f5', labelTxt:'#c44a7a', title:'#a42a5a' },
+];
+
+const total = 8;
+let current = -1;
+
+const btnNext    = document.getElementById('btnNext');
+const btnCounter = document.getElementById('btnCounter');
+const btnWrap    = document.getElementById('btnWrap');
+const closing    = document.getElementById('closing');
+const blob1      = document.getElementById('blob1');
+const blob2      = document.getElementById('blob2');
+const blob3      = document.getElementById('blob3');
+
+function showNext() {
+  current++;
+  if (current >= total) return;
+
+  // Mostrar gratitud
+  const g = document.getElementById('g' + current);
+  g.classList.add('shown');
+
+  // Cambiar colores
+  const c = colors[current];
+  document.body.style.backgroundColor = c.bg;
+  blob1.style.background = c.b1;
+  blob2.style.background = c.b2;
+  blob3.style.background = c.b3;
+
+  // Color label y título
+  const label = g.querySelector('.g-label');
+  const title = g.querySelector('.g-title');
+  label.style.background = c.label;
+  label.style.color = c.labelTxt;
+  title.style.color = c.title;
+
+  // Scroll suave a la nueva gratitud
+  setTimeout(() => g.scrollIntoView({ behavior:'smooth', block:'center' }), 100);
+
+  // Actualizar botón
+  if (current === total - 1) {
+    btnNext.disabled = true;
+    btnNext.textContent = 'eso era todo';
+    btnCounter.textContent = total + ' de ' + total;
+    setTimeout(() => {
+      btnWrap.style.display = 'none';
+      closing.classList.add('shown');
+      setTimeout(() => closing.scrollIntoView({ behavior:'smooth', block:'center' }), 200);
+    }, 1200);
+  } else {
+    btnNext.textContent = 'siguiente';
+    btnCounter.textContent = (current + 1) + ' de ' + total;
+  }
+}
+</script>
+</body>
+</html>
