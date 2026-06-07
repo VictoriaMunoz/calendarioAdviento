@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Dia 22 - Hablar contigo - Ame</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Cinzel:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;background:#06040f;font-family:'Cormorant Garamond',serif;overflow-x:hidden;position:relative;padding-bottom:6rem;cursor:default}
+canvas#bg{position:fixed;inset:0;z-index:0;pointer-events:none}
+.back-btn{position:fixed;top:.9rem;left:.9rem;z-index:10;background:rgba(255,255,255,.06);color:rgba(220,200,255,.55);font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:1.5px;text-transform:uppercase;padding:.38rem 1rem;border-radius:999px;border:1px solid rgba(200,180,255,.18);text-decoration:none;backdrop-filter:blur(10px);transition:all .2s}
+.back-btn:hover{color:rgba(220,200,255,.9);border-color:rgba(200,180,255,.4);background:rgba(255,255,255,.1)}
+.hdr{text-align:center;padding:3.5rem 1rem 0;position:relative;z-index:2}
+.hdr-day{font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:4px;text-transform:uppercase;color:rgba(200,180,255,.3);margin-bottom:.5rem}
+.hdr-title{font-family:'Cinzel',serif;font-size:clamp(1.4rem,4vw,2rem);color:#f0e8ff;font-weight:400;letter-spacing:2px;line-height:1.2}
+.hdr-title em{color:#c8a8f8;font-style:italic;font-family:'Cormorant Garamond',serif;font-size:1.15em}
+.hdr-sub{font-family:'Cormorant Garamond',serif;font-size:.95rem;color:rgba(200,180,255,.35);margin-top:.4rem;font-style:italic}
+.counter{position:fixed;top:1rem;right:1rem;z-index:10;font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:rgba(200,180,255,.4);background:rgba(255,255,255,.05);border:1px solid rgba(200,180,255,.12);padding:.35rem .9rem;border-radius:999px;backdrop-filter:blur(10px);transition:color .3s}
+.grid{max-width:620px;margin:2.5rem auto 0;padding:0 1rem;display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;position:relative;z-index:2}
+.card{background:rgba(255,255,255,.04);border:1px solid rgba(200,180,255,.12);border-radius:20px;padding:1.4rem 1.3rem 1.2rem;backdrop-filter:blur(8px);cursor:pointer;position:relative;overflow:hidden;opacity:0;transform:translateY(20px) scale(.96);transition:opacity .6s ease,transform .6s ease,border-color .25s,background .25s,box-shadow .25s}
+.card.visible{opacity:1;transform:translateY(0) scale(1)}
+.card:not(.flipped):hover{border-color:rgba(200,180,255,.3);background:rgba(255,255,255,.07);box-shadow:0 8px 40px rgba(150,100,255,.12);transform:translateY(-4px) scale(1.02)}
+.card.flipped{border-color:rgba(200,180,255,.4);background:rgba(150,100,255,.08);box-shadow:0 12px 50px rgba(150,100,255,.18);cursor:default}
+.card-num{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:2px;color:rgba(200,180,255,.3);margin-bottom:.5rem;transition:color .3s}
+.card.flipped .card-num{color:#c8a8f8}
+.card-front{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;min-height:80px;transition:opacity .3s}
+.card.flipped .card-front{display:none}
+.card-icon{font-size:1.8rem;filter:drop-shadow(0 0 8px rgba(200,180,255,.3))}
+.card-hint{font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(200,180,255,.3)}
+.card-back{display:none;font-family:'Cormorant Garamond',serif;font-size:.98rem;color:rgba(240,232,255,.8);line-height:1.8;font-style:italic}
+.card.flipped .card-back{display:block}
+.card-back em{font-style:normal;color:#c8a8f8;font-family:'Cinzel',serif;font-size:.86em;letter-spacing:.5px}
+.card-glow{position:absolute;inset:0;border-radius:20px;background:radial-gradient(circle at 50% 50%,rgba(200,180,255,.15),transparent 70%);opacity:0;transition:opacity .4s;pointer-events:none}
+.card.flipped .card-glow{opacity:1}
+.spark{position:fixed;pointer-events:none;z-index:100;width:4px;height:4px;border-radius:50%;background:#c8a8f8;animation:sparkFly .8s ease forwards}
+@keyframes sparkFly{0%{opacity:1;transform:translate(0,0) scale(1)}100%{opacity:0;transform:translate(var(--sx),var(--sy)) scale(0)}}
+.finale{max-width:500px;margin:1.5rem auto 0;padding:0 1.2rem 3rem;text-align:center;position:relative;z-index:2;opacity:0;transform:translateY(16px);transition:opacity 1.2s ease,transform 1.2s ease}
+.finale.show{opacity:1;transform:translateY(0)}
+.finale-line{width:50px;height:1px;background:rgba(200,180,255,.2);margin:0 auto 1.2rem}
+.finale-text{font-family:'Cormorant Garamond',serif;font-size:1.08rem;color:rgba(230,220,255,.7);line-height:2;font-style:italic}
+.finale-text em{color:#c8a8f8;font-style:normal;font-family:'Cinzel',serif;font-size:.88em;letter-spacing:1px}
+.finale-back{display:inline-block;margin-top:1.5rem;background:none;border:1px solid rgba(200,180,255,.25);color:rgba(200,180,255,.5);font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;padding:.45rem 1.3rem;border-radius:999px;cursor:pointer;text-decoration:none;transition:all .2s}
+.finale-back:hover{border-color:rgba(200,180,255,.5);color:rgba(220,200,255,.9)}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+<a class="back-btn" href="index.html">← volver al calendario</a>
+<div class="counter" id="counter">0 de 10</div>
+
+<header class="hdr">
+  <div class="hdr-day">dia 22</div>
+  <h1 class="hdr-title">Lo que me gusta de <em>hablar contigo</em></h1>
+  <p class="hdr-sub">toca cada carta para descubrirlo</p>
+</header>
+
+<div class="grid" id="grid"></div>
+
+<div class="finale" id="finale">
+  <div class="finale-line"></div>
+  <p class="finale-text">
+    Cada conversacion contigo es un lugar al que quiero volver.<br>
+    No importa de que sea. No importa cuanto dure.<br>
+    <em>Contigo siempre es suficiente.</em>
+  </p>
+  <a class="finale-back" href="index.html">← volver al calendario</a>
+</div>
+
+<script>
+var canvas=document.getElementById('bg'),ctx=canvas.getContext('2d');
+var W,H,stars=[],nebs=[],mouse={x:-999,y:-999};
+function initC(){
+  W=canvas.width=innerWidth;H=canvas.height=innerHeight;stars=[];nebs=[];
+  for(var i=0;i<250;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.2+.15,a:Math.random()*.6+.1,sp:Math.random()*.012+.003,off:Math.random()*Math.PI*2,vx:0,vy:0,ox:0,oy:0});
+  var cols=['rgba(150,100,255,VAL)','rgba(100,80,220,VAL)','rgba(180,120,255,VAL)','rgba(80,60,180,VAL)'];
+  for(var j=0;j<6;j++)nebs.push({x:Math.random()*W,y:Math.random()*H,rx:Math.random()*200+100,ry:Math.random()*150+70,rot:Math.random()*Math.PI,a:Math.random()*.05+.01,sp:Math.random()*.003+.001,off:Math.random()*Math.PI*2,col:cols[j%cols.length]});
+  stars.forEach(function(s){s.ox=s.x;s.oy=s.y;});
+}
+addEventListener('mousemove',function(e){mouse.x=e.clientX;mouse.y=e.clientY;});
+addEventListener('touchmove',function(e){if(e.touches[0]){mouse.x=e.touches[0].clientX;mouse.y=e.touches[0].clientY;}},{passive:true});
+var t=0;
+function frame(){
+  ctx.clearRect(0,0,W,H);t+=.005;
+  nebs.forEach(function(n){
+    var a=n.a*(.7+.3*Math.sin(t*n.sp*60+n.off));
+    ctx.save();ctx.translate(n.x,n.y);ctx.rotate(n.rot+t*n.sp);
+    var g=ctx.createRadialGradient(0,0,0,0,0,n.rx);
+    g.addColorStop(0,n.col.replace('VAL',a));g.addColorStop(.6,n.col.replace('VAL',a*.4));g.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.beginPath();ctx.ellipse(0,0,n.rx,n.ry,0,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();ctx.restore();
+  });
+  stars.forEach(function(s){
+    var dx=mouse.x-s.ox,dy=mouse.y-s.oy,dist=Math.sqrt(dx*dx+dy*dy);
+    if(dist<200){var force=(200-dist)/200*1.5;s.vx+=(dx/dist)*force*.08;s.vy+=(dy/dist)*force*.08;}
+    s.vx+=(s.ox-s.x)*.04;s.vy+=(s.oy-s.y)*.04;s.vx*=.88;s.vy*=.88;s.x+=s.vx;s.y+=s.vy;
+    var a=s.a*(.4+.6*Math.sin(t*s.sp*60+s.off));
+    ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,'+a+')';ctx.fill();
+  });
+  requestAnimationFrame(frame);
+}
+initC();frame();addEventListener('resize',function(){initC();});
+
+var ITEMS=[
+  {icon:'🌌',text:'Que despues de hablar contigo me quedo con la sensacion de haber descubierto <em>los secretos del universo</em>. Algo en tus palabras me abre puertas que yo no sabia que existian.'},
+  {icon:'⚡',text:'Que me dan nervios. Buenos nervios. Ese tipo de nervios que aparecen cuando estas frente a alguien <em>tan inteligente</em> que no quieres decir nada que no valga la pena.'},
+  {icon:'🫀',text:'Que hablamos de cosas muy personales, del trabajo, de la vida, de los miedos. No de los miedos genericos sino de <em>los miedos puntuales</em>, los que dan verguenza decir en voz alta.'},
+  {icon:'🌿',text:'Que eres increiblemente atenta. Prestas atencion a <em>absolutamente todo</em>. Nada se te escapa. Cuando hablas sabes que alguien realmente te esta escuchando.'},
+  {icon:'🗺',text:'Que buscamos palabras para explicarnos la una a la otra <em>en su espanol colombiano o mexicano</em>. Hay algo muy tierno en querer que la otra entienda exactamente lo que sentimos.'},
+  {icon:'🔓',text:'Que no se siente temor de hablar de nada. Ninguna pregunta es demasiado grande, ningun tema demasiado raro. Con vos <em>todo tiene lugar</em>.'},
+  {icon:'🌙',text:'Que puedo ser completamente yo. Sin editar, sin calcular. Hay una comodidad que no se explica, que simplemente <em>aparece</em> cuando empezamos a hablar.'},
+  {icon:'✨',text:'Que cuando termina una conversacion ya tengo ganas de la siguiente. No porque me falte algo, sino porque <em>hablar contigo se siente como estar en el lugar correcto</em>.'},
+  {icon:'🫧',text:'Que aprendo algo nuevo cada vez. No siempre algo grande. A veces es <em>una palabra, una forma de ver</em>, una perspectiva que no habia considerado. Eso tiene un valor enorme.'},
+  {icon:'💜',text:'Que todos los momentos me hacen feliz tenerlos ahi. No solo los grandes. <em>Todos</em>. Hasta los mas simples se sienten como un regalo que guardo con mucho cuidado.'},
+];
+
+var opened=0;
+var grid=document.getElementById('grid');
+var finale=document.getElementById('finale');
+var counter=document.getElementById('counter');
+
+ITEMS.forEach(function(item,i){
+  var card=document.createElement('div');
+  card.className='card';
+  var num=i+1<10?'0'+(i+1):''+(i+1);
+  card.innerHTML='<div class="card-num">'+num+'</div><div class="card-front"><div class="card-icon">'+item.icon+'</div><div class="card-hint">toca para abrir</div></div><div class="card-back">'+item.text+'</div><div class="card-glow"></div>';
+  card.addEventListener('click',function(e){
+    if(card.classList.contains('flipped'))return;
+    card.classList.add('flipped');opened++;
+    counter.textContent=opened+' de 10';
+    spawnSparks(e.clientX,e.clientY);
+    if(opened===ITEMS.length)setTimeout(function(){finale.classList.add('show');finale.scrollIntoView({behavior:'smooth',block:'start'});},600);
+  });
+  grid.appendChild(card);
+});
+
+var cards=document.querySelectorAll('.card');
+var obs=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting){setTimeout(function(){entry.target.classList.add('visible');},60);obs.unobserve(entry.target);}});},{threshold:0.1});
+cards.forEach(function(c){obs.observe(c);});
+
+function spawnSparks(cx,cy){
+  for(var i=0;i<12;i++){
+    var el=document.createElement('div');el.className='spark';
+    var angle=(i/12)*Math.PI*2,dist=30+Math.random()*50;
+    el.style.cssText='left:'+cx+'px;top:'+cy+'px;--sx:'+(Math.cos(angle)*dist).toFixed(0)+'px;--sy:'+(Math.sin(angle)*dist).toFixed(0)+'px';
+    el.style.background=i%2===0?'#c8a8f8':'#f8e8ff';
+    document.body.appendChild(el);
+    setTimeout(function(){el.remove();},850);
+  }
+}
+</script>
+</body>
+</html>
