@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Día 23 — Ya casi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#fdf8ee;min-height:100vh;font-family:'Lato',sans-serif;overflow-x:hidden;color:#2a1a04;}
+
+/* Fondo suave */
+body::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 60% 40% at 20% 10%, rgba(245,201,138,0.2) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 80% 80%, rgba(232,180,100,0.15) 0%, transparent 55%);
+  pointer-events:none;z-index:0;
+}
+
+/* Partículas de luz flotantes */
+.light-particle{
+  position:fixed;border-radius:50%;
+  background:radial-gradient(circle,rgba(245,201,138,0.9),transparent);
+  pointer-events:none;z-index:0;
+  animation:floatLight var(--d,8s) ease-in-out infinite alternate;
+}
+@keyframes floatLight{
+  0%{transform:translate(0,0) scale(1);opacity:var(--o,0.3);}
+  100%{transform:translate(var(--tx,20px),var(--ty,-30px)) scale(1.2);opacity:calc(var(--o,0.3)*0.4);}
+}
+
+/* Botón volver */
+.btn-back{
+  position:fixed;top:1.25rem;left:1.25rem;z-index:10;
+  font-family:'Lato',sans-serif;font-size:12px;
+  letter-spacing:0.1em;text-transform:uppercase;
+  color:#a07830;border:1px solid rgba(184,134,11,0.3);
+  background:rgba(253,248,238,0.9);
+  border-radius:999px;padding:7px 18px;
+  text-decoration:none;transition:all 0.2s;
+  backdrop-filter:blur(4px);
+}
+.btn-back:hover{background:#f5c98a;color:#2a1a04;border-color:#f5c98a;}
+
+/* Hero */
+.hero{position:relative;z-index:2;padding:5rem 2rem 2rem;text-align:center;}
+.hero-day{font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:#b8860b;margin-bottom:0.75rem;}
+.hero-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2.2rem,6vw,4rem);font-weight:300;
+  color:#2a1a04;line-height:1.15;margin-bottom:0.4rem;
+}
+.hero-title em{font-style:italic;color:#c8920b;}
+.hero-sub{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:17px;color:rgba(42,26,4,0.45);
+  max-width:400px;margin:0.75rem auto 0;line-height:1.75;
+}
+
+/* Vela animada */
+.candle-wrap{
+  position:relative;z-index:2;
+  text-align:center;margin:2rem 0 1rem;
+}
+.candle-svg{
+  width:80px;height:120px;display:inline-block;
+  cursor:pointer;
+  filter:drop-shadow(0 0 20px rgba(245,201,138,0.4));
+  transition:filter 0.3s;
+}
+.candle-svg:hover{filter:drop-shadow(0 0 30px rgba(245,201,138,0.7));}
+.flame{animation:flicker 1.5s ease-in-out infinite alternate;transform-origin:50% 100%;}
+@keyframes flicker{
+  0%{transform:scaleX(1) scaleY(1) rotate(-1deg);}
+  25%{transform:scaleX(0.9) scaleY(1.05) rotate(1deg);}
+  50%{transform:scaleX(1.05) scaleY(0.95) rotate(-0.5deg);}
+  75%{transform:scaleX(0.95) scaleY(1.08) rotate(1.5deg);}
+  100%{transform:scaleX(1.02) scaleY(0.98) rotate(-1deg);}
+}
+.glow{animation:glowPulse 2s ease-in-out infinite alternate;}
+@keyframes glowPulse{
+  0%{opacity:0.3;}100%{opacity:0.6;}
+}
+
+/* Contador */
+.counter-wrap{
+  position:relative;z-index:2;
+  max-width:480px;margin:1.5rem auto 0;padding:0 2rem;text-align:center;
+}
+.counter-label{
+  font-size:10px;letter-spacing:0.22em;text-transform:uppercase;
+  color:#b8860b;margin-bottom:1.25rem;opacity:0.7;
+}
+.counter-boxes{display:flex;justify-content:center;gap:10px;margin-bottom:0.75rem;}
+.counter-box{
+  background:#fff8ec;border:1px solid rgba(184,134,11,0.2);
+  border-radius:14px;padding:1.1rem 0.9rem;min-width:85px;
+  box-shadow:0 2px 12px rgba(184,134,11,0.08);
+  transition:border-color 0.3s, box-shadow 0.3s;
+}
+.counter-box:hover{border-color:rgba(184,134,11,0.4);box-shadow:0 4px 20px rgba(184,134,11,0.15);}
+.counter-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:3rem;font-weight:300;color:#c8920b;
+  line-height:1;display:block;
+  transition:transform 0.1s;
+}
+.counter-num.tick{animation:tickAnim 0.15s ease;}
+@keyframes tickAnim{0%{transform:scale(1.08);}100%{transform:scale(1);}}
+.counter-unit{font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(42,26,4,0.3);margin-top:4px;display:block;}
+.counter-note{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;color:rgba(42,26,4,0.3);margin-top:0.5rem;}
+
+/* Divisor */
+.divider{width:80px;height:1px;background:linear-gradient(90deg,transparent,rgba(184,134,11,0.4),transparent);margin:2.5rem auto;position:relative;z-index:2;}
+.divider-ornament{position:relative;z-index:2;text-align:center;margin:2rem 0;color:rgba(184,134,11,0.4);font-size:14px;letter-spacing:8px;}
+
+/* Momentos */
+.moments-wrap{max-width:620px;margin:0 auto;padding:0 1.5rem;position:relative;z-index:2;}
+.moments-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:14px;letter-spacing:0.15em;text-transform:uppercase;
+  color:#b8860b;text-align:center;margin-bottom:0.5rem;opacity:0.7;
+}
+.moments-sub{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:14px;color:rgba(42,26,4,0.35);text-align:center;
+  margin-bottom:2rem;
+}
+
+/* Tarjetas de momentos */
+.moments-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;}
+
+.moment-card{
+  background:#fff8ec;border:1px solid rgba(184,134,11,0.15);
+  border-radius:14px;padding:1rem 1.1rem;
+  opacity:0;transform:translateY(12px) scale(0.97);
+  transition:opacity 0.6s ease, transform 0.6s ease, border-color 0.3s, box-shadow 0.3s;
+  cursor:pointer;position:relative;overflow:hidden;
+}
+.moment-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 30% 30%,rgba(245,201,138,0.15),transparent 65%);
+  pointer-events:none;
+}
+.moment-card:hover{
+  border-color:rgba(184,134,11,0.4);
+  box-shadow:0 6px 20px rgba(184,134,11,0.12);
+  transform:translateY(-3px) scale(1.02) !important;
+}
+.moment-card.visible{opacity:1;transform:translateY(0) scale(1);}
+.moment-card.opened{border-color:rgba(184,134,11,0.5);background:#fffaef;}
+
+.moment-day{font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:#b8860b;margin-bottom:0.3rem;opacity:0.6;}
+.moment-name{font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:500;color:#2a1a04;line-height:1.3;margin-bottom:0.4rem;}
+.moment-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:12px;color:rgba(42,26,4,0.55);line-height:1.6;display:none;}
+.moment-card.opened .moment-text{display:block;}
+.moment-card.opened .moment-name{color:#c8920b;}
+
+/* Contador de abiertos */
+.open-counter{text-align:center;margin-top:1.25rem;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#b8860b;opacity:0.6;position:relative;z-index:2;}
+
+/* Mensaje cuando abre todos */
+.all-open{
+  max-width:500px;margin:2rem auto 0;padding:1.5rem 2rem;
+  background:#fff8ec;border:1px solid rgba(184,134,11,0.3);
+  border-radius:16px;text-align:center;
+  position:relative;z-index:2;
+  opacity:0;transition:opacity 0.8s ease;
+}
+.all-open.visible{opacity:1;}
+.all-open-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;color:#2a1a04;line-height:1.85;}
+
+/* Cierre */
+.closing{max-width:480px;margin:2.5rem auto 0;padding:0 2rem 5rem;text-align:center;position:relative;z-index:2;}
+.closing-text{font-family:'Cormorant Garamond',serif;font-size:clamp(1.1rem,3vw,1.6rem);font-weight:300;font-style:italic;color:#2a1a04;line-height:1.9;margin-bottom:1rem;}
+.closing-firma{font-family:'Cormorant Garamond',serif;font-size:14px;color:rgba(42,26,4,0.3);letter-spacing:0.08em;}
+
+/* Desbloqueado */
+.unlocked-msg{max-width:460px;margin:2rem auto;padding:1.5rem 2rem;background:#fff8ec;border:1.5px solid #c8920b;border-radius:16px;text-align:center;position:relative;z-index:2;display:none;}
+.unlocked-msg.show{display:block;}
+.unlocked-title{font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:#c8920b;margin-bottom:0.5rem;}
+.unlocked-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;color:rgba(42,26,4,0.55);line-height:1.75;margin-bottom:1.25rem;}
+.unlocked-btn{display:inline-block;padding:10px 28px;border:1px solid #c8920b;border-radius:999px;font-family:'Cormorant Garamond',serif;font-size:16px;color:#c8920b;text-decoration:none;transition:all 0.2s;}
+.unlocked-btn:hover{background:#c8920b;color:#fff;}
+
+.bottom-deco{text-align:center;color:rgba(184,134,11,0.3);font-size:18px;letter-spacing:10px;margin-top:2rem;position:relative;z-index:2;}
+</style>
+</head>
+<body>
+
+<!-- Partículas de luz -->
+<div class="light-particle" style="width:200px;height:200px;top:10%;left:5%;--d:10s;--o:0.25;--tx:30px;--ty:-20px;"></div>
+<div class="light-particle" style="width:150px;height:150px;top:40%;right:8%;--d:14s;--o:0.2;--tx:-20px;--ty:30px;"></div>
+<div class="light-particle" style="width:120px;height:120px;bottom:20%;left:15%;--d:12s;--o:0.18;--tx:20px;--ty:-25px;"></div>
+
+<!-- Botón volver -->
+<a href="index.html" class="btn-back">← volver al calendario</a>
+
+<header class="hero">
+  <p class="hero-day">día 23</p>
+  <h1 class="hero-title">Ya casi,<br><em>preciosa</em></h1>
+  <p class="hero-sub">mañana es el último — pero hoy hay algo que quiero que recuerdes</p>
+</header>
+
+<!-- Vela -->
+<div class="candle-wrap" title="haz click para soplar la vela">
+  <svg class="candle-svg" id="candleSvg" viewBox="0 0 80 120" xmlns="http://www.w3.org/2000/svg" onclick="blowCandle()">
+    <!-- Resplandor -->
+    <ellipse class="glow" cx="40" cy="25" rx="22" ry="22" fill="#f5c98a" opacity="0.25"/>
+    <!-- Llama -->
+    <g class="flame" id="flame">
+      <ellipse cx="40" cy="22" rx="6" ry="14" fill="#f5a020"/>
+      <ellipse cx="40" cy="24" rx="4" ry="10" fill="#f5c030"/>
+      <ellipse cx="40" cy="26" rx="2" ry="6"  fill="#fff8e0"/>
+    </g>
+    <!-- Mecha -->
+    <line x1="40" y1="36" x2="40" y2="42" stroke="#3a2010" stroke-width="1.5" stroke-linecap="round"/>
+    <!-- Cuerpo vela -->
+    <rect x="28" y="42" width="24" height="62" rx="4" fill="#fff8ec"/>
+    <rect x="28" y="42" width="24" height="62" rx="4" fill="none" stroke="rgba(184,134,11,0.3)" stroke-width="1"/>
+    <!-- Detalles cera -->
+    <path d="M28,52 Q34,48 40,52 Q46,48 52,52" fill="none" stroke="rgba(184,134,11,0.2)" stroke-width="1"/>
+    <!-- Base -->
+    <rect x="22" y="100" width="36" height="8" rx="3" fill="#f5c98a" opacity="0.6"/>
+    <rect x="20" y="105" width="40" height="6" rx="3" fill="#c8920b" opacity="0.4"/>
+  </svg>
+  <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;color:rgba(42,26,4,0.3);margin-top:8px;">toca la vela para soplarla</p>
+</div>
+
+<!-- Contador -->
+<div class="counter-wrap">
+  <p class="counter-label">tiempo para el día 24</p>
+  <div class="counter-boxes">
+    <div class="counter-box"><span class="counter-num" id="hours">00</span><span class="counter-unit">horas</span></div>
+    <div class="counter-box"><span class="counter-num" id="minutes">00</span><span class="counter-unit">minutos</span></div>
+    <div class="counter-box"><span class="counter-num" id="seconds">00</span><span class="counter-unit">segundos</span></div>
+  </div>
+  <p class="counter-note">medianoche hora Colombia · 23:00 hora México</p>
+</div>
+
+<!-- Desbloqueado -->
+<div class="unlocked-msg" id="unlockedMsg">
+  <div class="unlocked-title">Ya llegó, Ame</div>
+  <p class="unlocked-text">El último día está listo. Ve a abrirlo cuando quieras — fue hecho con todo.</p>
+  <a href="dia-24.html" class="unlocked-btn">abrir el día 24 →</a>
+</div>
+
+<div class="divider-ornament">◆ ◆ ◆</div>
+
+<!-- Momentos -->
+<div class="moments-wrap">
+  <p class="moments-title">23 días · 23 momentos</p>
+  <p class="moments-sub">toca cada uno para recordarlo</p>
+  <div class="moments-grid" id="momentsGrid"></div>
+  <p class="open-counter" id="openCounter"></p>
+</div>
+
+<div class="all-open" id="allOpen">
+  <p class="all-open-text">Lo recordaste todo, Ame.<br>Cada día fue real. Cada palabra fue tuya.<br>Mañana hay uno más — el más importante.</p>
+</div>
+
+<div class="closing">
+  <div class="divider"></div>
+  <p class="closing-text">
+    Cada día de este calendario<br>
+    fue una forma de decirte algo<br>
+    que no siempre sé decir en voz alta.<br><br>
+    Mañana es el último.<br>
+    Y va a ser el más honesto de todos.
+  </p>
+  <p class="closing-firma">hasta mañana · con todo · Victoria</p>
+</div>
+
+<div class="bottom-deco">✦ ✦ ✦</div>
+
+<script>
+// Vela
+let candleBlown = false;
+function blowCandle() {
+  if (candleBlown) return;
+  candleBlown = true;
+  const flame = document.getElementById('flame');
+  flame.style.transition = 'opacity 0.6s ease';
+  flame.style.opacity = '0';
+  document.querySelector('.glow').style.transition = 'opacity 0.6s ease';
+  document.querySelector('.glow').style.opacity = '0';
+  document.querySelector('.candle-svg').style.filter = 'none';
+  document.querySelector('.candle-wrap p').textContent = 'pediste un deseo? ✦';
+  setTimeout(() => {
+    document.querySelector('.candle-wrap p').textContent = 'mañana se cumple el último ✦';
+  }, 2000);
+}
+
+// Contador
+const target = new Date('2026-06-24T05:00:00Z');
+let prevSeconds = -1;
+
+function updateCounter() {
+  const now  = new Date();
+  const diff = target - now;
+  if (diff <= 0) {
+    ['hours','minutes','seconds'].forEach(id => document.getElementById(id).textContent = '00');
+    document.getElementById('unlockedMsg').classList.add('show');
+    return;
+  }
+  const h = Math.floor(diff / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+
+  document.getElementById('hours').textContent   = String(h).padStart(2,'0');
+  document.getElementById('minutes').textContent = String(m).padStart(2,'0');
+  const secEl = document.getElementById('seconds');
+  secEl.textContent = String(s).padStart(2,'0');
+
+  if (s !== prevSeconds) {
+    secEl.classList.remove('tick');
+    void secEl.offsetWidth;
+    secEl.classList.add('tick');
+    prevSeconds = s;
+  }
+}
+setInterval(updateCounter, 1000);
+updateCounter();
+
+// Momentos
+const moments = [
+  { day:'día 1',  name:'Frases bonitas',         text:'Palabras que aparecen cuando más las necesitas.' },
+  { day:'día 2',  name:'La playlist',             text:'Una playlist que suena exactamente a lo que siento.' },
+  { day:'día 3',  name:'Consola de mensajes',     text:'Para los momentos que no tienen nombre.' },
+  { day:'día 4',  name:'Carta de personaje',      text:'Porque eres protagonista de esta historia.' },
+  { day:'día 5',  name:'Cupones',                 text:'Cosas que solo yo puedo darte.' },
+  { day:'día 6',  name:'Lo que veo en ti',        text:'Lo que ves en ti que tú no siempre ves.' },
+  { day:'día 7',  name:'Lo que no dije',          text:'Todo lo que pensé y guardé. Hasta hoy.' },
+  { day:'día 8',  name:'Las puertas abiertas',    text:'Contigo siempre hay espacio para ser.' },
+  { day:'día 9',  name:'Constelación',            text:'Una constelación hecha de lo que eres.' },
+  { day:'día 10', name:'Respiración',             text:'Un momento para estar contigo misma.' },
+  { day:'día 11', name:'El juicio',               text:'Culpable de todos los cargos — con orgullo.' },
+  { day:'día 12', name:'El lienzo',               text:'Porque crear también es tuyo.' },
+  { day:'día 13', name:'Cuando me llamas',        text:'Lo que veo cada vez que apareces en pantalla.' },
+  { day:'día 14', name:'Máquina de mimos',        text:'Infinita. Siempre disponible.' },
+  { day:'día 15', name:'A veces pienso en',       text:'Imágenes que guardo de nosotras sin fecha.' },
+  { day:'día 16', name:'Tu día perfecto',         text:'Construido por ti, pensado para ti.' },
+  { day:'día 17', name:'Gracias',                 text:'Por todo lo que diste sin saber que lo dabas.' },
+  { day:'día 18', name:'El periódico',            text:'Todo lo del futuro va a pasar.' },
+  { day:'día 19', name:'Para siempre',            text:'No asusta cuando es contigo.' },
+  { day:'día 20', name:'La orquídea',             text:'Hecha de palabras, para ti.' },
+  { day:'día 21', name:'Lo que aprendí',          text:'Cosas que me enseñaste sin saber.' },
+  { day:'día 22', name:'Hablar contigo',          text:'Todo lo que me gusta de nuestras conversaciones.' },
+  { day:'día 23', name:'Ya casi',                 text:'El penúltimo. Mañana es el último.' },
+];
+
+const grid = document.getElementById('momentsGrid');
+const openCounter = document.getElementById('openCounter');
+const allOpen = document.getElementById('allOpen');
+let openedCount = 0;
+const openedSet = new Set();
+
+moments.forEach((m, i) => {
+  const card = document.createElement('div');
+  card.className = 'moment-card';
+  card.innerHTML = `
+    <p class="moment-day">${m.day}</p>
+    <p class="moment-name">${m.name}</p>
+    <p class="moment-text">${m.text}</p>
+  `;
+  card.addEventListener('click', () => {
+    if (!openedSet.has(i)) {
+      openedSet.add(i);
+      openedCount++;
+      openCounter.textContent = openedCount + ' de ' + moments.length + ' recordados';
+      if (openedCount === moments.length) {
+        setTimeout(() => {
+          allOpen.classList.add('visible');
+          allOpen.scrollIntoView({ behavior:'smooth', block:'center' });
+        }, 300);
+      }
+    }
+    card.classList.toggle('opened');
+  });
+  grid.appendChild(card);
+});
+
+openCounter.textContent = '0 de ' + moments.length + ' recordados';
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), Array.from(grid.children).indexOf(e.target) * 40);
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.05 });
+document.querySelectorAll('.moment-card').forEach(c => observer.observe(c));
+</script>
+</body>
+</html>
