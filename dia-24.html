@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Día 24 — Eres tú, Ame</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow-x:hidden;overflow-y:auto}
+body{background:#fdf8ee;font-family:'Cormorant Garamond',serif;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;position:relative}
+canvas#bg{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+.back-btn{position:fixed;top:.9rem;left:.9rem;z-index:10;background:rgba(255,248,220,.7);color:rgba(140,90,10,.5);font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:1.5px;text-transform:uppercase;padding:.38rem 1rem;border-radius:999px;border:1px solid rgba(200,140,20,.2);text-decoration:none;backdrop-filter:blur(10px);transition:all .2s}
+.back-btn:hover{color:rgba(140,90,10,.9);border-color:rgba(200,140,20,.5);background:rgba(255,248,220,.95)}
+
+/* ── PANTALLA PRINCIPAL ── */
+#main{position:relative;z-index:2;max-width:500px;width:90%;text-align:center;padding:6rem 0 4rem;}
+
+.day-label{font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:4px;text-transform:uppercase;color:rgba(160,100,10,.3);margin-bottom:2.5rem;opacity:0;animation:fadeUp .8s .3s ease forwards;}
+
+.msg{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,2.5vw,1.22rem);color:rgba(60,30,5,.8);line-height:2.2;font-style:italic;text-align:center;min-height:4rem;}
+.msg em{font-style:normal;color:#b8720a;font-family:'Cinzel',serif;font-size:.9em;letter-spacing:.5px;}
+.cursor{display:inline-block;width:2px;height:1.1em;background:#c8920b;margin-left:2px;vertical-align:middle;animation:blink .8s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+.question-wrap{margin-top:2.5rem;opacity:0;transform:translateY(12px);transition:opacity .8s ease,transform .8s ease}
+.question-wrap.show{opacity:1;transform:translateY(0)}
+.question{font-family:'Cinzel',serif;font-size:.75rem;letter-spacing:2px;color:rgba(140,80,10,.45);text-transform:uppercase;margin-bottom:1.25rem}
+.yes-btn{background:linear-gradient(135deg,#f5c842,#e8a020);border:none;color:#fff;font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:2.5px;text-transform:uppercase;padding:.65rem 2.4rem;border-radius:999px;cursor:pointer;transition:all .3s cubic-bezier(.34,1.56,.64,1);box-shadow:0 4px 20px rgba(200,140,20,.3);}
+.yes-btn:hover{transform:scale(1.07);box-shadow:0 6px 28px rgba(200,140,20,.5);}
+
+/* ── PANTALLA FINAL ── */
+#final{position:fixed;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;overflow-y:auto;padding:5rem 2rem 4rem;text-align:center;background:#fdf8ee;opacity:0;pointer-events:none;transition:opacity 1.2s ease;}
+#final.show{opacity:1;pointer-events:all;}
+
+.final-msg{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,2.5vw,1.22rem);color:rgba(60,30,5,.8);line-height:2.2;font-style:italic;max-width:460px;text-align:center;width:100%;}
+.final-msg em{font-style:normal;color:#b8720a;font-family:'Cinzel',serif;font-size:.9em;letter-spacing:.5px;}
+
+.final-bottom{margin-top:3rem;opacity:0;transition:opacity 1s ease;display:flex;flex-direction:column;align-items:center;gap:.75rem;padding-bottom:2rem;}
+.final-bottom.show{opacity:1;}
+.final-sig{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:3px;text-transform:uppercase;color:rgba(160,100,10,.28);}
+.final-back{display:inline-block;background:none;border:1px solid rgba(200,140,20,.25);color:rgba(140,80,10,.4);font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;padding:.42rem 1.3rem;border-radius:999px;text-decoration:none;transition:color .2s,border-color .2s;}
+.final-back:hover{color:rgba(140,80,10,.9);border-color:rgba(200,140,20,.5)}
+
+/* Partículas */
+.spark{position:fixed;pointer-events:none;z-index:100;font-size:var(--hs,1rem);opacity:1;animation:sparkFloat var(--hd,3s) ease forwards}
+@keyframes sparkFloat{0%{transform:translate(0,0) scale(0) rotate(var(--hr,-10deg));opacity:0}20%{opacity:1;transform:translate(var(--hx1,0px),var(--hy1,-30px)) scale(1) rotate(var(--hr,-10deg))}100%{transform:translate(var(--hx2,20px),var(--hy2,-150px)) scale(.4) rotate(var(--hr2,10deg));opacity:0}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+<a class="back-btn" href="index.html">← volver al calendario</a>
+
+<div id="main">
+  <p class="day-label">día 24 · el último · el más importante</p>
+  <div class="msg" id="msg"><span class="cursor"></span></div>
+  <div class="question-wrap" id="qWrap">
+    <div class="question">una sola pregunta</div>
+    <button class="yes-btn" id="yesBtn">sí, déjame</button>
+  </div>
+</div>
+
+<div id="final">
+  <div class="final-msg" id="finalMsg"><span class="cursor"></span></div>
+  <div class="final-bottom" id="finalBottom">
+    <div class="final-sig">día 24 · fin del calendario · inicio de lo que sigue</div>
+    <a class="final-back" href="index.html">← volver al calendario</a>
+  </div>
+</div>
+
+<script>
+// ── FONDO DORADO ──
+var canvas=document.getElementById('bg'),ctx=canvas.getContext('2d');
+var W,H,parts=[];
+function initC(){
+  W=canvas.width=innerWidth;H=canvas.height=innerHeight;parts=[];
+  for(var i=0;i<70;i++) parts.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.3+.2,a:Math.random()*.25+.04,sp:Math.random()*.007+.002,off:Math.random()*Math.PI*2,vx:(Math.random()-.5)*.12,vy:(Math.random()-.5)*.08,blob:false});
+  for(var j=0;j<5;j++) parts.push({blob:true,x:Math.random()*W,y:Math.random()*H,rx:Math.random()*220+100,ry:Math.random()*160+70,a:Math.random()*.055+.015,sp:Math.random()*.002+.001,off:Math.random()*Math.PI*2,vx:(Math.random()-.5)*.07,vy:(Math.random()-.5)*.05});
+}
+var t=0;
+function frame(){
+  ctx.clearRect(0,0,W,H);t+=.003;
+  parts.forEach(function(p){
+    if(p.blob){
+      var a=p.a*(.5+.5*Math.sin(t*p.sp*60+p.off));
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<-p.rx)p.x=W+p.rx;if(p.x>W+p.rx)p.x=-p.rx;
+      if(p.y<-p.ry)p.y=H+p.ry;if(p.y>H+p.ry)p.y=-p.ry;
+      ctx.save();ctx.translate(p.x,p.y);
+      var g=ctx.createRadialGradient(0,0,0,0,0,p.rx);
+      g.addColorStop(0,'rgba(245,195,60,'+a+')');g.addColorStop(.5,'rgba(220,160,30,'+(a*.4)+')');g.addColorStop(1,'rgba(255,240,180,0)');
+      ctx.beginPath();ctx.ellipse(0,0,p.rx,p.ry,0,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();ctx.restore();
+    } else {
+      var a2=p.a*(.4+.6*Math.sin(t*p.sp*60+p.off));
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle='rgba(200,150,20,'+a2+')';ctx.fill();
+    }
+  });
+  requestAnimationFrame(frame);
+}
+initC();frame();addEventListener('resize',initC);
+
+// ── HELPER TYPEWRITER ──
+function typeText(el, lines, highlights, onDone){
+  var fullText='';
+  lines.forEach(function(l){fullText+=l===''?'\n':l+'\n';});
+
+  function applyHL(html){
+    highlights.forEach(function(p){html=html.split(p).join('<em>'+p+'</em>');});
+    return html;
+  }
+
+  var charIndex=0,displayText='',done=false;
+  el.style.cursor='pointer';
+  el.onclick=function(){
+    if(!done){
+      done=true;
+      displayText=fullText;
+      el.innerHTML=applyHL(displayText.replace(/\n/g,'<br>'));
+      el.onclick=null;el.style.cursor='default';
+      if(onDone) onDone();
+    }
+  };
+
+  function next(){
+    if(done)return;
+    if(charIndex<fullText.length){
+      var ch=fullText[charIndex];
+      displayText+=ch;charIndex++;
+      el.innerHTML=applyHL(displayText.replace(/\n/g,'<br>'))+'<span class="cursor"></span>';
+      window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'});
+      var delay=ch==='\n'?320:ch==='.'||ch==='!'||ch==='?'?110:ch===','?80:30;
+      setTimeout(next,delay);
+    } else {
+      done=true;
+      el.innerHTML=el.innerHTML.replace('<span class="cursor"></span>','');
+      el.onclick=null;el.style.cursor='default';
+      if(onDone) setTimeout(onDone,700);
+    }
+  }
+  setTimeout(next,600);
+}
+
+// ── TEXTO PRINCIPAL ──
+var LINES1=[
+  'Llegaste al último día.',
+  '',
+  'Veinticuatro días después,',
+  'quiero que sepas algo sin adornos.',
+  'Solo la verdad, tal cual.',
+  '',
+  'No hay nadie más.',
+  'No es una frase bonita para un calendario.',
+  'Es lo que es.',
+  '',
+  'Eres tú la que me da nervios bonitos.',
+  'Eres tú la que hace que descubra',
+  'los secretos del universo cuando hablamos.',
+  'Eres tú la que me enseñó',
+  'que el amor no tiene por qué doler.',
+  '',
+  'Me devolviste algo que creía perdido.',
+  'Las ganas de querer, de crear, de esperar.',
+  'El color. La vida.',
+  '',
+  'Elegiste quedarte cuando podías no haberlo hecho.',
+  'Aprendiste a convivir con tu propio cerebro',
+  'con una valentía que no todo el mundo tiene.',
+  'Cada batalla que libraste importa.',
+  'Cada día que elegiste seguir importa.',
+  '',
+  'La respuesta siempre fuiste tú, Ame.',
+  'Cuando me pregunté qué quería.',
+  'Cuando me pregunté quién me hacía bien.',
+  'Cuando me pregunté por qué de repente',
+  'todo tenía más sentido.',
+  'La respuesta eras tú.',
+  'Siempre eras tú.',
+  '',
+  '¿Me dejas quererte?',
+];
+var HL1=['No hay nadie más.','La respuesta siempre fuiste tú, Ame.','La respuesta eras tú.','Siempre eras tú.','¿Me dejas quererte?','que el amor no tiene por qué doler.'];
+
+// ── TEXTO FINAL ──
+var LINES2=[
+  'Entonces desde aquí, desde lejos,',
+  'con todo lo que soy',
+  'y todo lo que todavía me falta aprender,',
+  'te digo que sí.',
+  '',
+  'Que voy a quererte bonito.',
+  'Paso a pasito, como tú quieras.',
+  'Sin etiquetas, sin presiones.',
+  'Solo presente. Solo real.',
+  '',
+  'Elegiste quedarte cuando podías no haberlo hecho.',
+  'Aprendiste a convivir con tu propio cerebro',
+  'con una valentía que no todo el mundo tiene.',
+  'Cada batalla que libraste importa.',
+  'Cada día que elegiste seguir importa.',
+  '',
+  'Y aquí hay alguien que quiere existir contigo.',
+  'No a pesar de todo lo que eres.',
+  'Exactamente por todo lo que eres.',
+  '',
+  'Eres tú, preciosa.',
+  'Sin duda. Sin miedo. Sin condición.',
+];
+var HL2=['te digo que sí.','Exactamente por todo lo que eres.','Eres tú, preciosa.','Sin duda. Sin miedo. Sin condición.'];
+
+// Iniciar
+typeText(document.getElementById('msg'), LINES1, HL1, function(){
+  document.getElementById('qWrap').classList.add('show');
+});
+
+// Botón
+document.getElementById('yesBtn').addEventListener('click',function(e){
+  spawnSparks(e.clientX,e.clientY);
+  spawnSparks(window.innerWidth/2,window.innerHeight*.4);
+  setTimeout(function(){
+    var f=document.getElementById('final');
+    f.classList.add('show');
+    var fm=document.getElementById('finalMsg');
+    typeText(fm, LINES2, HL2, function(){
+      document.getElementById('finalBottom').classList.add('show');
+    });
+  },700);
+});
+
+// ── PARTÍCULAS ──
+function spawnSparks(cx,cy){
+  var symbols=['✦','◆','✿','·','°','✧'];
+  for(var i=0;i<18;i++){
+    var el=document.createElement('div');el.className='spark';
+    var angle=(i/18)*Math.PI*2,d1=30+Math.random()*60,d2=90+Math.random()*120;
+    el.textContent=symbols[Math.floor(Math.random()*symbols.length)];
+    el.style.cssText='left:'+cx+'px;top:'+cy+'px;color:#c8920b;--hs:'+(0.6+Math.random()*.8)+'rem;--hd:'+(1.5+Math.random()*2).toFixed(1)+'s;--hx1:'+(Math.cos(angle)*d1).toFixed(0)+'px;--hy1:'+(Math.sin(angle)*d1-25).toFixed(0)+'px;--hx2:'+(Math.cos(angle)*d2).toFixed(0)+'px;--hy2:'+(Math.sin(angle)*d2-100).toFixed(0)+'px;--hr:'+(Math.random()*20-10).toFixed(0)+'deg;--hr2:'+(Math.random()*20-10).toFixed(0)+'deg;';
+    document.body.appendChild(el);
+    setTimeout(function(){el.remove();},3500);
+  }
+}
+</script>
+</body>
+</html>
