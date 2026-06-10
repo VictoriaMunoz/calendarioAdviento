@@ -4,37 +4,57 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>🌬 Día 10 · Un respiro · Ame</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Cinzel:wght@400&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Cinzel:wght@400&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden}
 body{background:#06050e;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:'Cormorant Garamond',serif;position:relative}
 #bgCanvas{position:fixed;inset:0;z-index:0;pointer-events:none}
-.aurora{position:fixed;border-radius:50%;filter:blur(100px);pointer-events:none;z-index:0;animation:auroraMove var(--ad,18s) ease-in-out infinite alternate;opacity:0;transition:opacity 2s ease}
+
+/* auroras */
+.aurora{position:fixed;border-radius:50%;filter:blur(110px);pointer-events:none;z-index:0;animation:auroraMove var(--ad,18s) ease-in-out infinite alternate;opacity:0;transition:opacity 3s ease}
 .aurora.visible{opacity:var(--ao,.07)}
-@keyframes auroraMove{0%{transform:translate(0,0) scale(1)}100%{transform:translate(var(--ax,30px),var(--ay,-20px)) scale(1.1)}}
+@keyframes auroraMove{0%{transform:translate(0,0) scale(1)}100%{transform:translate(var(--ax,30px),var(--ay,-20px)) scale(1.15)}}
+
+/* floating words */
+.float-word{position:fixed;pointer-events:none;z-index:3;font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(200,185,255,1);white-space:nowrap;will-change:transform,opacity;opacity:0}
+@keyframes wordFloat{
+  0%{opacity:0;transform:translateY(0px)}
+  15%{opacity:var(--wo,.22)}
+  75%{opacity:var(--wo,.22)}
+  100%{opacity:0;transform:translateY(var(--wy,-55px))}
+}
+
+/* scene */
 .scene{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:0}
 .back-btn{position:fixed;top:1rem;left:1rem;z-index:10;display:inline-flex;align-items:center;gap:.4rem;background:rgba(6,4,22,.8);color:rgba(168,159,216,.5);font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:1.5px;text-transform:uppercase;padding:.4rem 1rem;border-radius:999px;border:1px solid rgba(168,159,216,.15);backdrop-filter:blur(10px);text-decoration:none;transition:color .2s,border-color .2s}
 .back-btn:hover{color:#f4a8c0;border-color:rgba(244,168,192,.3)}
-#state-start{display:flex;flex-direction:column;align-items:center;gap:2rem;animation:fadeUp .9s ease both}
-.day-label{font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:4px;text-transform:uppercase;color:rgba(168,159,216,.35)}
+
+/* state start */
+#state-start{display:flex;flex-direction:column;align-items:center;gap:2.4rem;animation:fadeUp .9s ease both}
+.day-label{font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:4px;text-transform:uppercase;color:rgba(168,159,216,.3)}
+.intro-whisper{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;color:rgba(200,185,255,.28);letter-spacing:1px;text-align:center;line-height:2;max-width:280px;animation:fadeUp 1.4s ease both}
 .main-btn{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:1.4rem;padding:2rem;transition:transform .3s ease}
 .main-btn:hover{transform:scale(1.03)}
-.btn-orb{width:130px;height:130px;position:relative;display:flex;align-items:center;justify-content:center}
+.btn-orb{width:140px;height:140px;position:relative;display:flex;align-items:center;justify-content:center}
 .orb-ring{position:absolute;border-radius:50%;border:1px solid rgba(168,159,216,var(--oa,.15));animation:orbPulse var(--od,3s) ease-in-out infinite;animation-delay:var(--dl,0s)}
 @keyframes orbPulse{0%,100%{transform:scale(1);opacity:var(--oa,.15)}50%{transform:scale(1.08);opacity:calc(var(--oa,.15)*1.8)}}
-.orb-core{width:80px;height:80px;border-radius:50%;background:radial-gradient(circle at 38% 35%,rgba(200,185,255,.15),rgba(100,80,180,.05));border:1px solid rgba(168,159,216,.3);display:flex;align-items:center;justify-content:center;box-shadow:0 0 30px rgba(140,120,220,.08),inset 0 0 20px rgba(140,120,220,.05);animation:coreGlow 4s ease-in-out infinite alternate}
-@keyframes coreGlow{0%{box-shadow:0 0 20px rgba(140,120,220,.06),inset 0 0 15px rgba(140,120,220,.04)}100%{box-shadow:0 0 50px rgba(180,160,255,.14),inset 0 0 30px rgba(180,160,255,.08)}}
-.orb-icon{font-size:1.8rem;filter:drop-shadow(0 0 8px rgba(200,180,255,.3))}
-.btn-label{font-family:'Cinzel',serif;font-size:.75rem;letter-spacing:3px;text-transform:uppercase;color:rgba(200,190,255,.35)}
+.orb-core{width:84px;height:84px;border-radius:50%;background:radial-gradient(circle at 38% 35%,rgba(200,185,255,.15),rgba(100,80,180,.05));border:1px solid rgba(168,159,216,.3);display:flex;align-items:center;justify-content:center;box-shadow:0 0 30px rgba(140,120,220,.08),inset 0 0 20px rgba(140,120,220,.05);animation:coreGlow 4s ease-in-out infinite alternate}
+@keyframes coreGlow{0%{box-shadow:0 0 20px rgba(140,120,220,.06),inset 0 0 15px rgba(140,120,220,.04)}100%{box-shadow:0 0 60px rgba(180,160,255,.16),inset 0 0 30px rgba(180,160,255,.10)}}
+.orb-icon{font-size:1.9rem;filter:drop-shadow(0 0 10px rgba(200,180,255,.35))}
+.btn-label{font-family:'Cinzel',serif;font-size:.75rem;letter-spacing:3px;text-transform:uppercase;color:rgba(200,190,255,.3)}
+
+/* state breathe */
 #state-breathe{display:none;flex-direction:column;align-items:center;gap:2.2rem}
 #state-breathe.active{display:flex;animation:fadeUp .8s ease both}
-.breathe-orb{width:200px;height:200px;position:relative;display:flex;align-items:center;justify-content:center}
+.breathe-orb{width:210px;height:210px;position:relative;display:flex;align-items:center;justify-content:center}
 .b-ring{position:absolute;border-radius:50%;border:1px solid rgba(168,159,216,var(--bra,.12));transition:transform var(--bt,4s) ease-in-out,opacity var(--bt,4s) ease-in-out}
-.b-core{width:90px;height:90px;border-radius:50%;background:radial-gradient(circle at 38% 35%,rgba(200,185,255,.2),rgba(80,60,160,.08));border:1px solid rgba(168,159,216,.35);box-shadow:0 0 0 rgba(168,159,216,0);transition:transform var(--bt,4s) ease-in-out,box-shadow var(--bt,4s) ease-in-out;display:flex;align-items:center;justify-content:center}
+.b-core{width:92px;height:92px;border-radius:50%;background:radial-gradient(circle at 38% 35%,rgba(200,185,255,.2),rgba(80,60,160,.08));border:1px solid rgba(168,159,216,.35);box-shadow:0 0 0 rgba(168,159,216,0);transition:transform var(--bt,4s) ease-in-out,box-shadow var(--bt,4s) ease-in-out;display:flex;align-items:center;justify-content:center}
 .b-phrase{font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:rgba(200,190,255,.55);letter-spacing:2px;font-style:italic;text-align:center;min-height:1.6rem}
 .b-count{font-family:'Cinzel',serif;font-size:2.2rem;color:rgba(168,159,216,.3);min-height:3rem;letter-spacing:2px}
 .b-cycle{font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:rgba(168,159,216,.2)}
+
+/* state msg */
 #state-msg{display:none;flex-direction:column;align-items:center;gap:1.6rem;text-align:center;max-width:340px;padding:1rem 2rem}
 #state-msg.active{display:flex;animation:fadeUp 1.2s ease both}
 .msg-line{width:60px;height:1px;background:rgba(244,168,192,.2);margin:0 auto}
@@ -43,26 +63,29 @@ body{background:#06050e;display:flex;flex-direction:column;align-items:center;ju
 .msg-sig{font-family:'Cinzel',serif;font-size:.66rem;letter-spacing:3px;text-transform:uppercase;color:rgba(168,159,216,.28)}
 .msg-again{background:none;border:none;cursor:pointer;font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:2px;text-transform:uppercase;color:rgba(168,159,216,.2);margin-top:.3rem;transition:color .3s}
 .msg-again:hover{color:rgba(244,168,192,.45)}
-@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 </style>
 </head>
 <body>
 
 <a class="back-btn" href="index.html">← volver</a>
 
-<div class="aurora" style="width:500px;height:350px;top:-5%;left:-15%;background:#5b25a0;--ao:.08;--ad:20s;--ax:40px;--ay:20px"></div>
-<div class="aurora" style="width:400px;height:300px;bottom:0%;right:-10%;background:#1a2a8a;--ao:.07;--ad:16s;--ax:-30px;--ay:-25px"></div>
-<div class="aurora" style="width:300px;height:250px;top:40%;left:20%;background:#8a1560;--ao:.05;--ad:24s;--ax:20px;--ay:30px"></div>
+<div class="aurora" style="width:600px;height:420px;top:-8%;left:-18%;background:#5b25a0;--ao:.09;--ad:22s;--ax:50px;--ay:25px"></div>
+<div class="aurora" style="width:450px;height:350px;bottom:-5%;right:-12%;background:#1a2a8a;--ao:.08;--ad:17s;--ax:-35px;--ay:-30px"></div>
+<div class="aurora" style="width:340px;height:280px;top:35%;left:15%;background:#8a1560;--ao:.06;--ad:26s;--ax:25px;--ay:35px"></div>
+<div class="aurora" style="width:280px;height:200px;top:60%;right:5%;background:#2a4a9a;--ao:.05;--ad:19s;--ax:-20px;--ay:20px"></div>
 <canvas id="bgCanvas"></canvas>
 
 <div class="scene">
   <div id="state-start">
     <div class="day-label">día 10</div>
+    <p class="intro-whisper">para un momento, preciosa.<br>solo un momento.</p>
     <button class="main-btn" id="startBtn">
       <div class="btn-orb">
-        <div class="orb-ring" style="inset:-30px;--oa:.06;--od:3.5s;--dl:0s"></div>
-        <div class="orb-ring" style="inset:-18px;--oa:.1;--od:3s;--dl:.4s"></div>
-        <div class="orb-ring" style="inset:-8px;--oa:.15;--od:2.5s;--dl:.8s"></div>
+        <div class="orb-ring" style="inset:-36px;--oa:.05;--od:4s;--dl:0s"></div>
+        <div class="orb-ring" style="inset:-22px;--oa:.09;--od:3.2s;--dl:.5s"></div>
+        <div class="orb-ring" style="inset:-10px;--oa:.14;--od:2.6s;--dl:1s"></div>
         <div class="orb-core"><span class="orb-icon">🫧</span></div>
       </div>
       <span class="btn-label">necesito un respiro</span>
@@ -71,9 +94,9 @@ body{background:#06050e;display:flex;flex-direction:column;align-items:center;ju
 
   <div id="state-breathe">
     <div class="breathe-orb" id="breatheOrb">
-      <div class="b-ring" id="br3" style="inset:-40px;--bra:.05;--bt:4s"></div>
-      <div class="b-ring" id="br2" style="inset:-22px;--bra:.09;--bt:4s"></div>
-      <div class="b-ring" id="br1" style="inset:-8px;--bra:.14;--bt:4s"></div>
+      <div class="b-ring" id="br3" style="inset:-44px;--bra:.05;--bt:4s"></div>
+      <div class="b-ring" id="br2" style="inset:-24px;--bra:.09;--bt:4s"></div>
+      <div class="b-ring" id="br1" style="inset:-9px;--bra:.14;--bt:4s"></div>
       <div class="b-core" id="bCore"></div>
     </div>
     <div class="b-phrase" id="bPhrase">prepárate</div>
@@ -84,44 +107,237 @@ body{background:#06050e;display:flex;flex-direction:column;align-items:center;ju
   <div id="state-msg">
     <div class="msg-line"></div>
     <p class="msg-text">
-      Sé que hay días en que el peso del mundo se siente tuyo.<br>
-      Que el trabajo aprieta y la mente no para.<br><br>
-      Pero mira — acabas de darte un momento.<br>
-      Solo para ti. Y eso importa.<br><br>
-      Estoy muy orgullosa de ti,<br>
-      de todo lo que cargas y de todo lo que igual sigues dando.<br>
-      <em>Eres más de lo que crees, preciosa.</em>
+      Acabas de regalarle a tu cuerpo algo que necesitaba.<br>
+      Ese aire. Esa pausa. Ese momento solo tuyo.<br><br>
+      Sé que el mundo afuera sigue rápido y pesado.<br>
+      Pero tú acababas de encontrar el centro.<br>
+      Y siempre puedes volver a él.<br><br>
+      <em>Estoy muy orgullosa de ti, preciosa.</em><br><br>
+      Cada vez que respires así — recuerda que te quiero,<br>
+      que no estás sola, y que eres exactamente suficiente.
     </p>
     <div class="msg-line"></div>
-    <div class="msg-sig">con todo mi cariño · día 10</div>
-    <button class="msg-again" id="againBtn">respirar de nuevo</button>
+    <div class="msg-sig">tuya, siempre · con todo lo que soy</div>
+    <button class="msg-again" id="againBtn">✦ respirar de nuevo ✦</button>
   </div>
 </div>
 
 <script>
+/* ── canvas ── */
 const canvas=document.getElementById('bgCanvas');
 const ctx=canvas.getContext('2d');
 let W,H;
 const stars=[];
-const floaters=[];
+const floatParticles=[];
+const nebulae=[];
+
 function initCanvas(){
-  W=canvas.width=innerWidth;H=canvas.height=innerHeight;
-  stars.length=0;
-  for(let i=0;i<260;i++){stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*.9+.1,a:Math.random()*.5+.1,sp:Math.random()*.015+.003,off:Math.random()*Math.PI*2})}
+  W=canvas.width=innerWidth;
+  H=canvas.height=innerHeight;
+  stars.length=0;nebulae.length=0;
+  for(let i=0;i<320;i++){
+    stars.push({
+      x:Math.random()*W,y:Math.random()*H,
+      r:Math.random()*1.1+.1,
+      a:Math.random()*.6+.1,
+      sp:Math.random()*.012+.002,
+      off:Math.random()*Math.PI*2,
+      color:Math.random()<.15?[200,180,255]:Math.random()<.1?[255,200,220]:[255,255,255]
+    });
+  }
+  // soft nebula blobs on canvas
+  for(let i=0;i<6;i++){
+    nebulae.push({
+      x:Math.random()*W,y:Math.random()*H,
+      r:Math.random()*180+80,
+      hue:Math.random()<.5?260+Math.random()*30:200+Math.random()*40,
+      a:Math.random()*.025+.008,
+      sp:Math.random()*.003+.001,
+      off:Math.random()*Math.PI*2
+    });
+  }
 }
-function spawnFloaters(cx,cy){
-  for(let i=0;i<12;i++){floaters.push({x:cx+(Math.random()*60-30),y:cy+(Math.random()*20),vx:(Math.random()-.5)*1.2,vy:-(Math.random()*1.5+.5),r:Math.random()*2.5+.5,a:.7,life:1})}
+
+const shootingStars=[];
+function maybeShoot(){
+  if(Math.random()<.003&&shootingStars.length<2){
+    const sx=Math.random()*W*.7;
+    const sy=Math.random()*H*.4;
+    shootingStars.push({x:sx,y:sy,len:Math.random()*80+40,vx:Math.random()*4+3,vy:Math.random()*2+1,a:1});
+  }
 }
+
+const driftParticles=[];
+function spawnDrift(){
+  if(Math.random()<.04&&driftParticles.length<40){
+    driftParticles.push({
+      x:Math.random()*W,y:H+5,
+      vx:(Math.random()-.5)*.4,vy:-(Math.random()*.6+.2),
+      r:Math.random()*1.4+.3,
+      a:.5+Math.random()*.3,
+      life:1
+    });
+  }
+}
+
 let tick=0;
 function drawCanvas(){
-  ctx.clearRect(0,0,W,H);tick+=.008;
-  stars.forEach(s=>{const a=s.a*(.6+.4*Math.sin(tick*s.sp*60+s.off));ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${a})`;ctx.fill()});
-  for(let i=floaters.length-1;i>=0;i--){const f=floaters[i];f.x+=f.vx;f.y+=f.vy;f.a-=.012;if(f.a<=0){floaters.splice(i,1);continue}ctx.beginPath();ctx.arc(f.x,f.y,f.r,0,Math.PI*2);ctx.fillStyle=`rgba(200,185,255,${f.a})`;ctx.fill()}
+  ctx.clearRect(0,0,W,H);
+  tick+=.006;
+
+  // nebulae
+  nebulae.forEach(n=>{
+    const pulse=Math.sin(tick*n.sp*10+n.off);
+    const ra=n.a*(1+pulse*.3);
+    const grad=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,n.r*(1+pulse*.1));
+    grad.addColorStop(0,`hsla(${n.hue},60%,60%,${ra})`);
+    grad.addColorStop(1,`hsla(${n.hue},60%,60%,0)`);
+    ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
+    ctx.fillStyle=grad;ctx.fill();
+  });
+
+  // stars
+  stars.forEach(s=>{
+    const a=s.a*(.55+.45*Math.sin(tick*s.sp*60+s.off));
+    ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(${s.color[0]},${s.color[1]},${s.color[2]},${a})`;
+    ctx.fill();
+  });
+
+  // shooting stars
+  maybeShoot();
+  for(let i=shootingStars.length-1;i>=0;i--){
+    const ss=shootingStars[i];
+    const grad=ctx.createLinearGradient(ss.x,ss.y,ss.x-ss.len,ss.y-ss.len*.4);
+    grad.addColorStop(0,`rgba(220,210,255,${ss.a*.9})`);
+    grad.addColorStop(1,`rgba(220,210,255,0)`);
+    ctx.beginPath();ctx.moveTo(ss.x,ss.y);ctx.lineTo(ss.x-ss.len,ss.y-ss.len*.4);
+    ctx.strokeStyle=grad;ctx.lineWidth=1.5;ctx.stroke();
+    ss.x+=ss.vx;ss.y+=ss.vy;ss.a-=.018;
+    if(ss.a<=0)shootingStars.splice(i,1);
+  }
+
+  // drift particles
+  spawnDrift();
+  for(let i=driftParticles.length-1;i>=0;i--){
+    const p=driftParticles[i];
+    p.x+=p.vx;p.y+=p.vy;p.life-=.003;
+    if(p.y<-10||p.life<=0){driftParticles.splice(i,1);continue;}
+    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(200,185,255,${p.a*p.life})`;ctx.fill();
+  }
+
+  // breath particles
+  for(let i=floatParticles.length-1;i>=0;i--){
+    const f=floatParticles[i];
+    f.x+=f.vx;f.y+=f.vy;f.a-=.01;
+    if(f.a<=0){floatParticles.splice(i,1);continue;}
+    ctx.beginPath();ctx.arc(f.x,f.y,f.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(200,185,255,${f.a})`;ctx.fill();
+  }
+
   requestAnimationFrame(drawCanvas);
 }
-initCanvas();drawCanvas();addEventListener('resize',initCanvas);
+initCanvas();drawCanvas();
+addEventListener('resize',initCanvas);
 setTimeout(()=>document.querySelectorAll('.aurora').forEach(a=>a.classList.add('visible')),100);
 
+function spawnBreath(cx,cy){
+  for(let i=0;i<18;i++){
+    floatParticles.push({
+      x:cx+(Math.random()*80-40),y:cy+(Math.random()*30),
+      vx:(Math.random()-.5)*1.4,vy:-(Math.random()*2+.6),
+      r:Math.random()*3+.5,a:.75,life:1
+    });
+  }
+}
+
+/* ── floating words ── */
+const wordPoolIdle=[
+  'respira','suelta','aquí','contigo','tranquila','descansa','lo lograste',
+  'eres luz','presente','todo pasa','gentil','silencio',
+  'te quiero','estoy aquí','poco a poco','tú puedes',
+  'eres suficiente','pausa','suave','calma','hoy sí','te veo',
+  'eres fuerte','amor','te amo','mi amor','te adoro','te cuido',
+  'estoy contigo','te abrazo','tuya','siempre','te pienso','con amor',
+  'mi preciosa','corazón','eres mía','te quiero tanto','eres todo','luz mía',
+  'no estás sola','te elijo','cada día','te sostengo','eres hermosa',
+  'gracias por ser','eres especial','te celebro','mi favorita'
+];
+const wordPoolBreathe=[
+  'inhala','suave','lento','adentro','llénate','profundo',
+  'exhala','suelta','despacio','libera','fluye',
+  'quieta','pausa','presente','calma','aquí',
+  'amor','te quiero','te amo','contigo','mi amor','te abrazo',
+  'estás bien','solo respira','te tengo','sin prisa','eres paz'
+];
+
+let wordInterval=null;
+let breatheMode=false;
+let lastIdleIdx=-1, lastBreatheIdx=-1;
+let idleShuffled=[], breatheShuffled=[];
+
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+function nextWord(pool, isIdle){
+  let deck = isIdle ? idleShuffled : breatheShuffled;
+  let idx  = isIdle ? lastIdleIdx  : lastBreatheIdx;
+  if(deck.length===0 || idx>=deck.length-1){
+    deck = shuffle(pool);
+    idx  = -1;
+    if(isIdle) idleShuffled=deck; else breatheShuffled=deck;
+  }
+  idx++;
+  if(isIdle) lastIdleIdx=idx; else lastBreatheIdx=idx;
+  return deck[idx];
+}
+
+function spawnWord(){
+  const isIdle=!breatheMode;
+  const pool=breatheMode?wordPoolBreathe:wordPoolIdle;
+  const text=nextWord(pool, isIdle);
+  const el=document.createElement('div');
+  el.className='float-word';
+  el.textContent=text;
+
+  const fs=Math.random()<.3?(Math.random()*.4+.7):(Math.random()*.25+.55);
+  const wo=breatheMode?+(Math.random()*.2+.25).toFixed(3):+(Math.random()*.25+.35).toFixed(3);
+  const dur=Math.random()*4+6;
+  const dy=-(Math.random()*60+40)|0;
+
+  const side=Math.random()<.5?'left':'right';
+  let x;
+  if(side==='left') x=Math.random()*(W*.28)+W*.01;
+  else x=Math.random()*(W*.28)+W*.71;
+  const y=Math.random()*(H*.7)+H*.1;
+
+  const kfName='wf'+Math.random().toString(36).slice(2,8);
+  const st=document.createElement('style');
+  st.textContent=`@keyframes ${kfName}{0%{opacity:0;transform:translateY(0)}15%{opacity:${wo}}75%{opacity:${wo}}100%{opacity:0;transform:translateY(${dy}px)}}`;
+  document.head.appendChild(st);
+
+  el.style.cssText=`left:${x}px;top:${y}px;font-size:${fs}rem;animation:${kfName} ${dur}s ease forwards;`;
+  document.body.appendChild(el);
+  setTimeout(()=>{el.remove();st.remove();},dur*1000+200);
+}
+
+function startWords(isBreathe){
+  breatheMode=!!isBreathe;
+  clearInterval(wordInterval);
+  spawnWord(); spawnWord();
+  wordInterval=setInterval(spawnWord, breatheMode?1600:900);
+}
+function stopWords(){
+  clearInterval(wordInterval);wordInterval=null;
+  document.querySelectorAll('.float-word').forEach(w=>{w.style.opacity='0';setTimeout(()=>w.remove(),1200)});
+}
+
+startWords(false);
+
+/* ── states ── */
 const s1=document.getElementById('state-start');
 const s2=document.getElementById('state-breathe');
 const s3=document.getElementById('state-msg');
@@ -137,41 +353,80 @@ const breatheOrb=document.getElementById('breatheOrb');
 function show(el){el.style.display='flex';setTimeout(()=>el.classList.add('active'),20)}
 function hide(el){el.classList.remove('active');setTimeout(()=>el.style.display='none',600)}
 
-document.getElementById('startBtn').addEventListener('click',()=>{hide(s1);setTimeout(()=>{show(s2);runCycles(0)},500)});
-document.getElementById('againBtn').addEventListener('click',()=>{hide(s3);setTimeout(()=>{show(s2);runCycles(0)},500)});
+document.getElementById('startBtn').addEventListener('click',()=>{
+  clearInterval(wordInterval); wordInterval=null;
+  hide(s1);
+  setTimeout(()=>{show(s2);startWords(true);runCycles(0)},500);
+});
+document.getElementById('againBtn').addEventListener('click',()=>{
+  hide(s3);
+  setTimeout(()=>{show(s2);startWords(true);runCycles(0)},500);
+});
 
+/* ── breath engine ── */
 const CYCLES=4,INHALE=4,HOLD=4,EXHALE=6;
 let timer=null;
 
-function setExpand(expand,dur){
+// phase colors: inhale=soft violet, hold=still pale gold, exhale=rose mist
+const phaseColors={
+  grow:  {core:'rgba(180,165,255,.22)', glow:'0 0 80px rgba(160,140,255,.32),inset 0 0 40px rgba(160,140,255,.16)', rings:['rgba(170,155,255,.3)','rgba(160,145,255,.2)','rgba(150,135,255,.14)']},
+  hold:  {core:'rgba(220,205,170,.12)', glow:'0 0 50px rgba(200,185,140,.18),inset 0 0 25px rgba(200,185,140,.09)', rings:['rgba(210,195,160,.22)','rgba(200,185,150,.15)','rgba(190,175,140,.1)']},
+  shrink:{core:'rgba(244,168,192,.14)', glow:'0 0 60px rgba(244,168,192,.22),inset 0 0 30px rgba(244,168,192,.1)',  rings:['rgba(244,168,192,.25)','rgba(240,160,185,.17)','rgba(235,150,175,.11)']}
+};
+
+function setExpand(phase, dur){
+  const expand = phase==='grow';
+  const col = phaseColors[phase]||phaseColors.shrink;
   const d=dur+'s';
-  const scale=expand?1.6:1;
-  const glow=expand?'0 0 60px rgba(168,159,216,.25),inset 0 0 30px rgba(168,159,216,.12)':'0 0 10px rgba(168,159,216,.06),inset 0 0 10px rgba(168,159,216,.03)';
-  [br1,br2,br3].forEach(r=>{r.style.transition=`transform ${d} ease-in-out,opacity ${d} ease-in-out`});
-  bCore.style.transition=`transform ${d} ease-in-out,box-shadow ${d} ease-in-out`;
+  const scale=expand?1.65:phase==='hold'?1.55:1;
+
+  [br1,br2,br3].forEach((r,i)=>{
+    r.style.transition=`transform ${d} ease-in-out,opacity ${d} ease-in-out,border-color ${d} ease-in-out`;
+    r.style.borderColor=col.rings[i];
+  });
+  bCore.style.transition=`transform ${d} ease-in-out,box-shadow ${d} ease-in-out,background ${d} ease-in-out`;
   bCore.style.transform=`scale(${scale})`;
-  bCore.style.boxShadow=glow;
-  br1.style.transform=`scale(${expand?1.4:1})`;br2.style.transform=`scale(${expand?1.3:1})`;br3.style.transform=`scale(${expand?1.2:1})`;
-  br1.style.opacity=expand?.25:.14;br2.style.opacity=expand?.18:.09;br3.style.opacity=expand?.12:.05;
+  bCore.style.boxShadow=col.glow;
+  bCore.style.background=`radial-gradient(circle at 38% 35%,${col.core},rgba(80,60,160,.06))`;
+  br1.style.transform=`scale(${expand?1.45:phase==='hold'?1.4:1})`;
+  br2.style.transform=`scale(${expand?1.32:phase==='hold'?1.28:1})`;
+  br3.style.transform=`scale(${expand?1.18:phase==='hold'?1.14:1})`;
+  br1.style.opacity=expand?.3:phase==='hold'?.24:.16;
+  br2.style.opacity=expand?.21:phase==='hold'?.17:.1;
+  br3.style.opacity=expand?.14:phase==='hold'?.11:.06;
 }
 
-function doPhase(label,secs,cb,expand){
+function doPhase(label,secs,cb,phase){
   bPhrase.textContent=label;
-  if(expand==='grow')setExpand(true,secs);
-  else if(expand==='shrink')setExpand(false,secs);
-  let rem=secs;bCount.textContent=rem;
+  if(phase==='grow'||phase==='hold'||phase==='shrink') setExpand(phase,secs);
+  let rem=secs; bCount.textContent=rem;
   clearInterval(timer);
   timer=setInterval(()=>{
-    rem--;bCount.textContent=rem>0?rem:'';
-    if(expand==='shrink'&&rem===3){const rect=breatheOrb.getBoundingClientRect();spawnFloaters(rect.left+rect.width/2,rect.top+rect.height/2)}
-    if(rem<=0){clearInterval(timer);cb()}
+    rem--; bCount.textContent=rem>0?rem:'';
+    if(phase==='shrink'&&rem===2){
+      const rect=breatheOrb.getBoundingClientRect();
+      spawnBreath(rect.left+rect.width/2,rect.top+rect.height/2);
+    }
+    if(rem<=0){clearInterval(timer);cb();}
   },1000);
 }
 
 function runCycles(c){
-  if(c>=CYCLES){bPhrase.textContent='muy bien';bCount.textContent='';setTimeout(()=>{hide(s2);setTimeout(()=>show(s3),700)},1200);return}
+  if(c>=CYCLES){
+    bPhrase.textContent='muy bien ✦';bCount.textContent='';
+    setTimeout(()=>{
+      stopWords();
+      hide(s2);
+      setTimeout(()=>{show(s3); startWords(false);},700);
+    },1400);
+    return;
+  }
   bCycle.textContent=`ciclo ${c+1} de ${CYCLES}`;
-  doPhase('inhala',INHALE,()=>{doPhase('sostén',HOLD,()=>{doPhase('exhala',EXHALE,()=>runCycles(c+1),'shrink')},'hold')},'grow');
+  doPhase('inhala',INHALE,()=>{
+    doPhase('sostén',HOLD,()=>{
+      doPhase('exhala',EXHALE,()=>runCycles(c+1),'shrink');
+    },'hold');
+  },'grow');
 }
 </script>
 </body>
