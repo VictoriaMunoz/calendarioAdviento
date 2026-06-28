@@ -8,72 +8,154 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow-x:hidden;overflow-y:auto}
-body{background:#fdf8ee;font-family:'Cormorant Garamond',serif;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;position:relative}
+body{
+  background:#fdf8ee;
+  font-family:'Cormorant Garamond',serif;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:100vh;position:relative;
+  transition:background 2.5s ease;
+}
+body.warm{background:#fbeae8;}
 canvas#bg{position:fixed;inset:0;z-index:0;pointer-events:none}
 
 .back-btn{position:fixed;top:.9rem;left:.9rem;z-index:10;background:rgba(255,248,220,.7);color:rgba(140,90,10,.5);font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:1.5px;text-transform:uppercase;padding:.38rem 1rem;border-radius:999px;border:1px solid rgba(200,140,20,.2);text-decoration:none;backdrop-filter:blur(10px);transition:all .2s}
 .back-btn:hover{color:rgba(140,90,10,.9);border-color:rgba(200,140,20,.5);background:rgba(255,248,220,.95)}
 
 /* ── PANTALLA PRINCIPAL ── */
-#main{position:relative;z-index:2;max-width:500px;width:90%;text-align:center;padding:6rem 0 4rem;}
+#main{position:relative;z-index:2;max-width:520px;width:90%;text-align:center;padding:6rem 0 4rem;}
 
-.day-label{font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:4px;text-transform:uppercase;color:rgba(160,100,10,.3);margin-bottom:2.5rem;opacity:0;animation:fadeUp .8s .3s ease forwards;}
+.day-label{font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:4px;text-transform:uppercase;color:rgba(150,92,8,.75);margin-bottom:2.5rem;opacity:0;animation:fadeUp .8s .3s ease forwards;}
 
-.msg{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,2.5vw,1.22rem);color:rgba(60,30,5,.8);line-height:2.2;font-style:italic;text-align:center;min-height:4rem;}
+.msg{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,2.6vw,1.28rem);color:rgba(60,30,5,.82);line-height:2.25;font-style:italic;text-align:center;min-height:4rem;}
 .msg em{font-style:normal;color:#b8720a;font-family:'Cinzel',serif;font-size:.9em;letter-spacing:.5px;}
 .cursor{display:inline-block;width:2px;height:1.1em;background:#c8920b;margin-left:2px;vertical-align:middle;animation:blink .8s ease-in-out infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 
+.skip-hint{margin-top:1.5rem;font-family:'Cinzel',serif;font-size:.56rem;letter-spacing:2px;text-transform:uppercase;color:rgba(150,92,8,.45);opacity:0;animation:fadeUp .8s 1.6s ease forwards;}
+
 .question-wrap{margin-top:2.5rem;opacity:0;transform:translateY(12px);transition:opacity .8s ease,transform .8s ease}
 .question-wrap.show{opacity:1;transform:translateY(0)}
-.question{font-family:'Cinzel',serif;font-size:.75rem;letter-spacing:2px;color:rgba(140,80,10,.45);text-transform:uppercase;margin-bottom:1.25rem}
-.yes-btn{background:linear-gradient(135deg,#f5c842,#e8a020);border:none;color:#fff;font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:2.5px;text-transform:uppercase;padding:.65rem 2.4rem;border-radius:999px;cursor:pointer;transition:all .3s cubic-bezier(.34,1.56,.64,1);box-shadow:0 4px 20px rgba(200,140,20,.3);}
+.question-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(1.05rem,2.8vw,1.3rem);color:rgba(60,30,5,.85);margin-bottom:1.6rem;line-height:1.8;}
+.btn-row{display:flex;flex-wrap:wrap;justify-content:center;gap:.9rem;}
+.yes-btn{background:linear-gradient(135deg,#f5c842,#e8a020);border:none;color:#fff;font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:2.5px;text-transform:uppercase;padding:.7rem 2.6rem;border-radius:999px;cursor:pointer;transition:all .3s cubic-bezier(.34,1.56,.64,1);box-shadow:0 4px 20px rgba(200,140,20,.3);}
 .yes-btn:hover{transform:scale(1.07);box-shadow:0 6px 28px rgba(200,140,20,.5);}
+.yes-btn:active{transform:scale(.97);}
+.wait-btn{background:none;border:1px solid rgba(160,100,10,.3);color:rgba(120,75,8,.6);font-family:'Cinzel',serif;font-size:.66rem;letter-spacing:2px;text-transform:uppercase;padding:.66rem 1.8rem;border-radius:999px;cursor:pointer;transition:all .25s;}
+.wait-btn:hover{border-color:rgba(160,100,10,.55);color:rgba(120,75,8,.9);background:rgba(245,200,80,.08);}
+
+/* ── PANTALLA "TODAVÍA NO" ── */
+#waitScreen{position:fixed;inset:0;z-index:7;display:flex;align-items:center;justify-content:center;background:#fdf8ee;opacity:0;pointer-events:none;transition:opacity .8s ease;padding:4rem 2rem;overflow-y:auto;}
+#waitScreen.show{opacity:1;pointer-events:all;}
+.wait-msg{max-width:440px;text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;line-height:2.1;color:rgba(60,30,5,.82);}
+.wait-back-btn{margin-top:2rem;background:none;border:1px solid rgba(160,100,10,.3);color:rgba(120,75,8,.6);font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:2px;text-transform:uppercase;padding:.55rem 1.6rem;border-radius:999px;cursor:pointer;transition:all .25s;}
+.wait-back-btn:hover{border-color:rgba(160,100,10,.55);color:rgba(120,75,8,.9);}
+
+/* ── PAUSA ANTES DEL FINAL ── */
+#breath{position:fixed;inset:0;z-index:6;display:flex;align-items:center;justify-content:center;background:#fdf8ee;opacity:0;pointer-events:none;transition:opacity .9s ease;}
+#breath.show{opacity:1;pointer-events:all;}
+.breath-dot{width:10px;height:10px;border-radius:50%;background:#d4798a;animation:breathPulse 2.2s ease-in-out infinite;}
+@keyframes breathPulse{0%,100%{transform:scale(.8);opacity:.4;}50%{transform:scale(1.4);opacity:.9;}}
 
 /* ── PANTALLA FINAL ── */
-#final{position:fixed;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;overflow-y:auto;padding:5rem 2rem 4rem;text-align:center;background:#fdf8ee;opacity:0;pointer-events:none;transition:opacity 1.2s ease;}
+#final{position:fixed;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;overflow-y:auto;padding:5rem 2rem 4rem;text-align:center;background:#fbeae8;opacity:0;pointer-events:none;transition:opacity 1.4s ease;}
 #final.show{opacity:1;pointer-events:all;}
 
-.final-msg{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,2.5vw,1.22rem);color:rgba(60,30,5,.8);line-height:2.2;font-style:italic;max-width:460px;text-align:center;width:100%;}
-.final-msg em{font-style:normal;color:#b8720a;font-family:'Cinzel',serif;font-size:.9em;letter-spacing:.5px;}
+.final-msg{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,2.6vw,1.28rem);color:rgba(45,15,20,.88);line-height:2.25;font-style:italic;max-width:480px;text-align:center;width:100%;}
+.final-msg em{font-style:normal;color:#a8364a;font-family:'Cinzel',serif;font-size:.9em;letter-spacing:.5px;}
 
-.final-bottom{margin-top:3rem;opacity:0;transition:opacity 1s ease;display:flex;flex-direction:column;align-items:center;gap:.75rem;padding-bottom:2rem;}
+/* ── CONSTELACIÓN DE 24 DÍAS (cierre del círculo) ── */
+.days-circle{margin-top:3.2rem;opacity:0;transition:opacity 1.2s ease;display:flex;flex-direction:column;align-items:center;gap:1rem;}
+.days-circle.show{opacity:1;}
+.days-circle-label{font-family:'Cinzel',serif;font-size:.56rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(150,42,62,.8);}
+.days-svg{width:220px;height:220px;}
+.day-dot{fill:#d99aa3;opacity:.55;transition:opacity .25s, fill .25s;}
+.day-dot.lit{fill:#a8364a;opacity:1;}
+.day-dot.last{fill:#922e42;}
+.day-dot.last.lit{animation:lastGlow 1.8s ease-in-out infinite;}
+@keyframes lastGlow{0%,100%{opacity:1;}50%{opacity:.55;}}
+.days-circle-center{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.78rem;color:rgba(45,15,20,.7);}
+
+.final-bottom{margin-top:2.5rem;opacity:0;transition:opacity 1s ease;display:flex;flex-direction:column;align-items:center;gap:.85rem;padding-bottom:2rem;}
 .final-bottom.show{opacity:1;}
-.final-sig{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:3px;text-transform:uppercase;color:rgba(160,100,10,.28);}
-.final-back{display:inline-block;background:none;border:1px solid rgba(200,140,20,.25);color:rgba(140,80,10,.4);font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;padding:.42rem 1.3rem;border-radius:999px;text-decoration:none;transition:color .2s,border-color .2s;}
-.final-back:hover{color:rgba(140,80,10,.9);border-color:rgba(200,140,20,.5)}
+.final-sig{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:3px;text-transform:uppercase;color:rgba(150,42,62,.75);}
+.final-date{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.78rem;color:rgba(45,15,20,.65);}
+.final-back{display:inline-block;background:none;border:1px solid rgba(168,54,74,.32);color:rgba(120,38,52,.6);font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;padding:.42rem 1.3rem;border-radius:999px;text-decoration:none;transition:color .2s,border-color .2s;margin-top:.4rem;}
+.final-back:hover{color:rgba(120,38,52,.95);border-color:rgba(168,54,74,.6)}
 
 /* Partículas */
 .spark{position:fixed;pointer-events:none;z-index:100;font-size:var(--hs,1rem);opacity:1;animation:sparkFloat var(--hd,3s) ease forwards}
 @keyframes sparkFloat{0%{transform:translate(0,0) scale(0) rotate(var(--hr,-10deg));opacity:0}20%{opacity:1;transform:translate(var(--hx1,0px),var(--hy1,-30px)) scale(1) rotate(var(--hr,-10deg))}100%{transform:translate(var(--hx2,20px),var(--hy2,-150px)) scale(.4) rotate(var(--hr2,10deg));opacity:0}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+
+@media (max-width:480px){
+  #main{padding:5rem 0 3rem;}
+  .msg,.final-msg{font-size:1rem;line-height:2.05;}
+  .days-svg{width:180px;height:180px;}
+}
 </style>
 </head>
-<body>
+<body id="bodyEl">
 <canvas id="bg"></canvas>
 <a class="back-btn" href="index.html">← volver al calendario</a>
 
 <div id="main">
   <p class="day-label">día 24 · el último · el más importante</p>
   <div class="msg" id="msg"><span class="cursor"></span></div>
+  <p class="skip-hint" id="skipHint">toca el texto para leerlo de una vez</p>
   <div class="question-wrap" id="qWrap">
-    <div class="question">una sola pregunta</div>
-    <button class="yes-btn" id="yesBtn">sí, déjame</button>
+    <p class="question-text">¿me dejas quererte, así, sin prisa y sin condiciones?</p>
+    <div class="btn-row">
+      <button class="yes-btn" id="yesBtn">sí, quiero</button>
+      <button class="wait-btn" id="waitBtn">necesito un momento</button>
+    </div>
   </div>
+</div>
+
+<div id="waitScreen">
+  <div class="wait-msg">
+    <div id="waitText"><span class="cursor"></span></div>
+    <button class="wait-back-btn" id="waitBackBtn" style="display:none;">volver a la pregunta</button>
+  </div>
+</div>
+
+<div id="breath">
+  <div class="breath-dot"></div>
 </div>
 
 <div id="final">
   <div class="final-msg" id="finalMsg"><span class="cursor"></span></div>
+
+  <div class="days-circle" id="daysCircle">
+    <p class="days-circle-label">24 días · 24 razones · un solo corazón</p>
+    <svg class="days-svg" id="daysSvg" viewBox="0 0 220 220"></svg>
+    <p class="days-circle-center">cada punto fue un día contigo en la mente</p>
+  </div>
+
   <div class="final-bottom" id="finalBottom">
     <div class="final-sig">día 24 · fin del calendario · inicio de lo que sigue</div>
-    <a class="final-back" href="index.html">← volver al calendario</a>
+    <div class="final-date" id="finalDate"></div>
   </div>
 </div>
 
 <script>
-// ── FONDO DORADO ──
+// ── FONDO ANIMADO (dorado → rosado) ──
 var canvas=document.getElementById('bg'),ctx=canvas.getContext('2d');
 var W,H,parts=[];
+var palette={blob1:[235,172,30],blob2:[195,135,15],dot:[170,120,10]};
+var targetPalette={blob1:[235,172,30],blob2:[195,135,15],dot:[170,120,10]};
+var goldPalette={blob1:[235,172,30],blob2:[195,135,15],dot:[170,120,10]};
+var rosePalette={blob1:[222,118,132],blob2:[182,78,98],dot:[156,58,78]};
+
+function lerpPalette(){
+  var k=0.02,changed=false;
+  ['blob1','blob2','dot'].forEach(function(key){
+    for(var i=0;i<3;i++){
+      var diff=targetPalette[key][i]-palette[key][i];
+      if(Math.abs(diff)>0.5){palette[key][i]+=diff*k;changed=true;}
+    }
+  });
+}
+
 function initC(){
   W=canvas.width=innerWidth;H=canvas.height=innerHeight;parts=[];
   for(var i=0;i<70;i++) parts.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.3+.2,a:Math.random()*.25+.04,sp:Math.random()*.007+.002,off:Math.random()*Math.PI*2,vx:(Math.random()-.5)*.12,vy:(Math.random()-.5)*.08,blob:false});
@@ -82,6 +164,7 @@ function initC(){
 var t=0;
 function frame(){
   ctx.clearRect(0,0,W,H);t+=.003;
+  lerpPalette();
   parts.forEach(function(p){
     if(p.blob){
       var a=p.a*(.5+.5*Math.sin(t*p.sp*60+p.off));
@@ -89,19 +172,32 @@ function frame(){
       if(p.x<-p.rx)p.x=W+p.rx;if(p.x>W+p.rx)p.x=-p.rx;
       if(p.y<-p.ry)p.y=H+p.ry;if(p.y>H+p.ry)p.y=-p.ry;
       ctx.save();ctx.translate(p.x,p.y);
+      var b1=palette.blob1,b2=palette.blob2;
       var g=ctx.createRadialGradient(0,0,0,0,0,p.rx);
-      g.addColorStop(0,'rgba(245,195,60,'+a+')');g.addColorStop(.5,'rgba(220,160,30,'+(a*.4)+')');g.addColorStop(1,'rgba(255,240,180,0)');
+      g.addColorStop(0,'rgba('+b1[0]+','+b1[1]+','+b1[2]+','+a+')');
+      g.addColorStop(.5,'rgba('+b2[0]+','+b2[1]+','+b2[2]+','+(a*.4)+')');
+      g.addColorStop(1,'rgba(255,240,180,0)');
       ctx.beginPath();ctx.ellipse(0,0,p.rx,p.ry,0,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();ctx.restore();
     } else {
       var a2=p.a*(.4+.6*Math.sin(t*p.sp*60+p.off));
       p.x+=p.vx;p.y+=p.vy;
       if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;
-      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle='rgba(200,150,20,'+a2+')';ctx.fill();
+      var d=palette.dot;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle='rgba('+d[0]+','+d[1]+','+d[2]+','+a2+')';ctx.fill();
     }
   });
   requestAnimationFrame(frame);
 }
 initC();frame();addEventListener('resize',initC);
+
+function shiftToWarm(){
+  targetPalette={
+    blob1:rosePalette.blob1.slice(),
+    blob2:rosePalette.blob2.slice(),
+    dot:rosePalette.dot.slice()
+  };
+  document.getElementById('bodyEl').classList.add('warm');
+}
 
 // ── HELPER TYPEWRITER ──
 function typeText(el, lines, highlights, onDone){
@@ -121,6 +217,8 @@ function typeText(el, lines, highlights, onDone){
       displayText=fullText;
       el.innerHTML=applyHL(displayText.replace(/\n/g,'<br>'));
       el.onclick=null;el.style.cursor='default';
+      var sh=document.getElementById('skipHint');
+      if(sh) sh.style.opacity='0';
       if(onDone) onDone();
     }
   };
@@ -131,46 +229,79 @@ function typeText(el, lines, highlights, onDone){
       var ch=fullText[charIndex];
       displayText+=ch;charIndex++;
       el.innerHTML=applyHL(displayText.replace(/\n/g,'<br>'))+'<span class="cursor"></span>';
-      window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'});
+      var scrollHost = el.closest('#waitScreen') || el.closest('#final') || document.body;
+      if(scrollHost===document.body){
+        window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'});
+      } else {
+        scrollHost.scrollTo({top:scrollHost.scrollHeight,behavior:'smooth'});
+      }
       var delay=ch==='\n'?320:ch==='.'||ch==='!'||ch==='?'?110:ch===','?80:30;
       setTimeout(next,delay);
     } else {
       done=true;
       el.innerHTML=el.innerHTML.replace('<span class="cursor"></span>','');
       el.onclick=null;el.style.cursor='default';
+      var sh2=document.getElementById('skipHint');
+      if(sh2) sh2.style.opacity='0';
       if(onDone) setTimeout(onDone,700);
     }
   }
   setTimeout(next,600);
 }
 
-// ── TEXTO PRINCIPAL ──
+// ── TEXTO PRINCIPAL (más largo, sin reclamos, todo gratitud y ternura) ──
 var LINES1=[
   'Llegaste al último día.',
   '',
   'Veinticuatro días después,',
   'quiero que sepas algo sin adornos.',
-  'Solo la verdad, tal cual.',
+  'Solo la verdad, tal cual es.',
   '',
   'No hay nadie más.',
-  'No es una frase bonita para un calendario.',
-  'Es lo que es.',
+  'No es una frase bonita para cerrar un calendario.',
+  'Es, sencillamente, lo que es.',
   '',
-  'Eres tú la que me da nervios bonitos.',
+  'Eres tú la que me da nervios bonitos',
+  'incluso después de tanto tiempo,',
+  'como si cada conversación fuera',
+  'la primera vez otra vez.',
+  '',
   'Eres tú la que hace que descubra',
-  'los secretos del universo cuando hablamos.',
+  'los secretos del universo cuando hablamos,',
+  'aunque sea de algo tan simple',
+  'como qué vamos a comer,',
+  'o de algo tan tuyo',
+  'como lo que pasa por tu cabeza a las tres de la mañana.',
+  '',
   'Eres tú la que me enseñó',
-  'que el amor no tiene por qué doler.',
+  'que el amor no tiene por qué doler,',
+  'que se puede querer despacio,',
+  'sin urgencia, sin miedo,',
+  'y que eso también es para siempre.',
   '',
   'Me devolviste algo que creía perdido.',
   'Las ganas de querer, de crear, de esperar.',
   'El color. La vida.',
+  'Cosas que pensé que ya no me iban a volver a pasar,',
+  'y que llegaron contigo sin que las pidiera,',
+  'sin avisar, como llegan las cosas buenas de verdad.',
   '',
-  'Elegiste quedarte cuando podías no haberlo hecho.',
-  'Aprendiste a convivir con tu propio cerebro',
-  'con una valentía que no todo el mundo tiene.',
-  'Cada batalla que libraste importa.',
-  'Cada día que elegiste seguir importa.',
+  'Admiro algo en ti que no sé si tú misma ves:',
+  'la forma en que sigues eligiendo levantarte',
+  'incluso en los días en que tu cabeza',
+  'te pone las cosas más difíciles.',
+  'No es algo pequeño.',
+  'Es de las cosas más valientes que he visto de cerca,',
+  'y quería que lo supieras dicho con todas sus letras.',
+  '',
+  'Gracias por dejarme entrar',
+  'a las partes de ti que cuesta mostrar.',
+  'Gracias por seguir aquí,',
+  'incluso en los días difíciles.',
+  'Gracias, simplemente, por existir',
+  'en este mismo momento que yo existo,',
+  'al mismo tiempo, en el mismo mundo,',
+  'pudiendo hablar contigo.',
   '',
   'La respuesta siempre fuiste tú, Ame.',
   'Cuando me pregunté qué quería.',
@@ -179,60 +310,175 @@ var LINES1=[
   'todo tenía más sentido.',
   'La respuesta eras tú.',
   'Siempre eras tú.',
-  '',
-  '¿Me dejas quererte?',
 ];
-var HL1=['No hay nadie más.','La respuesta siempre fuiste tú, Ame.','La respuesta eras tú.','Siempre eras tú.','¿Me dejas quererte?','que el amor no tiene por qué doler.'];
+var HL1=['No hay nadie más.','que el amor no tiene por qué doler,','La respuesta siempre fuiste tú, Ame.','La respuesta eras tú.','Siempre eras tú.'];
 
-// ── TEXTO FINAL ──
+// ── TEXTO FINAL (más largo, promesa simbólica, cero reclamo) ──
 var LINES2=[
-  'Entonces desde aquí, desde lejos,',
+  'Entonces desde aquí, desde donde estoy,',
   'con todo lo que soy',
   'y todo lo que todavía me falta aprender,',
   'te digo que sí.',
   '',
   'Que voy a quererte bonito.',
   'Paso a pasito, como tú quieras.',
-  'Sin etiquetas, sin presiones.',
+  'Sin etiquetas, sin presiones,',
+  'sin más plan que el de seguir aquí.',
   'Solo presente. Solo real.',
   '',
-  'Elegiste quedarte cuando podías no haberlo hecho.',
-  'Aprendiste a convivir con tu propio cerebro',
-  'con una valentía que no todo el mundo tiene.',
-  'Cada batalla que libraste importa.',
-  'Cada día que elegiste seguir importa.',
+  'No te prometo un mapa con fechas',
+  'ni un futuro perfectamente armado.',
+  'Te prometo algo más simple y más mío:',
+  'que mientras tenga colores nuevos que mostrarte,',
+  'te los voy a seguir mostrando.',
+  'Que cada canción que me recuerde a ti',
+  'va a seguir llegando a tu teléfono sin avisar,',
+  'porque compartirte música siempre fue',
+  'una de mis formas favoritas de decirte "pensé en ti".',
+  'Que el tiempo que tengas, poco o mucho,',
+  'va a encontrar siempre un lugar mío reservado para ti.',
+  '',
+  'Sé que tu cabeza no siempre te lo pone fácil,',
+  'y no te estoy pidiendo que sea fácil.',
+  'Te estoy diciendo que ahí también quiero estar,',
+  'no de visita, no por ratos buenos solamente,',
+  'sino quedándome cuando el día sea de los difíciles también,',
+  'porque eso también es quererte de verdad.',
+  '',
+  'Quiero seguir descubriendo tus canciones favoritas',
+  'y que tú descubras las mías.',
+  'Quiero que cada playlist que armemos',
+  'sea un pedazo más de nuestra historia,',
+  'una que se pueda escuchar, no solo recordar.',
   '',
   'Y aquí hay alguien que quiere existir contigo.',
   'No a pesar de todo lo que eres.',
   'Exactamente por todo lo que eres.',
   '',
+  'Quiero seguir aprendiendo de ti todos los días que vengan.',
+  'Quiero que sigamos construyendo algo',
+  'que no se parezca a nada de lo que vivimos antes,',
+  'porque esto, contigo, nunca se ha sentido como nada conocido.',
+  '',
+  'Veinticuatro días te lo dije de veinticuatro formas distintas.',
+  'Esta es la última, y la más simple de todas:',
+  '',
   'Eres tú, preciosa.',
   'Sin duda. Sin miedo. Sin condición.',
+  'Hoy, y todos los días que sigan después de hoy.',
 ];
 var HL2=['te digo que sí.','Exactamente por todo lo que eres.','Eres tú, preciosa.','Sin duda. Sin miedo. Sin condición.'];
 
+// ── CONSTELACIÓN DE 24 DÍAS ──
+function buildDaysCircle(){
+  var svg=document.getElementById('daysSvg');
+  var cx=110,cy=110,r=88;
+  var ns='http://www.w3.org/2000/svg';
+  for(var i=0;i<24;i++){
+    var angle=(i/24)*Math.PI*2 - Math.PI/2;
+    var x=cx+Math.cos(angle)*r;
+    var y=cy+Math.sin(angle)*r;
+    var c=document.createElementNS(ns,'circle');
+    c.setAttribute('cx',x.toFixed(1));
+    c.setAttribute('cy',y.toFixed(1));
+    c.setAttribute('r', i===23 ? 6 : 4);
+    c.setAttribute('class','day-dot'+(i===23?' last':''));
+    svg.appendChild(c);
+  }
+}
+function litDaysCircle(){
+  var dots=document.querySelectorAll('.day-dot');
+  dots.forEach(function(d,i){
+    setTimeout(function(){d.classList.add('lit');}, i*55);
+  });
+}
+
 // Iniciar
+buildDaysCircle();
 typeText(document.getElementById('msg'), LINES1, HL1, function(){
   document.getElementById('qWrap').classList.add('show');
 });
 
-// Botón
+// ── TEXTO DE "NECESITO UN MOMENTO" (progresivo) ──
+var LINES3=[
+  'Está bien. De verdad está bien.',
+  '',
+  'Esto no es una prueba ni una condición,',
+  'y mucho menos algo que tengas que responder',
+  'para que lo demás siga existiendo.',
+  '',
+  'Lo que sentiste en estos 24 días es real,',
+  'y eso no cambia con un sí o con un todavía no.',
+  '',
+  'Si necesitas tiempo, tómalo.',
+  'Si necesitas silencio, tómalo también.',
+  'No estoy esperando una respuesta perfecta,',
+  'estoy aquí, contigo, sin cronómetro.',
+  '',
+  'Quiero que sepas que te quiero',
+  'incluso en este momento de duda,',
+  'incluso si hoy no tienes palabras,',
+  'incluso si lo que sientes es difícil de nombrar.',
+  '',
+  'No necesitas cargar esto sola.',
+  'Y no necesitas decirme nada todavía.',
+  '',
+  'Esto va a seguir aquí, abierto,',
+  'sin fecha de vencimiento,',
+  'para cuando tu corazón esté listo,',
+  'sea hoy, sea en un mes, sea cuando sea.',
+  '',
+  'Mientras tanto, solo quiero que sepas algo:',
+  'estás bien así, tal como estás ahora.',
+  'Y yo sigo aquí, queriéndote igual.',
+];
+var waitTyped=false;
+
+// Botón "necesito un momento"
+document.getElementById('waitBtn').addEventListener('click',function(){
+  document.getElementById('waitScreen').classList.add('show');
+  if(!waitTyped){
+    waitTyped=true;
+    typeText(document.getElementById('waitText'), LINES3, [], function(){
+      document.getElementById('waitBackBtn').style.display='inline-block';
+    });
+  }
+});
+document.getElementById('waitBackBtn').addEventListener('click',function(){
+  document.getElementById('waitScreen').classList.remove('show');
+});
+
+// Botón "sí, quiero"
 document.getElementById('yesBtn').addEventListener('click',function(e){
   spawnSparks(e.clientX,e.clientY);
   spawnSparks(window.innerWidth/2,window.innerHeight*.4);
+  shiftToWarm();
+
+  var breath=document.getElementById('breath');
+  breath.classList.add('show');
+
   setTimeout(function(){
+    breath.classList.remove('show');
     var f=document.getElementById('final');
     f.classList.add('show');
     var fm=document.getElementById('finalMsg');
     typeText(fm, LINES2, HL2, function(){
-      document.getElementById('finalBottom').classList.add('show');
+      document.getElementById('daysCircle').classList.add('show');
+      litDaysCircle();
+      setTimeout(function(){
+        document.getElementById('finalBottom').classList.add('show');
+        var fd=document.getElementById('finalDate');
+        var hoy=new Date();
+        var opciones={day:'numeric',month:'long',year:'numeric'};
+        fd.textContent='visto por primera vez el ' + hoy.toLocaleDateString('es-CO',opciones);
+      }, 1400);
     });
-  },700);
+  },1800);
 });
 
 // ── PARTÍCULAS ──
 function spawnSparks(cx,cy){
-  var symbols=['✦','◆','✿','·','°','✧'];
+  var symbols=['✦','◆','✿','·','°','✧','♥'];
   for(var i=0;i<18;i++){
     var el=document.createElement('div');el.className='spark';
     var angle=(i/18)*Math.PI*2,d1=30+Math.random()*60,d2=90+Math.random()*120;
