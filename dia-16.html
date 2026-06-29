@@ -175,22 +175,22 @@ addEventListener('resize', initCanvas);
 
 var QS = [
   {
-    id: 'morning', q: 'Como empieza tu manana',
+    id: 'morning', q: '¿Cómo empieza tu mañana?',
     opts: [
-      {l: 'cafe tranquila y despacito', v: 'cafe'},
+      {l: 'café, tranquila y despacito', v: 'cafe'},
       {l: 'dormida hasta tardecito', v: 'dormir'},
       {l: 'mi perrita me despierta', v: 'perrita'},
       {l: 'lluvia de fondo y cobija', v: 'lluvia'}
     ],
     rx: {
-      cafe: 'Me encanta. Un cafe contigo suena perfecto.',
+      cafe: 'Me encanta. Un café contigo suena perfecto.',
       dormir: 'El descanso tambien es sagrado.',
       perrita: 'Ella sabe que eres su persona favorita.',
-      lluvia: 'Hay algo muy tuyo en ese tipo de mananas.'
+      lluvia: 'Hay algo muy tuyo en ese tipo de mañanas.'
     }
   },
   {
-    id: 'vibe', q: 'Que clima tiene ese dia',
+    id: 'vibe', q: '¿Qué clima tiene ese día?',
     opts: [
       {l: 'soleado y calientito', v: 'sol'},
       {l: 'nublado y fresco', v: 'nublado'},
@@ -200,12 +200,12 @@ var QS = [
     rx: {
       sol: 'El sol te queda bien.',
       nublado: 'Esos dias tienen magia.',
-      lluvia: 'La lluvia y tu se llevan bien.',
-      frio: 'Frio y cobija, perfecto.'
+      lluvia: 'La lluvia y tú se llevan bien.',
+      frio: 'Frío y cobija, perfecto.'
     }
   },
   {
-    id: 'activity', q: 'Que haces ese dia',
+    id: 'activity', q: '¿Qué haces ese día?',
     opts: [
       {l: 'ir a mis talleres', v: 'talleres'},
       {l: 'series y no hacer nada', v: 'series'},
@@ -213,14 +213,14 @@ var QS = [
       {l: 'leer y descansar', v: 'leer'}
     ],
     rx: {
-      talleres: 'Ahi es donde mas brillas.',
+      talleres: 'Ahí es donde mas brillas.',
       series: 'A veces no hacer nada es lo mas necesario.',
       caminar: 'Me imagino que vas con audifonos y todo.',
       leer: 'Leer es un lujo que mereces mas seguido.'
     }
   },
   {
-    id: 'company', q: 'Con quien estas',
+    id: 'company', q: '¿Con quién estás?',
     opts: [
       {l: 'solo con mi perrita', v: 'perrita'},
       {l: 'con mi familia', v: 'familia'},
@@ -228,14 +228,14 @@ var QS = [
       {l: 'con alguien especial', v: 'especial'}
     ],
     rx: {
-      perrita: 'La mejor companera del mundo.',
+      perrita: 'La mejor compañera del mundo.',
       familia: 'Ese calorcito de casa no tiene precio.',
       sola: 'A veces una lo necesita y esta bien.',
-      especial: 'Me alegra que tengas a alguien asi.'
+      especial: 'Me alegra que tengas a alguien así.'
     }
   },
   {
-    id: 'food', q: 'Que comes ese dia',
+    id: 'food', q: '¿Qué comes ese día?',
     opts: [
       {l: 'comida mexicana rica', v: 'mexicana'},
       {l: 'cafe y algo dulce', v: 'cafe'},
@@ -244,23 +244,23 @@ var QS = [
     ],
     rx: {
       mexicana: 'Ahora se me antojo tambien.',
-      cafe: 'Cafe y algo dulce es un plan perfecto.',
+      cafe: 'Café y algo dulce es un plan perfecto.',
       casero: 'Lo casero siempre abraza diferente.',
-      libre: 'La mejor eleccion posible.'
+      libre: 'La mejor elección posible.'
     }
   },
   {
-    id: 'night', q: 'Como termina tu noche',
+    id: 'night', q: '¿Cómo termina tu noche?',
     opts: [
-      {l: 'un bano largo y rico', v: 'bano'},
+      {l: 'un baño largo y rico', v: 'bano'},
       {l: 'dormida tempranito', v: 'dormir'},
       {l: 'musica y calma total', v: 'musica'},
       {l: 'hablando con alguien', v: 'hablar'}
     ],
     rx: {
-      bano: 'Mereces ese bano mas seguido.',
+      bano: 'Mereces ese baño mas seguido.',
       dormir: 'El descanso es tuyo, completamente.',
-      musica: 'Musica y silencio y tu. Perfecto.',
+      musica: 'Música y silencio y tu. Perfecto.',
       hablar: 'Ojala esa persona te haga reir.'
     }
   }
@@ -316,39 +316,39 @@ sw.addEventListener('click', function(e) {
 function show() {
   var m = answers.morning, v = answers.vibe, a = answers.activity, c = answers.company, f = answers.food, n = answers.night;
   var MT = {
-    cafe: 'Me imagino que tu dia empieza despacito, con las manos alrededor de algo caliente, sin prisa, sin alarmas que griten.',
-    dormir: 'Me imagino que tu dia empieza con el lujo de no tener que levantarte. Abrazada a tu cobija, en tu cama con los cuadritos de fondo, con esa sensacion de que el tiempo es completamente tuyo.',
-    perrita: 'Me imagino que tu dia empieza con ella encima tuyo, moviendose y diciendote que ya es hora. No hay mejor despertador en el mundo.',
-    lluvia: 'Me imagino que tu dia empieza escuchando la lluvia de fondo, calentita entre tu cobija, sin querer salir de la cama todavia.'
+    cafe: 'Me imagino que tu día empieza despacito, con las manos alrededor de algo caliente, sin prisa, sin alarmas que griten.',
+    dormir: 'Me imagino que tu día empieza con el lujo de no tener que levantarte. Abrazada a tu cobija, en tu cama con los cuadritos de fondo, con esa sensación de que el tiempo es completamente tuyo.',
+    perrita: 'Me imagino que tu día empieza con ella encima tuyo, moviendose y diciendote que ya es hora. No hay mejor despertador en el mundo.',
+    lluvia: 'Me imagino que tu día empieza escuchando la lluvia de fondo, calentita entre tus cobijitas, sin querer salir de la cama todavia.'
   };
   var VT = {
-    sol: 'El sol entra por tu ventana y todo se siente mas liviano, mas posible.',
+    sol: 'El sol entra por tu ventana y todo se siente más liviano, más posible.',
     nublado: 'El cielo esta nublado y fresco, ese tipo de dia que invita a quedarse dentro y estar contigo misma.',
-    lluvia: 'Afuera llueve suavecito, ese sonido de fondo que hace que todo lo de adentro se sienta mas calido.',
-    frio: 'Hace frio pero del bueno, del que te da excusa para estar envuelta en algo suave todo el dia.'
+    lluvia: 'Afuera llueve suavecito, ese sonido de fondo que hace que todo lo de adentro se sienta más calido.',
+    frio: 'Hace frío pero del bueno, del que te da excusa para estar envuelta en algo suave todo el dia.'
   };
   var AT = {
-    talleres: 'En algun momento del dia te vas a tus talleres, haciendo lo que amas, en ese espacio que es completamente tuyo.',
+    talleres: 'En algún momento del día te vas a tus talleres, haciendo lo que amas, en ese espacio que es completamente tuyo.',
     series: 'No tienes que hacer nada. Absolutamente nada. Series, cobija, y el mundo puede esperar.',
     caminar: 'Sales a caminar sin destino fijo, dejando que el aire te despeje y la naturaleza te recuerde que existen cosas bellas.',
     leer: 'Agarras ese libro pendiente y lees sin culpa, sin reloj, sin tener que rendirle cuentas a nadie.'
   };
   var CT = {
-    perrita: 'Tu perrita esta ahi, siendo la mejor compania del mundo sin decir una sola palabra.',
+    perrita: 'Tu perrita esta ahí, siendo la mejor compania del mundo sin decir una sola palabra.',
     familia: 'Tu familia alrededor, ese ruido de fondo que en realidad es lo mas calido que existe.',
-    sola: 'Estas sola y se siente bien. A veces la mejor compania eres tu misma.',
-    especial: 'Hay alguien especial contigo, y eso hace que todo brille un poco mas.'
+    sola: 'Estas sola y se siente bien. A veces la mejor compañia eres tú misma.',
+    especial: 'Hay alguien especial contigo, y eso hace que todo brille un poco más.'
   };
   var FT = {
     mexicana: 'Comes algo rico, mexicano, de esos sabores que te abrazan por dentro y saben a casa.',
     cafe: 'Cafe y algo dulce. Simple. Perfecto. Sin mas.',
     casero: 'Algo casero y caliente, de esos platos que saben a descanso y a hogar.',
-    libre: 'Comes lo que se te antoja, sin calcularlo, sin culpa. Porque ese dia es completamente tuyo.'
+    libre: 'Comes lo que se te antoja, sin calcularlo, sin culpa. Porque ese día es completamente tuyo.'
   };
   var NT = {
-    bano: 'La noche la cierras con un bano largo, de esos que hacen que todo lo del dia se vaya.',
-    dormir: 'Te duermes tempranito, bien cobijada, con esa satisfaccion silenciosa de un dia que valio la pena.',
-    musica: 'Pones musica, apagas las luces, y te quedas en ese silencio calido que es completamente tuyo.',
+    bano: 'La noche la cierras con un baño largo, de esos que hacen que todo lo del día se vaya.',
+    dormir: 'Te duermes tempranito, bien cobijada, con esa satisfacción silenciosa de un dia que valio la pena.',
+    musica: 'Pones música, apagas las luces, y te quedas en ese silencio cálido que es completamente tuyo.',
     hablar: 'La noche la cierras hablando con alguien, de las cosas importantes o de las que no lo son.'
   };
   rt.innerHTML = '<p>' + MT[m] + '</p><p>' + VT[v] + ' ' + AT[a] + '</p><p>' + CT[c] + ' ' + FT[f] + '</p><p>' + NT[n] + '</p><p class="closing">Ese dia existe, preciosa. Y te lo mereces mas de lo que crees.</p>';
