@@ -323,6 +323,44 @@ body::before {
   z-index: 2;
 }
 
+/* ============================================================
+   CAJITA ESPECIAL — DÍA 25: EL DÍA QUE SE CONOCEN EN PERSONA
+   Siempre visible, con brillo rosado tipo "corazón" y su propio
+   modal con cuenta regresiva en vivo.
+   ============================================================ */
+.box.meta {
+  background: linear-gradient(135deg, #ffe3ea, #fff0d6);
+  border-color: #ff8fab;
+  box-shadow: 0 0 0 1.5px #ff8fab, 0 8px 30px rgba(255,143,171,0.28);
+  animation: glowMeta 2.4s ease-in-out infinite alternate;
+}
+@keyframes glowMeta {
+  0%   { box-shadow: 0 0 0 1.5px #ff8fab, 0 8px 24px rgba(255,143,171,0.22); }
+  100% { box-shadow: 0 0 0 1.5px #ff5c8a, 0 8px 40px rgba(255,92,138,0.38); }
+}
+.box.meta .box-day  { color: #ff5c8a; }
+.box.meta .box-label { color: #ff5c8a; }
+.box.meta:hover .box-day,
+.box.meta:hover .box-label { color: #e8447a; }
+.box.meta .box-emoji { animation: heartbeat 1.6s ease-in-out infinite; }
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.25); }
+}
+.meta-badge {
+  position: absolute;
+  top: 0; right: 0;
+  background: #ff5c8a;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 4px 9px;
+  border-radius: 0 20px 0 12px;
+  z-index: 2;
+}
+
 /* Nota informativa debajo del grid */
 .note {
   text-align: center;
@@ -421,6 +459,7 @@ body::before {
   transition: all 0.2s;
 }
 .modal-btn:hover { background: transparent; color: #1D9E75; }
+
 
 </style>
 </head>
@@ -607,10 +646,30 @@ function boxDateLabel(day) {
 // GENERACIÓN DEL GRID
 // Crea cada cajita dinámicamente y la agrega al HTML.
 // Los enlaces apuntan a dia-1.html, dia-2.html, etc.
+// La cajita 25 es especial: siempre visible, abre la cuenta
+// regresiva en vez de un enlace a otra página.
 // ============================================================
 const grid = document.getElementById('grid');
 
-for (let d = 1; d <= 24; d++) {
+for (let d = 1; d <= 25; d++) {
+
+  // ── Cajita especial del día 25 ──
+  if (d === 25) {
+    const meta = document.createElement('a');
+    meta.className = 'box meta';
+    meta.href = 'dia-25.html'; // ← abre la página especial en pestaña nueva
+    meta.target = '_blank';
+    meta.rel = 'noopener';
+    meta.innerHTML = `
+      <div class="meta-badge">especial ✿</div>
+      <div class="box-day">25</div>
+      <div class="box-emoji">❤️</div>
+      <div class="box-label">nos vemos</div>
+    `;
+    grid.appendChild(meta);
+    continue;
+  }
+
   const unlocked = isUnlocked(d);
   const todayBox = isToday(d);
   const emoji    = EMOJIS[d - 1] || '🌿';
