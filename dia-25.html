@@ -265,9 +265,19 @@ body::before {
   font-style: italic;
   color: var(--plum);
   line-height: 1.8;
-  margin: 0 0 2.2rem;
+  margin: 0 0 0.5rem;
   animation: fadeIn 1s ease 0.35s both;
   min-height: 1.6em;
+}
+
+.quote-hint {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--plum-soft);
+  opacity: 0.75;
+  margin: 0 0 2.2rem;
+  animation: fadeIn 1s ease 0.4s both;
 }
 
 .divider {
@@ -439,6 +449,7 @@ body::before {
   <p class="date-line">23 de octubre — el día que llegas de México a Colombia</p>
 
   <p class="quote" id="quote"></p>
+  <p class="quote-hint">una frase distinta cada vez que entras aquí</p>
 
   <div class="divider"><span>✦</span></div>
 
@@ -467,7 +478,7 @@ body::before {
     pero esta es un <b>avión de verdad</b>, un país entero de por medio, y tú
     decidiendo cruzarlo solo para que por fin nos podamos ver.
     Eso no es poca cosa, y no pienso dejar que se sienta así.
-    <span class="letter-sign">— Te amo mucho, mi amor ♥ </span>
+    <span class="letter-sign">— con todo mi cariño, contando los días</span>
   </div>
 
   <p class="closing">No importa cuántas horas de vuelo sean:<br><b>al final de ese camino voy a estar yo, esperándote.</b></p>
@@ -489,7 +500,50 @@ const QUOTES = [
   "Ninguna distancia es suficiente cuando de verdad quieres llegar.",
   "Ya casi, preciosa. Ya casi.",
   "Todo ese vuelo va a valer la pena, te lo prometo.",
-  "Voy a estar contando cada hora de ese vuelo contigo, aunque estés en el aire."
+  "Voy a estar contando cada hora de ese vuelo contigo, aunque estés en el aire.",
+  "De todas las pantallas, esta es la que más quiero que se vuelva real.",
+  "Un país de por medio ya no va a ser excusa para nada.",
+  "Voy a reconocerte entre toda la gente de esa sala de espera.",
+  "Cada día que pasa es un día menos para tenerte cerca.",
+  "No hay huso horario que me quite las ganas de verte.",
+  "Ese abrazo lleva meses esperando pasar.",
+  "Vas a bajar de ese avión y ahí va a estar todo lo que hemos hablado, hecho persona.",
+  "Llevo contando los días como quien cuenta lo único que de verdad importa.",
+  "Se acaba la distancia y empieza lo demás.",
+  "Después de esto ya no vamos a tener que imaginarnos nada.",
+  "Voy a aprender tu risa de memoria, no solo de oído.",
+  "Este vuelo no es solo un viaje, es el principio de todo lo demás.",
+  "Cada mensaje que nos escribimos fue construyendo este momento.",
+  "Cuando aterrices, se acaba la espera y empieza lo que de verdad vinimos a vivir.",
+  "No sé si voy a llorar, reír o las dos cosas cuando te vea salir.",
+  "Falta menos de lo que parece cuando pienso en ti todos los días.",
+  "Todo lo que hemos construido de lejos por fin va a caber en un abrazo.",
+  "Voy a estar ahí, con los nervios y la felicidad al mismo tiempo.",
+  "Esto que sentimos ya se ganó el derecho de estar en el mismo lugar.",
+  "Un teclado nunca va a poder con lo que sí puede un abrazo.",
+  "Ya quiero que el mapa entre nosotros se reduzca a unos pasos.",
+  "Cada video llamada fue un ensayo de esto que ya casi llega.",
+  "Voy a memorizar cómo se siente tenerte cerca, no solo cómo se ve.",
+  "Todo lo que no cabe en un mensaje, por fin lo vamos a decir de cerca.",
+  "El tiempo que falta también cuenta como parte de esta historia.",
+  "No hay pantalla que aguante lo que se siente esperar esto.",
+  "Vas a bajar de ese avión y el mundo se va a sentir más pequeño, en el buen sentido.",
+  "Esta cuenta regresiva es, sin exagerar, la más bonita que he hecho.",
+  "Cada hora que pasa te acerca un poco más a mis brazos.",
+  "Ya casi dejamos de decir 'cuando nos veamos' para decir 'ya estás aquí'.",
+  "La espera también se va a sentir bonita cuando la mires desde el otro lado.",
+  "Voy a tener el corazón acelerado desde antes de que aterrices.",
+  "Ese aeropuerto va a ser testigo de algo que llevamos tiempo esperando.",
+  "No hay boleto que valga más que el que te trae hasta aquí.",
+  "Vas a llegar y todo lo demás va a poder esperar.",
+  "Esta distancia siempre fue temporal, y ya se le está acabando el tiempo.",
+  "Voy a estar contando los minutos como quien cuenta lo más valioso que tiene.",
+  "Después de este vuelo, ya no vamos a tener que despedirnos por una pantalla.",
+  "Todo lo que sembramos de lejos, por fin lo vamos a cosechar de cerca.",
+  "Cuando te vea salir, va a valer cada día de esta espera.",
+  "No hay maleta lo bastante grande para todo lo que traes con esta llegada.",
+  "Esto que sentimos ya no necesita más pruebas, solo necesita que llegues.",
+  "Vas a llegar, y con eso, todo lo demás va a empezar a tener sentido."
 ];
 
 document.getElementById('quote').textContent =
