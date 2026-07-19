@@ -376,6 +376,35 @@ body::before {
 }
 .closing b { color: var(--plum); font-weight: 600; }
 
+.promise {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 1.5rem 0.5rem;
+  margin-bottom: 1.8rem;
+  border-top: 1px solid var(--lilac-2);
+  border-bottom: 1px solid var(--lilac-2);
+}
+.promise-heart {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--lilac);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: breathe 2.6s ease-in-out infinite;
+}
+.promise-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 15px;
+  line-height: 1.85;
+  color: var(--plum);
+  max-width: 340px;
+}
+
 .back-link {
   display: inline-block;
   margin-top: 2.2rem;
@@ -478,12 +507,32 @@ body::before {
     pero esta es un <b>avión de verdad</b>, un país entero de por medio, y tú
     decidiendo cruzarlo solo para que por fin nos podamos ver.
     Eso no es poca cosa, y no pienso dejar que se sienta así.
+    <br><br>
+    Llevo tiempo queriéndote de una forma que ya no cabe en una pantalla.
+    No es solo ganas de verte: es que quiero <b>construir contigo</b>, quiero
+    que un día esto de contar los días sea solo un recuerdo bonito, porque
+    ya vivamos en el mismo lugar, con la misma casa, la misma cama, los mismos
+    planes. Quiero <b>casarme contigo</b>. Quiero que cada cosa linda que me
+    pasa en la vida la puedas ver de cerca, no por una foto ni por un mensaje.
     <span class="letter-sign">— con todo mi cariño, contando los días</span>
   </div>
 
-  <p class="closing">No importa cuántas horas de vuelo sean:<br><b>al final de ese camino voy a estar yo, esperándote.</b></p>
+  <div class="promise">
+    <div class="promise-heart">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 20.5s-7.5-4.6-10-9.2C0.3 7.8 2.3 4 6 4c2.1 0 3.7 1.2 6 3.6C14.3 5.2 15.9 4 18 4c3.7 0 5.7 3.8 4 7.3-2.5 4.6-10 9.2-10 9.2z" fill="#C79A3F"/>
+      </svg>
+    </div>
+    <p class="promise-text">
+      Te prometo que este es apenas el primer viaje de muchos, y que un día
+      ya no vamos a necesitar boletos de avión para estar juntos — solo
+      vamos a tener que caminar hasta la otra habitación.
+    </p>
+  </div>
 
-  <a class="back-link" href="calendario.html">← volver al calendario</a>
+  <p class="closing">No importa cuántas horas de vuelo sean:<br><b>al final de ese camino voy a estar yo, esperándote, con ganas de no volver a soltarte.</b></p>
+
+  <a class="back-link" href="index.html">← volver al calendario</a>
 
 </div>
 </div>
