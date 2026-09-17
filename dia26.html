@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mi amor y mi amiga · Amor y Amistad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Spectral:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { min-height: 100vh; }
+:root{
+  --ink: #2C3A52;
+  --azul: #1B4F9C;
+  --azul-soft: #A8C2E6;
+  --azul-pale: #EAF1FB;
+  --amarillo: #E8A803;
+  --amarillo-dark: #B98404;
+  --amarillo-soft: #F6D77A;
+  --amarillo-pale: #FDF3D9;
+  --rojo: #C6362F;
+  --rojo-soft: #F0B5B0;
+  --rojo-pale: #FCEDEB;
+  --white: #FFFCF6;
+  --cream: #FDF7E9;
+}
+body {
+  background: linear-gradient(160deg, #FFFBF0 0%, #FDF3D9 40%, #EFF4FC 100%);
+  font-family: 'Spectral', serif;
+  color: var(--ink);
+  overflow-x: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1.5rem;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 55% 40% at 12% 0%, rgba(232,168,3,0.20) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 45% at 100% 12%, rgba(27,79,156,0.14) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 45% at 92% 100%, rgba(198,54,47,0.12) 0%, transparent 55%),
+    radial-gradient(ellipse 45% 40% at 0% 92%, rgba(232,168,3,0.14) 0%, transparent 55%);
+  pointer-events: none;
+  z-index: 0;
+}
+.spark {
+  position: fixed; border-radius: 50%;
+  background: var(--amarillo-soft);
+  pointer-events: none; z-index: 0;
+  animation: glow var(--gd, 4s) ease-in-out infinite;
+}
+@keyframes glow {
+  0%, 100% { opacity: 0.25; transform: scale(0.85); }
+  50% { opacity: 0.8; transform: scale(1.12); }
+}
+.mariposa {
+  position: fixed; top: -6%; z-index: 0; opacity: 0.5;
+  animation: volar var(--vd, 26s) linear infinite;
+}
+.mariposa svg { display: block; animation: aletear 1.6s ease-in-out infinite; }
+@keyframes volar {
+  0%   { transform: translateY(-10vh) translateX(0) rotate(-8deg); }
+  25%  { transform: translateY(25vh) translateX(26px) rotate(10deg); }
+  50%  { transform: translateY(60vh) translateX(-22px) rotate(-12deg); }
+  75%  { transform: translateY(95vh) translateX(18px) rotate(8deg); }
+  100% { transform: translateY(130vh) translateX(-10px) rotate(-6deg); }
+}
+@keyframes aletear { 0%, 100% { transform: scaleX(1); } 50% { transform: scaleX(0.55); } }
+@keyframes riseIn { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+
+.card-frame {
+  position: relative; z-index: 2;
+  max-width: 470px; width: 100%;
+  padding: 2px; border-radius: 28px;
+  background: linear-gradient(150deg, var(--amarillo) 0%, var(--amarillo-soft) 30%, var(--azul-soft) 62%, var(--rojo-soft) 100%);
+  box-shadow: 0 35px 70px -25px rgba(27,79,156,0.30);
+  animation: riseIn 1s cubic-bezier(.2,.7,.2,1) both;
+}
+.card {
+  position: relative;
+  background: linear-gradient(175deg, var(--white) 0%, var(--cream) 100%);
+  border-radius: 27px;
+  padding: 0 2.2rem 2.6rem;
+  text-align: center;
+  overflow: hidden;
+}
+.tricolor { display: flex; height: 7px; margin: 0 -2.2rem 2.4rem; }
+.tricolor i { display: block; height: 100%; }
+.tricolor i:nth-child(1) { flex: 2; background: var(--amarillo); }
+.tricolor i:nth-child(2) { flex: 1; background: var(--azul); }
+.tricolor i:nth-child(3) { flex: 1; background: var(--rojo); }
+
+.flourish { display: block; margin: 0.6rem auto 1.1rem; width: 120px; height: auto; animation: fadeIn 1.2s ease 0.05s both; }
+.eyebrow {
+  display: inline-block; font-size: 10.5px; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--azul); font-weight: 600;
+  padding: 0.4rem 1.1rem; border-radius: 999px;
+  background: var(--azul-pale); border: 1px solid var(--azul-soft);
+  margin-bottom: 1.5rem; animation: fadeIn 1s ease 0.1s both;
+}
+.date-line {
+  font-size: 11.5px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink); opacity: 0.6; margin-bottom: 0.8rem;
+  animation: fadeIn 1s ease 0.15s both;
+}
+.title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500; font-style: italic;
+  font-size: clamp(1.55rem, 5.5vw, 2rem);
+  color: var(--ink); line-height: 1.35; margin-bottom: 1rem;
+  animation: fadeIn 1s ease 0.2s both;
+}
+.title .accent { color: var(--rojo); font-weight: 600; }
+.subtitle {
+  font-size: 14px; line-height: 1.75; color: var(--ink); opacity: 0.75;
+  max-width: 340px; margin: 0 auto 1.8rem; animation: fadeIn 1s ease 0.22s both;
+}
+
+.two-words { display: flex; justify-content: center; gap: 14px; margin-bottom: 2.2rem; animation: fadeIn 1.1s ease 0.25s both; }
+.two-words .word {
+  font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 600;
+  font-size: 1.05rem; padding: 0.5rem 1.2rem; border-radius: 999px;
+  background: var(--azul-pale); color: var(--azul); border: 1px solid var(--azul-soft);
+}
+.two-words .word.gold { background: var(--amarillo-pale); color: var(--amarillo-dark); border-color: var(--amarillo-soft); }
+.two-words .plus { align-self: center; color: var(--rojo); opacity: 0.7; font-size: 1rem; }
+
+.divider { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 0 0 2.2rem; }
+.divider::before, .divider::after {
+  content: ''; width: 50px; height: 1px;
+  background: linear-gradient(to right, transparent, var(--amarillo-soft));
+}
+.divider::after { background: linear-gradient(to left, transparent, var(--amarillo-soft)); }
+.divider span { color: var(--amarillo); font-size: 13px; }
+
+.section-label{
+  font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--ink); opacity: 0.5; margin-bottom: 1rem;
+}
+.section-intro {
+  font-size: 13.5px; line-height: 1.75; color: var(--ink); opacity: 0.72;
+  max-width: 360px; margin: -0.4rem auto 1.4rem;
+}
+
+.letter {
+  position: relative; text-align: left;
+  background: var(--amarillo-pale); border-radius: 14px;
+  padding: 1.7rem 1.6rem; margin-bottom: 2rem;
+  font-family: 'Cormorant Garamond', serif; font-style: italic;
+  font-size: 16.5px; line-height: 1.95; color: var(--ink);
+}
+.letter::before {
+  content: ''; position: absolute; left: 0; top: 6%;
+  width: 4px; height: 88%; border-radius: 4px;
+  background: linear-gradient(180deg, var(--amarillo) 0%, var(--amarillo) 50%, var(--azul) 50%, var(--azul) 75%, var(--rojo) 75%, var(--rojo) 100%);
+}
+.letter p + p { margin-top: 1.1rem; }
+.letter b { font-style: normal; font-weight: 600; color: var(--azul); }
+.letter .rojo { font-style: normal; font-weight: 600; color: var(--rojo); }
+.letter-sign { display: block; text-align: right; margin-top: 1.2rem; font-size: 13px; color: var(--rojo); opacity: 0.95; }
+
+.costumbre {
+  display: flex; align-items: flex-start; gap: 12px; text-align: left;
+  background: var(--azul-pale); border: 1px solid var(--azul-soft);
+  border-radius: 14px; padding: 1.2rem 1.3rem; margin-bottom: 2.4rem;
+  font-size: 14px; line-height: 1.75;
+}
+.costumbre .ico { flex-shrink: 0; margin-top: 3px; }
+.costumbre b { color: var(--azul); font-weight: 600; }
+.costumbre p + p { margin-top: 0.7rem; }
+
+/* ——— razones, rediseñadas como tarjetitas ——— */
+.razones { display: flex; flex-direction: column; gap: 0.85rem; margin-bottom: 2.4rem; text-align: left; }
+.razon {
+  position: relative;
+  background: var(--white);
+  border: 1px solid var(--amarillo-soft);
+  border-radius: 16px;
+  padding: 1.15rem 1.25rem 1.15rem 1.35rem;
+  box-shadow: 0 8px 20px -14px rgba(44,58,82,0.35);
+  overflow: hidden;
+}
+.razon::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+  background: var(--amarillo);
+}
+.razon.amor { border-color: var(--rojo-soft); }
+.razon.amor::before { background: var(--rojo); }
+.razon-top { display: flex; align-items: center; gap: 8px; margin-bottom: 0.45rem; }
+.razon-num {
+  font-family: 'Cormorant Garamond', serif; font-style: italic;
+  font-size: 12px; color: var(--ink); opacity: 0.35; letter-spacing: 0.05em;
+}
+.razon-badge {
+  font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase;
+  font-weight: 600; padding: 3px 9px; border-radius: 999px;
+  background: var(--amarillo-pale); color: var(--amarillo-dark); border: 1px solid var(--amarillo-soft);
+}
+.razon.amor .razon-badge { background: var(--rojo-pale); color: var(--rojo); border-color: var(--rojo-soft); }
+.razon h4 {
+  font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 600;
+  font-size: 1.16rem; line-height: 1.4; color: var(--amarillo-dark); margin-bottom: 0.35rem;
+}
+.razon.amor h4 { color: var(--rojo); }
+.razon p { font-size: 14px; line-height: 1.75; color: var(--ink); opacity: 0.88; }
+
+.distancia {
+  text-align: left; border-radius: 14px; padding: 1.4rem;
+  margin-bottom: 2.2rem; background: var(--rojo-pale);
+  border: 1px solid var(--rojo-soft); font-size: 14.5px; line-height: 1.8;
+}
+.distancia h3 {
+  font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 600;
+  font-size: 1.15rem; color: var(--rojo); margin-bottom: 0.6rem;
+}
+.distancia p + p { margin-top: 0.8rem; }
+.distancia b { color: var(--rojo); font-weight: 600; }
+
+.promesas { text-align: left; display: flex; flex-direction: column; gap: 0.85rem; margin-bottom: 2.2rem; }
+.promesa { display: flex; gap: 10px; align-items: flex-start; font-size: 14.5px; line-height: 1.7; }
+.promesa .check {
+  flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%;
+  background: var(--amarillo-pale); border: 1px solid var(--amarillo-soft);
+  display: flex; align-items: center; justify-content: center; margin-top: 2px;
+}
+
+.promise {
+  display: flex; flex-direction: column; align-items: center; gap: 0.8rem;
+  padding: 1.7rem 0.5rem; margin-bottom: 1.8rem;
+  border-top: 1px solid var(--amarillo-soft); border-bottom: 1px solid var(--amarillo-soft);
+}
+.promise-heart {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--rojo-pale); border: 1px solid var(--rojo-soft);
+  display: flex; align-items: center; justify-content: center;
+  animation: breathe 2.6s ease-in-out infinite;
+}
+.promise-text {
+  font-family: 'Cormorant Garamond', serif; font-style: italic;
+  font-size: 15.5px; line-height: 1.9; color: var(--azul); max-width: 350px;
+}
+.promise-text + .promise-text { color: var(--ink); opacity: 0.8; font-size: 14.5px; }
+
+.closing { font-size: 15px; line-height: 1.85; color: var(--ink); }
+.closing b { color: var(--rojo); font-weight: 600; }
+.closing .small { display: block; margin-top: 0.9rem; font-size: 13px; opacity: 0.7; line-height: 1.75; }
+
+.back-link {
+  display: inline-block; margin-top: 2.2rem; font-size: 11.5px; letter-spacing: 0.06em;
+  color: var(--ink); opacity: 0.55; text-decoration: none;
+  border-bottom: 1px solid var(--amarillo-soft); padding-bottom: 2px;
+  transition: opacity 0.2s, color 0.2s;
+}
+.back-link:hover { opacity: 1; color: var(--azul); }
+
+@media (prefers-reduced-motion: reduce) {
+  .mariposa, .mariposa svg, .spark, .card-frame, .promise-heart { animation: none !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="mariposa" style="left:9%; animation-delay:0s; --vd:28s;">
+  <svg width="22" height="18" viewBox="0 0 24 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 10C12 10 8.5 2 5 2.6 1.5 3.2 1.8 9 5 11.4 8.2 13.8 12 10 12 10Z" fill="#E8A803"/>
+    <path d="M12 10C12 10 15.5 2 19 2.6c3.5.6 3.2 6.4 0 8.8C15.8 13.8 12 10 12 10Z" fill="#F6D77A"/>
+    <path d="M12 10C12 10 9 17.5 6.4 17c-2.6-.5-2-4.4.4-5.8C9.2 9.8 12 10 12 10Z" fill="#F6D77A"/>
+    <path d="M12 10c0 0 3 7.5 5.6 7 2.6-.5 2-4.4-.4-5.8C14.8 9.8 12 10 12 10Z" fill="#E8A803"/>
+  </svg>
+</div>
+<div class="mariposa" style="left:82%; animation-delay:-14s; --vd:32s; opacity:0.38;">
+  <svg width="16" height="13" viewBox="0 0 24 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 10C12 10 8.5 2 5 2.6 1.5 3.2 1.8 9 5 11.4 8.2 13.8 12 10 12 10Z" fill="#E8A803"/>
+    <path d="M12 10C12 10 15.5 2 19 2.6c3.5.6 3.2 6.4 0 8.8C15.8 13.8 12 10 12 10Z" fill="#F6D77A"/>
+    <path d="M12 10C12 10 9 17.5 6.4 17c-2.6-.5-2-4.4.4-5.8C9.2 9.8 12 10 12 10Z" fill="#F6D77A"/>
+    <path d="M12 10c0 0 3 7.5 5.6 7 2.6-.5 2-4.4-.4-5.8C14.8 9.8 12 10 12 10Z" fill="#E8A803"/>
+  </svg>
+</div>
+<div class="mariposa" style="left:50%; animation-delay:-22s; --vd:36s; opacity:0.3;">
+  <svg width="13" height="11" viewBox="0 0 24 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 10C12 10 8.5 2 5 2.6 1.5 3.2 1.8 9 5 11.4 8.2 13.8 12 10 12 10Z" fill="#E8A803"/>
+    <path d="M12 10C12 10 15.5 2 19 2.6c3.5.6 3.2 6.4 0 8.8C15.8 13.8 12 10 12 10Z" fill="#F6D77A"/>
+    <path d="M12 10C12 10 9 17.5 6.4 17c-2.6-.5-2-4.4.4-5.8C9.2 9.8 12 10 12 10Z" fill="#F6D77A"/>
+    <path d="M12 10c0 0 3 7.5 5.6 7 2.6-.5 2-4.4-.4-5.8C14.8 9.8 12 10 12 10Z" fill="#E8A803"/>
+  </svg>
+</div>
+
+<div class="spark" style="top:14%; left:8%; width:5px; height:5px; --gd:3.4s;"></div>
+<div class="spark" style="top:22%; left:90%; width:4px; height:4px; --gd:4.2s;"></div>
+<div class="spark" style="top:78%; left:12%; width:4px; height:4px; --gd:3.8s;"></div>
+<div class="spark" style="top:85%; left:88%; width:5px; height:5px; --gd:4.6s;"></div>
+
+<div class="card-frame">
+  <div class="card">
+
+    <div class="tricolor"><i></i><i></i><i></i></div>
+
+    <svg class="flourish" viewBox="0 0 160 46" xmlns="http://www.w3.org/2000/svg" fill="none">
+      <path d="M8 23 C 30 8, 55 8, 80 23" stroke="#E8A803" stroke-width="1.2" stroke-linecap="round"/>
+      <path d="M152 23 C 130 8, 105 8, 80 23" stroke="#E8A803" stroke-width="1.2" stroke-linecap="round"/>
+      <path d="M8 23 C 30 38, 55 38, 80 23" stroke="#1B4F9C" stroke-width="1.1" stroke-linecap="round" opacity="0.65"/>
+      <path d="M152 23 C 130 38, 105 38, 80 23" stroke="#C6362F" stroke-width="1.1" stroke-linecap="round" opacity="0.65"/>
+      <circle cx="80" cy="23" r="6" fill="#C6362F"/>
+      <circle cx="80" cy="23" r="2.6" fill="#FFFCF6"/>
+      <circle cx="22" cy="17" r="2.2" fill="#E8A803"/>
+      <circle cx="138" cy="17" r="2.2" fill="#1B4F9C" opacity="0.7"/>
+    </svg>
+
+    <div class="eyebrow">día 26 · edición especial</div>
+    <div class="date-line">tercer sábado de septiembre · colombia</div>
+
+    <h1 class="title">No eres solo mi amor.<br>Eres también mi <span class="accent">mejor amiga</span>.</h1>
+    <p class="subtitle">
+      Y hoy, que en Colombia celebramos las dos cosas el mismo día, por fin tengo la
+      excusa perfecta para decirte con calma, y sin que me dé pena, todo lo que
+      normalmente te digo a medias.
+    </p>
+
+    <div class="two-words">
+      <span class="word gold">amor</span>
+      <span class="plus">+</span>
+      <span class="word">amistad</span>
+    </div>
+
+    <div class="divider"><span>✦</span></div>
+
+    <p class="section-label">una carta, sin afán</p>
+    <div class="letter">
+      <p>
+        Mi amor, siempre me pareció curioso que aquí juntáramos el amor y la amistad en una
+        misma fecha, como si fueran la misma cosa. Durante años pensé que era solo una
+        costumbre bonita, una excusa de septiembre para vender flores y peluches. Hasta que
+        llegaste tú y entendí que hay personas que sí son <b>las dos cosas a la vez</b>, sin
+        que una le quite espacio a la otra, y que el país entero tenía razón desde el
+        principio.
+      </p>
+      <p>
+        Eres mi amor. Eso ya lo sabes, pero igual quiero escribirlo, porque hay cosas que
+        uno necesita ver puestas en palabras: eres la persona con la que quiero construir
+        algo real, no una idea bonita ni un rato lindo. La que se me aparece en la cabeza
+        cuando veo algo hermoso y lo primero que pienso es "a ella le encantaría". La que
+        extraño incluso en los días buenos, cuando todo me sale bien y aun así siento que
+        falta algo — y ese algo siempre eres tú.
+      </p>
+      <p>
+        Pero eres mi amiga también, y esa parte casi nunca se dice en voz alta. Eres la que
+        me escucha sin apurarme, sin corregirme a la mitad, sin poner cara de que ya sabe
+        cómo termina la historia. La que me dice la verdad aunque no sea lo que quiero oír,
+        y lo hace de una forma que no duele, que solo me acomoda. La que se ríe conmigo de
+        las bobadas más absurdas a la una de la mañana, cuando cualquier persona sensata
+        estaría durmiendo.
+      </p>
+      <p>
+        Y creo que eso es lo raro, lo que no se encuentra fácil: la mayoría de la gente es
+        una cosa o la otra. Hay amores con los que uno no se puede reír, y amistades con las
+        que uno nunca se atrevería a ser tan vulnerable. Tú lograste <span class="rojo">ser
+        las dos sin esforzarte</span>, y yo todavía no me acostumbro a la suerte que tengo.
+      </p>
+      <p>
+        Gracias por quererme en los días en que yo no me quería mucho. Gracias por hacer
+        que quererte sea lo más fácil que hago en el día.
+      </p>
+      <span class="letter-sign">— feliz día, a las dos personas que eres para mí</span>
+    </div>
+
+    <div class="costumbre">
+      <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2.5c3.3 0 6 2.7 6 6 0 4.1-6 9-6 9s-6-4.9-6-9c0-3.3 2.7-6 6-6Z" fill="#E8A803"/>
+        <path d="M10.6 17.8h2.8l.5 3.2h-3.8l.5-3.2Z" fill="#1B4F9C"/>
+      </svg>
+      <div>
+        <p>
+          Hoy medio país juega <b>amigo secreto</b>, se manda flores, se lleva serenata y se
+          inventa cualquier excusa para verse. Las oficinas se llenan de globos, los
+          restaurantes se llenan de gente enamorada, y todo el mundo anda con esa cosa medio
+          cursi que da septiembre.
+        </p>
+        <p>
+          Yo no necesito sorteo ni papelito doblado. Si me pusieran a escoger entre todas las
+          personas del mundo, sabiendo todo lo que sé, te volvería a escoger a ti — y no una
+          vez, sino en las dos categorías: de amiga y de amor.
+        </p>
+      </div>
+    </div>
+
+    <p class="section-label">por qué eres las dos cosas</p>
+    <p class="section-intro">
+      Me puse a hacer una lista y me di cuenta de que podría seguir toda la noche.
+      Dejé ocho, pero que quede claro que fue por falta de espacio, no de razones.
+    </p>
+    <div class="razones">
+
+      <div class="razon amor">
+        <div class="razon-top"><span class="razon-num">i</span><span class="razon-badge">amor</span></div>
+        <h4>Porque cuidarte se me volvió instinto</h4>
+        <p>
+          Estar pendiente de que comas, de que duermas, de que no cargues sola lo pesado.
+          No me pesa ni me cuesta: me sale solo, como respirar. Si algo te duele, yo quiero
+          estar ahí antes de que me lo pidas.
+        </p>
+      </div>
+
+      <div class="razon">
+        <div class="razon-top"><span class="razon-num">ii</span><span class="razon-badge">amistad</span></div>
+        <h4>Porque eres la primera a la que le quiero contar todo</h4>
+        <p>
+          Lo bueno, lo malo y lo que no le importa a nadie más. Si me pasa algo y no te lo he
+          contado, siento que todavía no pasó del todo. Eres mi manera de procesar la vida.
+        </p>
+      </div>
+
+      <div class="razon amor">
+        <div class="razon-top"><span class="razon-num">iii</span><span class="razon-badge">amor</span></div>
+        <h4>Porque un "te extraño" tuyo me arregla el día entero</h4>
+        <p>
+          No sabes lo que hace un mensaje corto tuyo en la mitad de una tarde fea. Lo leo dos
+          o tres veces, sonrío sola como boba, y de repente el resto del día se vuelve
+          perfectamente manejable.
+        </p>
+      </div>
+
+      <div class="razon">
+        <div class="razon-top"><span class="razon-num">iv</span><span class="razon-badge">amistad</span></div>
+        <h4>Porque contigo puedo ser yo, entera</h4>
+        <p>
+          Sin máscaras, sin medir cada palabra, sin tener que ser mi mejor versión todo el
+          tiempo. Puedo estar cansada, de mal genio o siendo completamente ridícula, y sé que
+          no me vas a querer ni un poquito menos.
+        </p>
+      </div>
+
+      <div class="razon amor">
+        <div class="razon-top"><span class="razon-num">v</span><span class="razon-badge">amor</span></div>
+        <h4>Porque me imagino el futuro y siempre estás ahí</h4>
+        <p>
+          No en un plan vago de "algún día", sino en cosas chiquitas y concretas: una cocina,
+          un domingo sin afán, una rutina boba que sea nuestra. Cada vez que pienso en cómo
+          quiero que sea mi vida, apareces tú, sin que te invite.
+        </p>
+      </div>
+
+      <div class="razon">
+        <div class="razon-top"><span class="razon-num">vi</span><span class="razon-badge">amistad</span></div>
+        <h4>Porque nos entendemos sin tener que explicarnos</h4>
+        <p>
+          Tenemos chistes que nadie más entendería, palabras que solo significan algo entre
+          nosotras dos, silencios que no incomodan. Eso no se construye en un rato; eso se
+          gana con tiempo y con confianza.
+        </p>
+      </div>
+
+      <div class="razon amor">
+        <div class="razon-top"><span class="razon-num">vii</span><span class="razon-badge">amor</span></div>
+        <h4>Porque me haces querer ser mejor</h4>
+        <p>
+          No porque me lo exijas, sino porque verte a ti intentándolo me da pena quedarme
+          quieta. Eres, con diferencia, la mejor influencia que me ha pasado en la vida.
+        </p>
+      </div>
+
+      <div class="razon">
+        <div class="razon-top"><span class="razon-num">viii</span><span class="razon-badge">amistad</span></div>
+        <h4>Porque te tendría cerca aunque no fueras mi novia</h4>
+        <p>
+          Y creo que esa es la prueba más grande de todas. Si mañana el amor cambiara de
+          forma, yo igual te querría en mi vida, igual te llamaría, igual te contaría todo.
+          Tú no eres solo mi pareja: eres mi gente.
+        </p>
+      </div>
+
+    </div>
+
+    <div class="distancia">
+      <h3>Sobre la distancia</h3>
+      <p>
+        Sí, hoy me hubiera encantado despertarte, llevarte a desayunar, aparecerme con flores
+        aunque te diera risa lo predecible que soy. Me duele un poquito que esta fecha nos
+        agarre lejos, y no te voy a mentir diciéndote que no.
+      </p>
+      <p>
+        Pero también pienso esto: la distancia ha sido la prueba más honesta que hemos tenido.
+        Sin la comodidad de tenernos cerca, lo único que queda es <b>querer elegirse todos los
+        días</b>. Y nos seguimos eligiendo, mi amor. Eso vale más que cualquier día perfecto
+        juntas.
+      </p>
+      <p>
+        Cada kilómetro que nos separa es un kilómetro que estoy dispuesta a recorrer. Y lo
+        voy a recorrer.
+      </p>
+    </div>
+
+    <p class="section-label">lo que te prometo hoy</p>
+    <div class="promesas">
+      <div class="promesa">
+        <span class="check"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.6 2.6L9 1.2" stroke="#E8A803" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span>Seguir siendo tu amiga incluso en los días difíciles — porque hemos tenido diferencias, claro, pero ni una sola vez me he cansado de ti.</span>
+      </div>
+      <div class="promesa">
+        <span class="check"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.6 2.6L9 1.2" stroke="#E8A803" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span>Escucharte de verdad, no solo esperar mi turno para hablar.</span>
+      </div>
+      <div class="promesa">
+        <span class="check"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.6 2.6L9 1.2" stroke="#E8A803" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span>Decirte las cosas bonitas en el momento exacto en que las pienso, y no guardármelas para una fecha especial.</span>
+      </div>
+      <div class="promesa">
+        <span class="check"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.6 2.6L9 1.2" stroke="#E8A803" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span>Elegirte todos los días, incluso los días en que elegir cueste.</span>
+      </div>
+      <div class="promesa">
+        <span class="check"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.6 2.6L9 1.2" stroke="#E8A803" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span>Acortar esta distancia, cada día un poquito, hasta que sea nada más que una anécdota que contamos riéndonos.</span>
+      </div>
+    </div>
+
+    <div class="promise">
+      <div class="promise-heart">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 20.5s-7.5-4.6-10-9.2C0.3 7.8 2.3 4 6 4c2.1 0 3.7 1.2 6 3.6C14.3 5.2 15.9 4 18 4c3.7 0 5.7 3.8 4 7.3-2.5 4.6-10 9.2-10 9.2z" fill="#C6362F"/>
+        </svg>
+      </div>
+      <p class="promise-text">
+        No es fácil encontrar a alguien que sea las dos cosas a la vez, sin esfuerzo, todos
+        los días. Y tú lo eres, mi amor, incluso desde lejos.
+      </p>
+      <p class="promise-text">
+        Por eso hoy no te escribo solo un "feliz día". Te escribo esto: que te quiero como se
+        quiere a un amor, y que te cuido como se cuida a la amistad más bonita de mi vida.
+        Las dos cosas, al tiempo, en serio y para largo.
+      </p>
+    </div>
+
+    <p class="closing">
+      Feliz día del amor y la amistad,<br>
+      <b>a la persona que es ambas cosas para mí.</b>
+      <span class="small">
+        Guárdate esta página, mi vida. Los días en que dudes de lo que significas para mí,
+        vuelve aquí y léela otra vez — aquí va a seguir, igualita, esperándote.
+      </span>
+    </p>
+
+    <a class="back-link" href="index.html">← volver al calendario</a>
+
+  </div>
+</div>
+
+</body>
+</html>
