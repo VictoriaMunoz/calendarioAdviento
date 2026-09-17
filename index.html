@@ -9,17 +9,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
 
-/* ============================================================
-   RESET GLOBAL
-   Elimina márgenes y paddings por defecto de todos los elementos
-   ============================================================ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ============================================================
-   BODY — Fondo general de la página
-   · background: color base (puedes cambiarlo aquí)
-   · padding-bottom: espacio al final para que no quede pegado
-   ============================================================ */
 body {
   min-height: 100vh;
   background: #edf4ef;
@@ -29,11 +20,6 @@ body {
   padding-bottom: 4rem;
 }
 
-/* ============================================================
-   GRADIENTES DE FONDO DECORATIVOS
-   Burbujas de color suave que dan profundidad al fondo.
-   Puedes ajustar los colores rgba() o los porcentajes de posición.
-   ============================================================ */
 body::before {
   content: '';
   position: fixed;
@@ -46,13 +32,6 @@ body::before {
   z-index: 0;
 }
 
-/* ============================================================
-   PARTÍCULAS AL HACER CLICK
-   Hojitas y flores que salen al tocar la pantalla.
-   · flyUp: animación de vuelo hacia arriba y desvanecimiento
-   · Las variables --tx, --ty, --rot, --dur, --fs se asignan
-     desde JavaScript para que cada partícula sea única
-   ============================================================ */
 .particle {
   position: fixed;
   pointer-events: none;
@@ -67,13 +46,6 @@ body::before {
   100% { transform: translate(var(--tx, 0px), var(--ty, -120px)) rotate(var(--rot, 180deg)) scale(0.4); opacity: 0; }
 }
 
-/* ============================================================
-   HOJAS DECORATIVAS DE FONDO
-   Emojis fijos en los bordes de la pantalla que se mecen.
-   · --s: tamaño · --o: opacidad · --d: duración animación
-   · --r1, --r2: ángulos de balanceo
-   Se definen en el HTML con style="..."
-   ============================================================ */
 .deco-leaf {
   position: fixed;
   font-size: var(--s, 2rem);
@@ -88,15 +60,6 @@ body::before {
   100% { transform: rotate(var(--r2, 6deg)); }
 }
 
-/* ============================================================
-   HEADER / HERO
-   Título principal de la página.
-   · hero-eyebrow: etiqueta pequeña arriba del título
-   · hero-title: título grande "Para ti, preciosa"
-   · hero-sub: subtítulo pequeño debajo
-   · hero-orquidea: flor SVG decorativa
-   · hero-divider: línea divisora con ✿
-   ============================================================ */
 .hero {
   position: relative;
   z-index: 2;
@@ -109,7 +72,7 @@ body::before {
   font-size: 11px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #1D9E75;         /* ← color del texto de la etiqueta */
+  color: #1D9E75;
   font-weight: 700;
   margin-bottom: 1rem;
   border: 1.5px solid #9FE1CB;
@@ -120,20 +83,20 @@ body::before {
 
 .hero-title {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(2rem, 6vw, 3.4rem); /* responsive: mínimo 2rem, máximo 3.4rem */
-  color: #085041;         /* ← color del título principal */
+  font-size: clamp(2rem, 6vw, 3.4rem);
+  color: #085041;
   font-weight: 400;
   line-height: 1.2;
   margin-bottom: 0.4rem;
 }
 .hero-title em {
   font-style: italic;
-  color: #1D9E75;         /* ← color de "preciosa" en cursiva */
+  color: #1D9E75;
 }
 
 .hero-sub {
   font-size: 13px;
-  color: #5DCAA5;         /* ← color del subtítulo */
+  color: #5DCAA5;
   font-weight: 400;
   letter-spacing: 0.06em;
   margin-top: 0.5rem;
@@ -168,13 +131,6 @@ body::before {
   background: linear-gradient(to left, transparent, #9FE1CB);
 }
 
-/* ============================================================
-   GRID — Contenedor del calendario
-   · max-width: ancho máximo del grid
-   · minmax(138px, 1fr): cada cajita mínimo 138px, máximo igual
-     Si quieres cajitas más grandes, sube el 138px
-   · gap: espacio entre cajitas
-   ============================================================ */
 .grid-wrap {
   max-width: 920px;
   margin: 2rem auto 0;
@@ -189,12 +145,6 @@ body::before {
   gap: 14px;
 }
 
-/* ============================================================
-   CAJITA BASE
-   · aspect-ratio: 1 = cuadrada perfecta
-   · border-radius: redondez de las esquinas
-   · box-shadow: sombra suave
-   ============================================================ */
 .box {
   aspect-ratio: 1;
   border-radius: 22px;
@@ -213,7 +163,6 @@ body::before {
   box-shadow: 0 3px 14px rgba(29,158,117,0.12);
 }
 
-/* Brillo interno decorativo */
 .box::before {
   content: '';
   position: absolute;
@@ -222,20 +171,11 @@ body::before {
   pointer-events: none;
 }
 
-/* ── VARIANTES DE COLOR POR CAJITA ──
-   Cada 4 cajitas rota entre estos 4 colores.
-   Para cambiar los colores, edita background y border-color aquí.
-   4n   = cajitas 4, 8, 12, 16, 20, 24  → verde menta
-   4n+1 = cajitas 1, 5, 9, 13, 17, 21   → lavanda rosado
-   4n+2 = cajitas 2, 6, 10, 14, 18, 22  → lavanda azul
-   4n+3 = cajitas 3, 7, 11, 15, 19, 23  → amarillo suave
-   ============================================================ */
 .box:nth-child(4n)   { background: #e2f5eb; border-color: #8ed4b4; }
 .box:nth-child(4n+1) { background: #f3e6f8; border-color: #d4a8e0; }
 .box:nth-child(4n+2) { background: #eae7ff; border-color: #b8aee8; }
 .box:nth-child(4n+3) { background: #fff3d6; border-color: #e8c878; }
 
-/* Efecto hover en cajitas desbloqueadas */
 .box:not(.locked):hover {
   transform: translateY(-6px) scale(1.03);
   box-shadow: 0 16px 36px rgba(29,158,117,0.15), 0 0 0 1.5px #5DCAA5;
@@ -243,21 +183,19 @@ body::before {
   z-index: 3;
 }
 
-/* Número del día dentro de la cajita */
 .box-day {
   font-family: 'Playfair Display', serif;
-  font-size: 2.2rem;    /* ← tamaño del número */
+  font-size: 2.2rem;
   font-weight: 400;
-  color: #5DCAA5;       /* ← color del número en reposo */
+  color: #5DCAA5;
   line-height: 1;
   position: relative;
   z-index: 1;
   transition: color 0.2s;
 }
 .box:not(.locked):hover .box-day,
-.box.open .box-day { color: #085041; } /* ← color al hover o abierta */
+.box.open .box-day { color: #085041; }
 
-/* Emoji debajo del número */
 .box-emoji {
   font-size: 1.4rem;
   position: relative;
@@ -266,7 +204,6 @@ body::before {
 }
 .box:not(.locked):hover .box-emoji { transform: scale(1.3) rotate(-8deg); }
 
-/* Texto "DÍA X" debajo del emoji */
 .box-label {
   font-size: 10px;
   font-weight: 700;
@@ -279,10 +216,6 @@ body::before {
 }
 .box:not(.locked):hover .box-label { color: #1D9E75; }
 
-/* ── CAJITA BLOQUEADA ──
-   Días que aún no se pueden abrir.
-   · opacity: qué tan transparente se ve (0 = invisible, 1 = sólido)
-   ============================================================ */
 .box.locked {
   cursor: default;
   opacity: 0.65;
@@ -293,9 +226,6 @@ body::before {
 .box.locked:hover { transform: none; box-shadow: none; }
 .lock-icon { font-size: 1rem; position: relative; z-index: 1; opacity: 0.5; }
 
-/* ── CAJITA DE HOY ──
-   Resaltada con brillo animado.
-   ============================================================ */
 .box.today {
   background: linear-gradient(135deg, #e8f8f2, #f5eeff);
   border-color: #1D9E75;
@@ -308,7 +238,6 @@ body::before {
 }
 .box.today .box-day { color: #1D9E75; }
 
-/* Badge "HOY ✿" en esquina superior derecha */
 .today-badge {
   position: absolute;
   top: 0; right: 0;
@@ -323,11 +252,6 @@ body::before {
   z-index: 2;
 }
 
-/* ============================================================
-   CAJITA ESPECIAL — DÍA 25: EL DÍA QUE SE CONOCEN EN PERSONA
-   Siempre visible, con brillo rosado tipo "corazón" y su propio
-   modal con cuenta regresiva en vivo.
-   ============================================================ */
 .box.meta {
   background: linear-gradient(135deg, #ffe3ea, #fff0d6);
   border-color: #ff8fab;
@@ -361,7 +285,66 @@ body::before {
   z-index: 2;
 }
 
-/* Nota informativa debajo del grid */
+/* ============================================================
+   CAJITA ESPECIAL — DÍA 26: AMOR Y AMISTAD
+   Se abre el 19 de septiembre a las 12:00 m. (hora Colombia).
+   Se diferencia con su propia franja tricolor amarillo/azul/rojo.
+   ============================================================ */
+.box.dia26 {
+  background: linear-gradient(135deg, #fdf3d9, #eaf1fb);
+  border-color: #e8a803;
+  box-shadow: 0 0 0 1.5px #e8a803, 0 8px 30px rgba(232,168,3,0.22);
+}
+.box.dia26 .box-day   { color: #c6362f; }
+.box.dia26 .box-label { color: #1b4f9c; }
+.box.dia26:hover .box-day,
+.box.dia26:hover .box-label { color: #c6362f; }
+.dia26-badge {
+  position: absolute;
+  top: 0; right: 0;
+  background: #c6362f;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 4px 9px;
+  border-radius: 0 20px 0 12px;
+  z-index: 2;
+}
+
+/* ============================================================
+   CAJITA ESPECIAL — DÍA 27: FLORES AMARILLAS
+   Se abre el 21 de septiembre (medianoche, hora Colombia).
+   ============================================================ */
+.box.dia27 {
+  background: linear-gradient(135deg, #fff6e0, #ffe9b3);
+  border-color: #e8a93a;
+  box-shadow: 0 0 0 1.5px #e8a93a, 0 8px 30px rgba(232,169,58,0.25);
+}
+.box.dia27 .box-day   { color: #c9862a; }
+.box.dia27 .box-label { color: #a86f22; }
+.box.dia27:hover .box-day,
+.box.dia27:hover .box-label { color: #c9862a; }
+.box.dia27 .box-emoji { animation: sway27 2.4s ease-in-out infinite; }
+@keyframes sway27 {
+  0%, 100% { transform: rotate(-8deg); }
+  50% { transform: rotate(8deg); }
+}
+.dia27-badge {
+  position: absolute;
+  top: 0; right: 0;
+  background: #e8a93a;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 4px 9px;
+  border-radius: 0 20px 0 12px;
+  z-index: 2;
+}
+
 .note {
   text-align: center;
   margin-top: 1.5rem;
@@ -370,7 +353,6 @@ body::before {
 }
 .note p { font-size: 12px; color: #9FE1CB; font-weight: 400; letter-spacing: 0.04em; }
 
-/* Footer */
 .footer {
   text-align: center;
   padding: 0 0 3rem;
@@ -382,12 +364,6 @@ body::before {
   color: #9FE1CB;
 }
 
-/* ============================================================
-   MODAL — Ventana emergente para cajitas bloqueadas
-   · modal-bg: fondo oscuro semitransparente con blur
-   · modal: tarjeta blanca centrada
-   · .show: clase que activa la visibilidad (agrega JS)
-   ============================================================ */
 .modal-bg {
   position: fixed;
   inset: 0;
@@ -422,14 +398,14 @@ body::before {
 .modal-title {
   font-family: 'Playfair Display', serif;
   font-size: 1.25rem;
-  color: #085041;       /* ← color del título del modal */
+  color: #085041;
   font-weight: 400;
   margin-bottom: 0.6rem;
 }
 
 .modal-msg {
   font-size: 14px;
-  color: #5DCAA5;       /* ← color del mensaje del modal */
+  color: #5DCAA5;
   line-height: 1.75;
   margin-bottom: 1rem;
   font-weight: 300;
@@ -465,11 +441,6 @@ body::before {
 </head>
 <body>
 
-<!-- ============================================================
-     HOJAS DECORATIVAS DE FONDO
-     Para agregar más: copia una línea y cambia top/left/right/bottom
-     y las variables --s (tamaño), --o (opacidad), --d (velocidad)
-     ============================================================ -->
 <div class="deco-leaf" style="top:6%;left:2%;--s:3rem;--o:0.1;--d:9s;--r1:-8deg;--r2:6deg">🌿</div>
 <div class="deco-leaf" style="top:18%;right:3%;--s:2.5rem;--o:0.09;--d:11s;--r1:5deg;--r2:-10deg">🍃</div>
 <div class="deco-leaf" style="bottom:28%;left:1%;--s:3.5rem;--o:0.09;--d:8s;--r1:-5deg;--r2:8deg">🌿</div>
@@ -477,17 +448,11 @@ body::before {
 <div class="deco-leaf" style="top:52%;right:1%;--s:2rem;--o:0.08;--d:13s;--r1:-3deg;--r2:9deg">🌸</div>
 <div class="deco-leaf" style="top:38%;left:0%;--s:2rem;--o:0.08;--d:12s;--r1:4deg;--r2:-7deg">🌸</div>
 
-<!-- ============================================================
-     HEADER
-     Para cambiar el título principal, edita el h1.
-     Para cambiar el subtítulo, edita el <p class="hero-sub">
-     ============================================================ -->
 <header class="hero">
   <div class="hero-eyebrow">🌿 calendario de adviento · 2026 🌿</div>
   <h1 class="hero-title">Para ti,<br><em>preciosa</em> 🖤</h1>
   <p class="hero-sub">24 días · 24 sorpresas hechas con todo mi amor</p>
 
-  <!-- Orquídea SVG decorativa — no necesitas tocar esto -->
   <svg class="hero-orquidea" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
     <path d="M50 72 Q48 82 46 92" stroke="#5DCAA5" stroke-width="2" fill="none" stroke-linecap="round"/>
     <path d="M48 82 Q36 78 32 70 Q40 72 48 82Z" fill="#5DCAA5" opacity="0.7"/>
@@ -511,7 +476,6 @@ body::before {
   <div class="hero-divider">✿ ✿ ✿</div>
 </header>
 
-<!-- Grid de cajitas — se genera automáticamente en el JS -->
 <div class="grid-wrap">
   <div class="grid" id="grid"></div>
   <div class="note">
@@ -521,10 +485,6 @@ body::before {
 
 <footer class="footer">hecho con todo mi amor · para ti · 2026</footer>
 
-<!-- ============================================================
-     MODAL — Ventana emergente para días bloqueados
-     El contenido (título, mensaje, fecha) se llena desde JS
-     ============================================================ -->
 <div class="modal-bg" id="modal">
   <div class="modal">
     <svg class="modal-flower" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -554,38 +514,41 @@ body::before {
 // ============================================================
 // CONFIGURACIÓN PRINCIPAL
 // ============================================================
-
-// ⚠️ MODO PRUEBA vs MODO REAL
-// Para probar todos los días sin esperar:
-//   → Cambia TEST_MODE = true
-//   → Todos los días aparecerán desbloqueados
-// Para el calendario real (un día por día):
-//   → Cambia TEST_MODE = false
 const TEST_MODE = false;
 
-// Fecha de inicio del calendario (día 1)
-// START_MONTH: 0=enero, 1=feb, 2=mar, 3=abr, 4=may, 5=jun, 6=jul, 7=ago, 8=sep, 9=oct, 10=nov, 11=dic
 const START_YEAR  = 2026;
 const START_MONTH = 5;    // ← Junio
 const START_DAY   = 1;
 
 // ============================================================
-// EMOJIS DE CADA CAJITA
-// Orden: día 1 al 24. Puedes cambiar cualquier emoji aquí.
+// FECHA DE APERTURA DEL DÍA 26 (amor y amistad)
+// Se abre el 19 de septiembre de 2026 a las 12:00 m., hora Colombia.
+// Para revisarla tú antes de tiempo, activa TEST_MODE arriba,
+// o simplemente entra directo a dia26.html (no queda escondida
+// del todo, pero al menos no se abre sola desde el calendario).
 // ============================================================
+const DIA26_APERTURA = new Date('2026-09-19T12:00:00-05:00').getTime();
+const DIA26_MENSAJE  = {
+  title: "Todavía no, mi amor",
+  msg: "Esta se abre el 19 de septiembre a las 12:00 del mediodía. Falta poquito."
+};
+
+// ============================================================
+// FECHA DE APERTURA DEL DÍA 27 (flores amarillas)
+// Se abre el 21 de septiembre de 2026, medianoche hora Colombia.
+// ============================================================
+const DIA27_APERTURA = new Date('2026-09-21T00:00:00-05:00').getTime();
+const DIA27_MENSAJE  = {
+  title: "Todavía no, mi vida",
+  msg: "Esta se abre el 21 de septiembre, con las primeras flores amarillas del día."
+};
+
 const EMOJIS = [
   '🌿','🐛','🌸','🍃','🐝','🦋','🌱','🐞',
   '🌺','🍀','🐌','🌻','🌿','🐛','🌸','🍃',
   '🐝','🦋','🌱','🐞','🌺','🍀','🐌','🌟'
 ];
 
-// ============================================================
-// MENSAJES DE CAJITAS BLOQUEADAS
-// Un objeto por día (24 en total).
-// · title: título grande del modal
-// · msg: frase en cursiva debajo
-// Para editar: busca el día que quieras y cambia el texto.
-// ============================================================
 const LOCKED_MESSAGES = [
   { title: "Todavía no, preciosa",           msg: "Las cosas buenas se esperan." },
   { title: "Aún no",                         msg: "Pero ya casi. Aguanta." },
@@ -613,51 +576,37 @@ const LOCKED_MESSAGES = [
   { title: "Este es el último",              msg: "Ábrelo con calma." },
 ];
 
-// ============================================================
-// LÓGICA DE FECHAS
-// Compara la fecha de cada cajita con la fecha de hoy.
-// En TEST_MODE, todas las cajitas aparecen desbloqueadas.
-// ============================================================
 const today      = new Date();
 const localToday = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
 
 function getBoxTime(day) {
-  // Retorna el timestamp de medianoche del día correspondiente
   return new Date(START_YEAR, START_MONTH, START_DAY + day - 1).getTime();
 }
 
 function isUnlocked(day) {
-  if (TEST_MODE) return true; // En modo prueba, todo abierto
+  if (TEST_MODE) return true;
   return getBoxTime(day) <= localToday;
 }
 
 function isToday(day) {
-  if (TEST_MODE) return day === 1; // En modo prueba, solo el día 1 tiene badge "HOY"
+  if (TEST_MODE) return day === 1;
   return getBoxTime(day) === localToday;
 }
 
 function boxDateLabel(day) {
-  // Devuelve la fecha en formato "1 de junio"
   const d = new Date(START_YEAR, START_MONTH, START_DAY + day - 1);
   return d.toLocaleDateString('es-MX', { day: 'numeric', month: 'long' });
 }
 
-// ============================================================
-// GENERACIÓN DEL GRID
-// Crea cada cajita dinámicamente y la agrega al HTML.
-// Los enlaces apuntan a dia-1.html, dia-2.html, etc.
-// La cajita 25 es especial: siempre visible, abre la cuenta
-// regresiva en vez de un enlace a otra página.
-// ============================================================
 const grid = document.getElementById('grid');
 
-for (let d = 1; d <= 25; d++) {
+for (let d = 1; d <= 27; d++) {
 
   // ── Cajita especial del día 25 ──
   if (d === 25) {
     const meta = document.createElement('a');
     meta.className = 'box meta';
-    meta.href = 'dia-25.html'; // ← abre la página especial en pestaña nueva
+    meta.href = 'dia-25.html';
     meta.target = '_blank';
     meta.rel = 'noopener';
     meta.innerHTML = `
@@ -670,6 +619,73 @@ for (let d = 1; d <= 25; d++) {
     continue;
   }
 
+  // ── Cajita especial del día 26 (amor y amistad) ──
+  // Se rige por su propia fecha/hora, no por la fórmula de START_DAY.
+  if (d === 26) {
+    const unlocked26 = TEST_MODE ? true : (Date.now() >= DIA26_APERTURA);
+
+    const a26 = document.createElement('a');
+    a26.className = 'box dia26' + (unlocked26 ? ' open' : ' locked');
+
+    if (unlocked26) {
+      a26.href = 'dia26.html'; // ← nombre del archivo del día 26
+    } else {
+      a26.href = '#';
+      a26.addEventListener('click', e => {
+        e.preventDefault();
+        document.getElementById('modal-title').textContent = DIA26_MENSAJE.title;
+        document.getElementById('modal-msg').textContent   = DIA26_MENSAJE.msg;
+        document.getElementById('modal-date').textContent  = 'se abre el 19 de septiembre, 12:00 m.';
+        document.getElementById('modal').classList.add('show');
+      });
+    }
+
+    a26.innerHTML = `
+      <div class="dia26-badge">amor ✦ amistad</div>
+      <div class="box-day">26</div>
+      ${unlocked26
+        ? `<div class="box-emoji">💛</div><div class="box-label">día 26</div>`
+        : `<div class="lock-icon">🔒</div>`
+      }
+    `;
+
+    grid.appendChild(a26);
+    continue;
+  }
+
+  // ── Cajita especial del día 27 (flores amarillas) ──
+  if (d === 27) {
+    const unlocked27 = TEST_MODE ? true : (Date.now() >= DIA27_APERTURA);
+
+    const a27 = document.createElement('a');
+    a27.className = 'box dia27' + (unlocked27 ? ' open' : ' locked');
+
+    if (unlocked27) {
+      a27.href = 'dia27.html'; // ← nombre del archivo del día 27
+    } else {
+      a27.href = '#';
+      a27.addEventListener('click', e => {
+        e.preventDefault();
+        document.getElementById('modal-title').textContent = DIA27_MENSAJE.title;
+        document.getElementById('modal-msg').textContent   = DIA27_MENSAJE.msg;
+        document.getElementById('modal-date').textContent  = 'se abre el 21 de septiembre';
+        document.getElementById('modal').classList.add('show');
+      });
+    }
+
+    a27.innerHTML = `
+      <div class="dia27-badge">flores amarillas</div>
+      <div class="box-day">27</div>
+      ${unlocked27
+        ? `<div class="box-emoji">🌼</div><div class="box-label">día 27</div>`
+        : `<div class="lock-icon">🔒</div>`
+      }
+    `;
+
+    grid.appendChild(a27);
+    continue;
+  }
+
   const unlocked = isUnlocked(d);
   const todayBox = isToday(d);
   const emoji    = EMOJIS[d - 1] || '🌿';
@@ -678,7 +694,7 @@ for (let d = 1; d <= 25; d++) {
   a.className = 'box' + (unlocked ? (todayBox ? ' today open' : ' open') : ' locked');
 
   if (unlocked) {
-    a.href = `dia-${d}.html`; // ← nombre del archivo de cada día
+    a.href = `dia-${d}.html`;
   } else {
     a.href = '#';
     a.addEventListener('click', e => { e.preventDefault(); openModal(d); });
@@ -696,12 +712,6 @@ for (let d = 1; d <= 25; d++) {
   grid.appendChild(a);
 }
 
-// ============================================================
-// PARTÍCULAS AL HACER CLICK
-// Al tocar cualquier parte, salen hojitas desde ese punto.
-// · count: cuántas partículas por click (default 8)
-// · PARTICLES: emojis que pueden salir
-// ============================================================
 const PARTICLES = ['🌿','🍃','🌸','🌺','✿','🌱','🍀','🌼'];
 
 function spawnParticles(x, y, count = 8) {
@@ -725,7 +735,7 @@ function spawnParticles(x, y, count = 8) {
     `;
 
     document.body.appendChild(el);
-    el.addEventListener('animationend', () => el.remove()); // se limpia solo
+    el.addEventListener('animationend', () => el.remove());
   }
 }
 
@@ -733,12 +743,6 @@ document.addEventListener('click', e => {
   spawnParticles(e.clientX, e.clientY, 8);
 });
 
-// ============================================================
-// MODAL — Abrir y cerrar
-// openModal(day): muestra el modal con el mensaje del día
-// closeModal(): lo cierra
-// También se cierra al hacer click fuera del modal
-// ============================================================
 function openModal(day) {
   const msg = LOCKED_MESSAGES[day - 1];
   document.getElementById('modal-title').textContent = msg.title;
@@ -751,7 +755,6 @@ function closeModal() {
   document.getElementById('modal').classList.remove('show');
 }
 
-// Click fuera del modal lo cierra
 document.getElementById('modal').addEventListener('click', e => {
   if (e.target === e.currentTarget) closeModal();
 });
