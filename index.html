@@ -528,20 +528,26 @@ const START_DAY   = 1;
 // del todo, pero al menos no se abre sola desde el calendario).
 // ============================================================
 const DIA26_APERTURA = new Date('2026-09-19T12:00:00-05:00').getTime();
-const DIA26_MENSAJE  = {
-  title: "Todavía no, mi amor",
-  msg: "Esta se abre el 19 de septiembre a las 12:00 del mediodía. Falta poquito."
-};
+const DIA26_MENSAJES = [
+  { title: "Todavía no, mi amor",     msg: "Esta se abre el 19 de septiembre a las 12:00 del mediodía." },
+  { title: "Un poquito más",          msg: "Falta menos de lo que crees." },
+  { title: "Aguanta, preciosa",       msg: "Esto lo hice con muchas ganas de que lo veas." },
+  { title: "No, todavía no",          msg: "Pero ya casi llega el 19." },
+  { title: "Paciencia, mi vida",      msg: "Lo bueno se hizo para esperarse." },
+];
 
 // ============================================================
 // FECHA DE APERTURA DEL DÍA 27 (flores amarillas)
 // Se abre el 21 de septiembre de 2026, medianoche hora Colombia.
 // ============================================================
 const DIA27_APERTURA = new Date('2026-09-21T00:00:00-05:00').getTime();
-const DIA27_MENSAJE  = {
-  title: "Todavía no, mi vida",
-  msg: "Esta se abre el 21 de septiembre, con las primeras flores amarillas del día."
-};
+const DIA27_MENSAJES = [
+  { title: "Todavía no, mi vida",     msg: "Esta se abre el 21 de septiembre." },
+  { title: "Casi, casi",              msg: "Pero todavía no." },
+  { title: "Espera un poquito más",   msg: "Vale la pena, te lo prometo." },
+  { title: "No hagas trampa",         msg: "Sé que ya intentaste varias veces." },
+  { title: "Falta poco",              msg: "El 21 se abre solita." },
+];
 
 const EMOJIS = [
   '🌿','🐛','🌸','🍃','🐝','🦋','🌱','🐞',
@@ -633,18 +639,18 @@ for (let d = 1; d <= 27; d++) {
       a26.href = '#';
       a26.addEventListener('click', e => {
         e.preventDefault();
-        document.getElementById('modal-title').textContent = DIA26_MENSAJE.title;
-        document.getElementById('modal-msg').textContent   = DIA26_MENSAJE.msg;
+        const m = DIA26_MENSAJES[Math.floor(Math.random() * DIA26_MENSAJES.length)];
+        document.getElementById('modal-title').textContent = m.title;
+        document.getElementById('modal-msg').textContent   = m.msg;
         document.getElementById('modal-date').textContent  = 'se abre el 19 de septiembre, 12:00 m.';
         document.getElementById('modal').classList.add('show');
       });
     }
 
     a26.innerHTML = `
-      <div class="dia26-badge">amor ✦ amistad</div>
       <div class="box-day">26</div>
       ${unlocked26
-        ? `<div class="box-emoji">💛</div><div class="box-label">día 26</div>`
+        ? `<div class="box-emoji">✿</div><div class="box-label">día 26</div>`
         : `<div class="lock-icon">🔒</div>`
       }
     `;
@@ -666,18 +672,18 @@ for (let d = 1; d <= 27; d++) {
       a27.href = '#';
       a27.addEventListener('click', e => {
         e.preventDefault();
-        document.getElementById('modal-title').textContent = DIA27_MENSAJE.title;
-        document.getElementById('modal-msg').textContent   = DIA27_MENSAJE.msg;
+        const m = DIA27_MENSAJES[Math.floor(Math.random() * DIA27_MENSAJES.length)];
+        document.getElementById('modal-title').textContent = m.title;
+        document.getElementById('modal-msg').textContent   = m.msg;
         document.getElementById('modal-date').textContent  = 'se abre el 21 de septiembre';
         document.getElementById('modal').classList.add('show');
       });
     }
 
     a27.innerHTML = `
-      <div class="dia27-badge">flores amarillas</div>
       <div class="box-day">27</div>
       ${unlocked27
-        ? `<div class="box-emoji">🌼</div><div class="box-label">día 27</div>`
+        ? `<div class="box-emoji">✿</div><div class="box-label">día 27</div>`
         : `<div class="lock-icon">🔒</div>`
       }
     `;
