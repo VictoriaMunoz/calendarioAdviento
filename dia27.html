@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Ame</title>
+<style>
+  :root{
+    --sky-top:#fff6e0;
+    --sky-bottom:#ffe9b3;
+    --petal:#f6c445;
+    --petal-dark:#e8a93a;
+    --stem:#4f7a3e;
+    --ink:#4a3c1e;
+    --ink-soft:#7a6537;
+    --paper:#fffdf6;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --sky-top:#241d0f;
+      --sky-bottom:#3a2c12;
+      --paper:#2b2310;
+      --ink:#fbe9c2;
+      --ink-soft:#d8c088;
+    }
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    min-height:100vh;
+    background:linear-gradient(180deg, var(--sky-top), var(--sky-bottom));
+    font-family: 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+    color:var(--ink);
+    overflow-x:hidden;
+    position:relative;
+  }
+
+  /* Falling petals */
+  .petal{
+    position:fixed;
+    top:-40px;
+    z-index:1;
+    pointer-events:none;
+    opacity:0.9;
+    animation-name: fall, sway;
+    animation-timing-function: linear, ease-in-out;
+    animation-iteration-count: infinite, infinite;
+  }
+  @keyframes fall{
+    to{ transform: translateY(110vh); }
+  }
+  @keyframes sway{
+    0%,100%{ margin-left:0px; }
+    50%{ margin-left:40px; }
+  }
+
+  .wrap{
+    position:relative;
+    z-index:2;
+    max-width:640px;
+    margin:0 auto;
+    padding:70px 24px 90px;
+  }
+
+  .eyebrow-flower{
+    display:block;
+    margin:0 auto 18px;
+    width:64px;
+    height:64px;
+  }
+
+  h1{
+    text-align:center;
+    font-size:2.6rem;
+    line-height:1.15;
+    margin:0 0 6px;
+    font-weight:600;
+    letter-spacing:0.2px;
+  }
+  .subtitle{
+    text-align:center;
+    color:var(--ink-soft);
+    font-size:1.05rem;
+    margin:0 0 48px;
+    font-style:italic;
+  }
+
+  .card{
+    background:var(--paper);
+    border-radius:6px;
+    padding:38px 34px;
+    box-shadow: 0 18px 50px rgba(120,90,20,0.15);
+    position:relative;
+    margin-bottom:34px;
+  }
+  .card::before{
+    content:"";
+    position:absolute;
+    top:0; left:0;
+    width:100%; height:5px;
+    background: linear-gradient(90deg, var(--petal), var(--petal-dark));
+    border-radius:6px 6px 0 0;
+  }
+  .card p{
+    font-size:1.12rem;
+    line-height:1.75;
+    margin:0 0 18px;
+  }
+  .card p:last-child{margin-bottom:0;}
+  .signature{
+    text-align:right;
+    font-style:italic;
+    color:var(--ink-soft);
+    margin-top:22px;
+  }
+
+  .distance{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:18px;
+    margin:44px 0;
+    font-size:0.95rem;
+    color:var(--ink-soft);
+  }
+  .distance .city{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:6px;
+  }
+  .distance .flag{font-size:1.6rem;}
+  .distance .line{
+    flex:1;
+    max-width:120px;
+    height:1px;
+    background:repeating-linear-gradient(90deg, var(--ink-soft) 0 6px, transparent 6px 12px);
+    position:relative;
+  }
+  .distance .line::after{
+    content:"";
+    position:absolute;
+    top:-6px; left:50%;
+    transform:translateX(-50%);
+    width:12px; height:12px;
+    background:var(--petal);
+    border-radius:50% 0 50% 50%;
+    box-shadow:0 0 0 2px var(--sky-bottom);
+  }
+
+  .field{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    margin:8px 0 8px;
+    flex-wrap:wrap;
+  }
+
+  footer{
+    text-align:center;
+    color:var(--ink-soft);
+    font-size:0.85rem;
+    margin-top:20px;
+    font-style:italic;
+  }
+
+  @media (max-width:480px){
+    h1{font-size:2.1rem;}
+    .card{padding:28px 22px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <svg class="eyebrow-flower" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g>
+      <ellipse cx="32" cy="14" rx="9" ry="13" fill="#f6c445"/>
+      <ellipse cx="32" cy="50" rx="9" ry="13" fill="#f6c445"/>
+      <ellipse cx="14" cy="32" rx="13" ry="9" fill="#f6c445"/>
+      <ellipse cx="50" cy="32" rx="13" ry="9" fill="#f6c445"/>
+      <ellipse cx="19" cy="19" rx="9" ry="12" fill="#e8a93a" transform="rotate(45 19 19)"/>
+      <ellipse cx="45" cy="19" rx="9" ry="12" fill="#e8a93a" transform="rotate(-45 45 19)"/>
+      <ellipse cx="19" cy="45" rx="9" ry="12" fill="#e8a93a" transform="rotate(-45 19 45)"/>
+      <ellipse cx="45" cy="45" rx="9" ry="12" fill="#e8a93a" transform="rotate(45 45 45)"/>
+      <circle cx="32" cy="32" r="10" fill="#c9862a"/>
+    </g>
+  </svg>
+
+  <h1>Para Ame</h1>
+  <p class="subtitle">Septiembre trae flores amarillas, y contigo cada una tiene tu nombre</p>
+
+  <div class="card">
+    <p>Hay personas que uno quiere, y hay personas que uno elige querer así, distinto, con todo lo que tiene, sin reservas. Tú eres eso para mí.</p>
+    <p>Desde que llegaste a mi vida entendí algo que antes solo sonaba a frase bonita: que se puede extrañar a alguien todos los días y aun así sentirse en casa con esa persona, sin importar cuántos kilómetros haya en medio.</p>
+    <p>No te quiero como a cualquiera. Te quiero de esa forma en que uno se cuida las palabras, en que uno piensa dos veces antes de decir algo para no lastimar, en que uno espera el mensaje del otro con las mismas ganas de siempre. Así te quiero yo a ti: con paciencia, con ternura, con ganas de cuidarte incluso desde lejos.</p>
+    <p>Eres, sin exagerar, la persona a la que más he querido en toda mi vida. Y no lo digo por decir algo bonito hoy — lo digo porque cada día que pasa me lo confirma un poco más.</p>
+    <p>Con estas flores amarillas de septiembre solo quería recordarte eso: que eres importante, que eres amada como a nadie más, y que pase lo que pase, aquí vas a encontrarme siempre esperándote con los brazos abiertos.</p>
+    <p class="signature">Tuya, con todo lo que soy</p>
+  </div>
+
+  <footer>para la persona que más quiero en este mundo</footer>
+</div>
+
+<script>
+  // Genera pétalos amarillos cayendo suavemente
+  const colors = ['#f6c445', '#e8a93a', '#f9d773'];
+  const total = 18;
+  for(let i=0;i<total;i++){
+    const petal = document.createElement('div');
+    petal.className = 'petal';
+    const size = 10 + Math.random()*10;
+    petal.style.left = (Math.random()*100) + 'vw';
+    petal.style.width = size+'px';
+    petal.style.height = (size*1.3)+'px';
+    petal.style.background = colors[Math.floor(Math.random()*colors.length)];
+    petal.style.borderRadius = '0 100% 0 100%';
+    const duration = 9 + Math.random()*10;
+    const delay = Math.random()*15;
+    petal.style.animationDuration = duration+'s, '+ (3+Math.random()*2) +'s';
+    petal.style.animationDelay = delay+'s, '+ delay +'s';
+    document.body.appendChild(petal);
+  }
+</script>
+
+</body>
+</html>
