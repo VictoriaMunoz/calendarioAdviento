@@ -6,7 +6,7 @@
 <title>Nos vamos a conocer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Spectral:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
 <style>
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -26,7 +26,7 @@ html, body { min-height: 100vh; }
 
 body {
   background: linear-gradient(160deg, #FBF7FE 0%, #F3E9FA 45%, #FDF6EA 100%);
-  font-family: 'Spectral', serif;
+  font-family: 'Lora', serif;
   color: var(--ink);
   overflow-x: hidden;
   position: relative;
@@ -101,8 +101,13 @@ body::before {
   padding: 2px;
   border-radius: 28px;
   background: linear-gradient(150deg, var(--plum-soft), var(--gold-soft) 55%, var(--plum-soft));
+  background-size: 220% 220%;
   box-shadow: 0 35px 70px -25px rgba(126,90,166,0.35);
-  animation: riseIn 1s cubic-bezier(.2,.7,.2,1) both;
+  animation: riseIn 1s cubic-bezier(.2,.7,.2,1) both, frameShimmer 9s ease-in-out infinite 1s;
+}
+@keyframes frameShimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
 }
 
 .card {
@@ -134,23 +139,64 @@ body::before {
   border-radius: 999px;
   background: var(--lilac);
   border: 1px solid var(--lilac-2);
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.9rem;
   animation: fadeIn 1s ease 0.1s both;
 }
 
+.whisper {
+  font-family: 'Lora', serif;
+  font-style: italic;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--plum);
+  opacity: 0.75;
+  max-width: 300px;
+  margin: 0 auto 1.6rem;
+  animation: fadeIn 1.2s ease 0.12s both;
+}
+
+/* ───── ruta con avión animado ───── */
+.route-wrap {
+  position: relative;
+  margin-bottom: 1.1rem;
+  animation: fadeIn 1s ease 0.15s both;
+}
 .route {
   font-size: 11px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--ink);
   opacity: 0.6;
-  margin-bottom: 0.6rem;
-  animation: fadeIn 1s ease 0.15s both;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
-.route .arrow { color: var(--gold); margin: 0 6px; }
+.route-line {
+  position: relative;
+  flex: 0 1 110px;
+  height: 1px;
+  background: repeating-linear-gradient(to right, var(--plum-soft) 0, var(--plum-soft) 3px, transparent 3px, transparent 7px);
+}
+.route-plane {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 15px;
+  height: 15px;
+  margin-top: -7.5px;
+  color: var(--gold);
+  animation: flyAcross 7s ease-in-out infinite;
+}
+@keyframes flyAcross {
+  0%       { left: -4%;  opacity: 0; }
+  12%      { opacity: 1; }
+  88%      { opacity: 1; }
+  100%     { left: 96%;  opacity: 0; }
+}
 
 .title {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Lora', serif;
   font-weight: 500;
   font-style: italic;
   font-size: clamp(1.5rem, 5.5vw, 1.95rem);
@@ -160,6 +206,16 @@ body::before {
   animation: fadeIn 1s ease 0.2s both;
 }
 .title .accent { color: var(--plum); font-weight: 600; }
+
+.thread-map {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  display: block;
+  margin: 0 auto 2.4rem;
+  opacity: 0.9;
+  animation: fadeIn 1.2s ease 0.22s both;
+}
 
 .countdown {
   position: relative;
@@ -191,7 +247,7 @@ body::before {
 }
 
 .countdown-num {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Lora', serif;
   font-weight: 600;
   font-size: clamp(4.4rem, 22vw, 6.6rem);
   line-height: 0.85;
@@ -235,7 +291,7 @@ body::before {
 .countdown-sub-unit { text-align: center; }
 
 .countdown-sub-num {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Lora', serif;
   font-weight: 600;
   font-size: 1.75rem;
   color: var(--plum);
@@ -256,9 +312,39 @@ body::before {
   font-style: italic;
   color: var(--ink);
   opacity: 0.65;
-  margin: 0 0 2rem;
+  margin: 0 0 1.6rem;
   animation: fadeIn 1s ease 0.3s both;
 }
+
+/* ───── barra de progreso de la espera ───── */
+.progress-wrap {
+  margin: 0 0 2rem;
+  animation: fadeIn 1s ease 0.32s both;
+}
+.progress-track {
+  position: relative;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--lilac-2);
+  overflow: hidden;
+}
+.progress-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0%;
+  border-radius: 999px;
+  background: linear-gradient(to right, var(--plum-soft), var(--plum) 60%, var(--gold));
+  transition: width 1.2s cubic-bezier(.2,.7,.2,1);
+}
+.progress-caption {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  opacity: 0.55;
+  margin-top: 0.7rem;
+}
+.progress-caption b { color: var(--plum); font-weight: 600; }
 
 .quote {
   font-size: 15.5px;
@@ -268,7 +354,9 @@ body::before {
   margin: 0 0 0.5rem;
   animation: fadeIn 1s ease 0.35s both;
   min-height: 1.6em;
+  transition: opacity 0.45s ease;
 }
+.quote.is-fading { opacity: 0; }
 
 .quote-hint {
   font-size: 10px;
@@ -276,9 +364,25 @@ body::before {
   text-transform: uppercase;
   color: var(--plum-soft);
   opacity: 0.75;
-  margin: 0 0 2.2rem;
+  margin: 0 0 1rem;
   animation: fadeIn 1s ease 0.4s both;
 }
+
+.quote-btn {
+  font-family: 'Lora', serif;
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--plum);
+  background: var(--lilac);
+  border: 1px solid var(--lilac-2);
+  border-radius: 999px;
+  padding: 0.45rem 1.2rem;
+  cursor: pointer;
+  margin-bottom: 2.2rem;
+  transition: background 0.2s, transform 0.2s;
+}
+.quote-btn:hover { background: var(--lilac-2); transform: translateY(-1px); }
 
 .divider {
   display: flex;
@@ -295,6 +399,55 @@ body::before {
 }
 .divider::after { background: linear-gradient(to left, transparent, var(--gold-soft)); }
 .divider span { color: var(--gold); font-size: 12px; }
+
+.section-title {
+  font-family: 'Lora', serif;
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--plum);
+  margin-bottom: 1.2rem;
+}
+
+/* ───── cositas que ya amo de ti ───── */
+.loveflowers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 0 0 2.5rem;
+}
+.lf-card {
+  position: relative;
+  background: var(--lilac);
+  border: 1px solid var(--lilac-2);
+  border-radius: 16px;
+  padding: 1.3rem 0.95rem 0.95rem;
+  text-align: left;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.lf-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px -14px rgba(126,90,166,0.4);
+}
+.lf-card::before {
+  content: '\201C';
+  position: absolute;
+  top: 0.35rem;
+  left: 0.7rem;
+  font-family: 'Lora', serif;
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--gold);
+  opacity: 0.55;
+}
+.lf-card p {
+  font-family: 'Lora', serif;
+  font-style: italic;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--ink);
+  opacity: 0.85;
+  padding-top: 0.6rem;
+}
 
 .timeline {
   display: flex;
@@ -337,6 +490,85 @@ body::before {
   background: repeating-linear-gradient(to right, var(--plum-soft) 0, var(--plum-soft) 3px, transparent 3px, transparent 6px);
 }
 
+/* ───── lista: lo primero que quiero hacer ───── */
+.wishlist {
+  text-align: left;
+  margin: 0 0 2.4rem;
+}
+.wish {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 0.62rem 0;
+  border-bottom: 1px dashed var(--lilac-2);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.wish:last-child { border-bottom: none; }
+.wish-num {
+  flex: 0 0 auto;
+  font-family: 'Lora', serif;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--gold);
+  width: 18px;
+  text-align: right;
+  padding-top: 1px;
+}
+
+/* ───── sobres: ábreme cuando… ───── */
+.envelopes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 0 0 2.4rem;
+}
+.env {
+  text-align: left;
+  background: var(--lilac);
+  border: 1px solid var(--lilac-2);
+  border-radius: 13px;
+  padding: 0.85rem 0.9rem;
+  cursor: pointer;
+  font-family: 'Lora', serif;
+  color: var(--ink);
+  transition: background 0.25s, transform 0.25s, border-color 0.25s;
+}
+.env:hover { transform: translateY(-2px); border-color: var(--plum-soft); }
+.env.is-open { background: var(--white); border-color: var(--gold-soft); }
+.env-label {
+  display: block;
+  font-size: 9.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--plum);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.env-title {
+  display: block;
+  font-family: 'Lora', serif;
+  font-style: italic;
+  font-size: 14.5px;
+  line-height: 1.4;
+  color: var(--ink);
+}
+.env-msg {
+  display: block;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--ink);
+  transition: max-height 0.45s ease, opacity 0.45s ease, margin-top 0.45s ease;
+}
+.env.is-open .env-msg {
+  max-height: 260px;
+  opacity: 0.85;
+  margin-top: 8px;
+}
+
 .letter {
   position: relative;
   text-align: left;
@@ -344,7 +576,7 @@ body::before {
   border-radius: 14px;
   padding: 1.4rem 1.5rem;
   margin-bottom: 2rem;
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Lora', serif;
   font-style: italic;
   font-size: 16.5px;
   line-height: 1.85;
@@ -367,6 +599,29 @@ body::before {
   font-size: 13px;
   color: var(--gold);
   opacity: 0.9;
+}
+.letter { cursor: pointer; }
+.letter-touch-hint {
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--plum-soft);
+  text-align: center;
+  margin: -1.5rem 0 2rem;
+  opacity: 0.8;
+}
+.petal {
+  position: fixed;
+  top: -5%;
+  z-index: 5;
+  pointer-events: none;
+  font-size: 14px;
+  color: var(--plum-soft);
+  animation: petalFall 3.4s ease-in forwards;
+}
+@keyframes petalFall {
+  0%   { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.95; }
+  100% { transform: translateY(70vh) translateX(var(--dx, 30px)) rotate(340deg); opacity: 0; }
 }
 
 .closing {
@@ -397,13 +652,23 @@ body::before {
   animation: breathe 2.6s ease-in-out infinite;
 }
 .promise-text {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Lora', serif;
   font-style: italic;
   font-size: 15px;
   line-height: 1.85;
   color: var(--plum);
   max-width: 340px;
 }
+
+.ps {
+  font-size: 12.5px;
+  font-style: italic;
+  line-height: 1.75;
+  color: var(--ink);
+  opacity: 0.7;
+  margin-top: 1.6rem;
+}
+.ps b { color: var(--plum); font-style: normal; font-weight: 600; opacity: 1; }
 
 .back-link {
   display: inline-block;
@@ -420,7 +685,8 @@ body::before {
 .back-link:hover { opacity: 1; color: var(--plum); }
 
 @media (prefers-reduced-motion: reduce) {
-  .falling, .spark, .countdown-num, .countdown-main, .card-frame, .countdown-halo { animation: none !important; }
+  .falling, .spark, .countdown-num, .countdown-main, .card-frame,
+  .countdown-halo, .route-plane, .promise-heart { animation: none !important; }
 }
 
 </style>
@@ -449,8 +715,36 @@ body::before {
   </svg>
 
   <div class="eyebrow">día 25 · edición especial</div>
-  <div class="route">México <span class="arrow">→</span> Colombia</div>
-  <h1 class="title">De todas las cajitas,<br>esta es la que <span class="accent">de verdad cuenta</span>.</h1>
+  <p class="whisper">esto me da un poco de miedo decirlo así, en voz alta. pero contigo, hasta el miedo se siente más suave.</p>
+
+  <div class="route-wrap">
+    <div class="route">
+      <span>México</span>
+      <span class="route-line">
+        <svg class="route-plane" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5L21 16z"/>
+        </svg>
+      </span>
+      <span>Colombia</span>
+    </div>
+  </div>
+
+  <h1 class="title">De todas las cajitas,<br>esta eres <span class="accent">tú, llegando de verdad</span>.</h1>
+
+  <svg class="thread-map" viewBox="0 0 300 90" xmlns="http://www.w3.org/2000/svg" fill="none">
+    <path id="thread-path" d="M18 62 C 70 20, 130 88, 180 34 S 250 12, 282 46" stroke="#B9A0D6" stroke-width="1.3" stroke-linecap="round" stroke-dasharray="3 6"/>
+    <circle cx="18" cy="62" r="4.5" fill="#7E5AA6"/>
+    <circle cx="18" cy="62" r="8" fill="none" stroke="#7E5AA6" stroke-width="1" opacity="0.35"/>
+    <text x="18" y="80" text-anchor="middle" font-family="'Lora', serif" font-size="7" letter-spacing="1" fill="#3B2A4D" opacity="0.55">BOGOTÁ</text>
+    <circle cx="282" cy="46" r="4.5" fill="#C79A3F"/>
+    <circle cx="282" cy="46" r="8" fill="none" stroke="#C79A3F" stroke-width="1" opacity="0.4"/>
+    <text x="282" y="18" text-anchor="middle" font-family="'Lora', serif" font-size="7" letter-spacing="1" fill="#3B2A4D" opacity="0.55">MÉXICO</text>
+    <circle r="3.2" fill="#C79A3F" class="thread-plane">
+      <animateMotion dur="6s" repeatCount="indefinite" rotate="auto">
+        <mpath href="#thread-path"/>
+      </animateMotion>
+    </circle>
+  </svg>
 
   <div class="countdown">
     <div class="countdown-halo"></div>
@@ -475,10 +769,16 @@ body::before {
     </div>
   </div>
 
-  <p class="date-line">23 de octubre — el día que llegas de México a Colombia</p>
+  <p class="date-line">18 de octubre — el día que llegas de México a Colombia</p>
+
+  <div class="progress-wrap">
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    <p class="progress-caption">ya llevamos <b id="progress-pct">0%</b> del camino andado</p>
+  </div>
 
   <p class="quote" id="quote"></p>
   <p class="quote-hint">una frase distinta cada vez que entras aquí</p>
+  <button class="quote-btn" id="quote-btn">dame otra ✦</button>
 
   <div class="divider"><span>✦</span></div>
 
@@ -502,19 +802,84 @@ body::before {
   </div>
 
   <div class="letter">
-    De todas las cajitas de este calendario, esta es la que más significa para mí.
-    Las otras veinticuatro fueron pantallas, mensajes, sorpresas pequeñas —
+    De todas las cajitas de este calendario, esta es la que más me tiembla en las manos.
+    Las otras veinticuatro fueron pantallas, mensajitos, sorpresas pequeñas para hacerte sonreír de lejos —
     pero esta es un <b>avión de verdad</b>, un país entero de por medio, y tú
-    decidiendo cruzarlo solo para que por fin nos podamos ver.
-    Eso no es poca cosa, y no pienso dejar que se sienta así.
+    decidiendo cruzarlo solo para que por fin nos podamos ver, tocar, quedarnos calladas la una junto a la otra.
+    Eso no es poca cosa, mi amor. No pienso dejar que se sienta pequeño.
     <br><br>
-    Llevo tiempo queriéndote de una forma que ya no cabe en una pantalla.
-    No es solo ganas de verte: es que quiero <b>construir contigo</b>, quiero
-    que un día esto de contar los días sea solo un recuerdo bonito, porque
-    ya vivamos en el mismo lugar, con la misma casa, la misma cama, los mismos
-    planes. Quiero <b>casarme contigo</b>. Quiero que cada cosa linda que me
-    pasa en la vida la puedas ver de cerca, no por una foto ni por un mensaje.
+    Llevo tiempo queriéndote de una forma que ya no me cabe en una pantalla, ni en un mensaje de buenas noches,
+    ni en nada que se pueda apagar cuando se acaba la batería.
+    No es solo ganas de verte: es que quiero <b>construir contigo</b>, despacito, sin prisa,
+    hasta que un día esto de contar los días sea solo un recuerdo bonito que nos vamos a reír de contar —
+    porque ya vivamos en el mismo lugar, con la misma casa, la misma cama, los mismos
+    planes pequeños de un martes cualquiera. Quiero <b>formar algo lindo contigo</b>, algo que no tenga fecha
+    de cierre — quiero estar contigo para siempre, y ya no me da miedo decirlo
+    así, tan directo. Quiero <b>mi familia, junto a ti</b>, así, sin adornarlo más. Quiero que cada cosa linda que me
+    pasa en la vida la puedas ver de cerca, no por una foto ni por un mensaje, sino ahí, a mi lado, viéndolo pasar conmigo.
     <span class="letter-sign">— Te amo mucho mi amor, estoy contando los días</span>
+  </div>
+  <p class="letter-touch-hint">toca la carta ✦</p>
+
+  <h2 class="section-title">Cositas que ya amo de ti</h2>
+  <div class="loveflowers">
+    <div class="lf-card">
+      <p>Que la primera vez que te vi fue enseñando, con esa paciencia tuya que no se nota que es un esfuerzo — y ya desde ahí me gustaste.</p>
+    </div>
+    <div class="lf-card">
+      <p>Que cuando de verdad quieres decirme algo tierno, se te sale en inglés, como si el español guardara demasiada distancia para lo que sientes.</p>
+    </div>
+    <div class="lf-card">
+      <p>Que en una llamada tuya, a las dos de la mañana o a mitad de un día horrible, se me olvida por completo que hay un país entero entre nosotras.</p>
+    </div>
+    <div class="lf-card">
+      <p>Que a pesar de los días en que nos quedamos calladas, y de lo mucho que dolió, siempre volviste a mí. Y yo también, sin pensarlo dos veces.</p>
+    </div>
+  </div>
+
+  <h2 class="section-title">Lo primero que quiero hacer contigo</h2>
+  <div class="wishlist">
+    <div class="wish"><span class="wish-num">01</span><span>Abrazarte tan fuerte y tan largo que se nos olvide contar el tiempo, por primera vez desde que nos conocemos.</span></div>
+    <div class="wish"><span class="wish-num">02</span><span>Verte la cara sin que una pantalla decida cuándo se congela — solo tú, respirando, de verdad ahí.</span></div>
+    <div class="wish"><span class="wish-num">03</span><span>Que me digas algo tierno en inglés, pero esta vez mirándome a los ojos y no a una cámara pequeñita.</span></div>
+    <div class="wish"><span class="wish-num">04</span><span>Reírme contigo de algo tan tonto que ni se entienda después por qué daba tanta risa.</span></div>
+    <div class="wish"><span class="wish-num">05</span><span>Quedarnos calladas juntas, en el mismo cuarto, solo porque ya no hace falta llenar el silencio con palabras.</span></div>
+    <div class="wish"><span class="wish-num">06</span><span>Que me enseñes algo, como aquella primera vez, pero ahora sentada muy cerca de ti y no del otro lado de una pantalla.</span></div>
+    <div class="wish"><span class="wish-num">07</span><span>Dormirme a tu lado y despertar sabiendo dónde estás, sin tener que preguntarlo ni imaginarlo.</span></div>
+  </div>
+
+  <h2 class="section-title">Ábreme cuando…</h2>
+  <div class="envelopes">
+    <div class="env" role="button" tabindex="0">
+      <span class="env-label">ábreme cuando</span>
+      <span class="env-title">me extrañes</span>
+      <span class="env-msg">Yo también, justo ahora, mientras lees esto. Mira el número grande de arriba: cada vez que vuelves aquí, es un poquito más chiquito. Extrañarnos también es una forma de estar cerca, ¿sabes?</span>
+    </div>
+    <div class="env" role="button" tabindex="0">
+      <span class="env-label">ábreme cuando</span>
+      <span class="env-title">tengas un día horrible</span>
+      <span class="env-msg">No tienes que estar bien hoy, ni fingir que sí lo estás. Cuéntamelo todo, aunque sea feo, aunque sea largo, aunque no tenga solución. Aquí estoy, con espacio de sobra para tu día horrible.</span>
+    </div>
+    <div class="env" role="button" tabindex="0">
+      <span class="env-label">ábreme cuando</span>
+      <span class="env-title">recuerdes esos días de silencio</span>
+      <span class="env-msg">Yo también los recuerdo, y también me dolieron, más de lo que dije en su momento. Pero volvimos, con una llamada, sin que nadie tuviera que fingir que no había pasado nada. Eso me enseñó que esto nuestro aguanta hasta los silencios más difíciles.</span>
+    </div>
+    <div class="env" role="button" tabindex="0">
+      <span class="env-label">ábreme cuando</span>
+      <span class="env-title">dudes de esto</span>
+      <span class="env-msg">Yo no dudo, mi amor. Nadie planea un viaje, cuenta los días y sueña con una familia junto a alguien de quien duda. La distancia siempre fue lo único difícil entre nosotras, y ya hasta le pusimos fecha de vencimiento.</span>
+    </div>
+    <div class="env" role="button" tabindex="0">
+      <span class="env-label">ábreme cuando</span>
+      <span class="env-title">estés a punto de viajar</span>
+      <span class="env-msg">Respira hondo. Lo único imprescindible en esa maleta eres tú, no lo que se te haya olvidado. Nos vemos del otro lado, con todo y nervios, con todo y ganas.</span>
+    </div>
+    <div class="env" role="button" tabindex="0">
+      <span class="env-label">ábreme cuando</span>
+      <span class="env-title">ya estés aquí</span>
+      <span class="env-msg">Entonces esta página ya cumplió su trabajo, y qué bonito. Guárdala igual: un día vamos a querer acordarnos de cuánto esperamos esto, y de lo mucho que valió la pena cada día de espera.</span>
+    </div>
   </div>
 
   <div class="promise">
@@ -526,11 +891,13 @@ body::before {
     <p class="promise-text">
       Te prometo que este es apenas el primer viaje de muchos, y que un día
       ya no vamos a necesitar boletos de avión para estar juntas — solo
-      vamos a tener que caminar hasta la otra habitación.
+      vamos a tener que caminar hasta la otra habitación, y ya.
     </p>
   </div>
 
-  <p class="closing">No importa cuántas horas de vuelo sean:<br><b>al final de ese camino voy a estar yo, esperándote, con ganas de no volver a soltarte.</b></p>
+  <p class="closing">No importa cuántas horas de vuelo sean:<br><b>al final de ese camino voy a estar yo, con el corazón acelerado, esperándote, con ganas de no volver a soltarte.</b></p>
+
+  <p class="ps"><b>P.D.</b> Esta página se queda aquí para siempre. Vuelve cuantas veces quieras — mientras falte, para contar los días; y cuando ya no falte, para acordarte de cómo se sentía extrañarme y saber que ya casi era hora.</p>
 
   <a class="back-link" href="index.html">← volver al calendario</a>
 
@@ -539,7 +906,12 @@ body::before {
 
 <script>
 
-const MEETING_TIME = Date.UTC(2026, 9, 23, 5, 0, 0);
+/* ── Fecha de llegada: 18 de octubre, 5:00 UTC (≈ 12:00 a.m. Colombia) ── */
+const MEETING_TIME = Date.UTC(2026, 9, 18, 5, 0, 0);
+
+/* ── Desde cuándo contamos (para la barra de progreso).
+      Cámbialo por la fecha que quieras usar como inicio de la espera. ── */
+const START_TIME   = Date.UTC(2025, 11, 25, 5, 0, 0);
 
 const QUOTES = [
   "Vas a cruzar un país entero para verme.",
@@ -592,12 +964,82 @@ const QUOTES = [
   "Cuando te vea salir, va a valer cada día de esta espera.",
   "No hay maleta lo bastante grande para todo lo que traes con esta llegada.",
   "Esto que sentimos ya no necesita más pruebas, solo necesita que llegues.",
-  "Vas a llegar, y con eso, todo lo demás va a empezar a tener sentido."
+  "Vas a llegar, y con eso, todo lo demás va a empezar a tener sentido.",
+  "Te quiero de esa forma tranquila que no se cansa de esperar.",
+  "Me gustas hoy más que ayer, y eso lleva pasando un buen rato.",
+  "Ya escogí el lugar exacto del aeropuerto donde te voy a esperar.",
+  "Vas a llegar y yo voy a estar hecha un manojo de nervios feliz.",
+  "Lo mejor de contar los días es saber que este cuento sí tiene final feliz.",
+  "Nadie me ha hecho querer tanto que el tiempo pase rápido.",
+  "Todavía no llegas y ya te extraño menos, porque ya casi.",
+  "No me imagino esperando así a nadie más.",
+  "Esta espera se siente distinta porque sé exactamente a dónde lleva.",
+  "Contigo hasta esperar se volvió algo bonito de hacer.",
+  "Vas a llegar y voy a entender de golpe por qué valía la pena todo.",
+  "Quiero verte dormida, despeinada y de mal humor. Todo eso también lo quiero.",
+  "Voy a querer tomarte fotos todo el tiempo, te aviso desde ya.",
+  "Cuando te vayas de este viaje ya vamos a estar planeando el siguiente.",
+  "Te voy a presentar mi ciudad como quien presenta a alguien importante.",
+  "Ya no falta tanto como para dudar, ni tan poco como para no emocionarme.",
+  "Nos vamos a ver y este calendario va a quedar como el testigo de todo.",
+  "Cada vez que abres esta página, falta menos. Literalmente.",
+  "Te amo, y esta vez te lo voy a poder decir mirándote.",
+  "Ya casi se acaba la parte difícil de esta historia.",
+  "Vas a estar en mi casa, tomando café conmigo. Piénsalo.",
+  "Este vuelo va a partir nuestra historia en un antes y un después.",
+  "Nunca he estado tan segura de algo que todavía no pasa.",
+  "Hay amores que aguantan la distancia. El nuestro además le puso fecha.",
+  "Que hayas decidido venir tú dice más de lo que cabe en esta pantalla.",
+  "Cuando te vea, lo primero que voy a hacer es quedarme callada un segundo.",
+  "Te prometo que el abrazo va a estar a la altura de la espera."
 ];
 
-document.getElementById('quote').textContent =
-  QUOTES[Math.floor(Math.random() * QUOTES.length)];
+const quoteEl = document.getElementById('quote');
+let lastQuote = -1;
 
+function showQuote(animated) {
+  let i = Math.floor(Math.random() * QUOTES.length);
+  if (QUOTES.length > 1) { while (i === lastQuote) i = Math.floor(Math.random() * QUOTES.length); }
+  lastQuote = i;
+
+  if (!animated) { quoteEl.textContent = QUOTES[i]; return; }
+  quoteEl.classList.add('is-fading');
+  setTimeout(function () {
+    quoteEl.textContent = QUOTES[i];
+    quoteEl.classList.remove('is-fading');
+  }, 450);
+}
+
+showQuote(false);
+document.getElementById('quote-btn').addEventListener('click', function () { showQuote(true); });
+
+/* ── pétalos al tocar la carta ── */
+const petalGlyphs = ['✦', '❀', '✧', '♡'];
+document.querySelector('.letter').addEventListener('click', function (e) {
+  const rect = this.getBoundingClientRect();
+  for (let i = 0; i < 10; i++) {
+    const p = document.createElement('span');
+    p.className = 'petal';
+    p.textContent = petalGlyphs[Math.floor(Math.random() * petalGlyphs.length)];
+    p.style.left = (rect.left + Math.random() * rect.width) + 'px';
+    p.style.setProperty('--dx', (Math.random() * 80 - 40) + 'px');
+    p.style.animationDelay = (Math.random() * 0.3) + 's';
+    p.style.color = Math.random() > 0.5 ? '#B9A0D6' : '#E7D3A0';
+    document.body.appendChild(p);
+    setTimeout(function () { p.remove(); }, 4000);
+  }
+});
+
+/* ── sobres ── */
+document.querySelectorAll('.env').forEach(function (env) {
+  function toggle() { env.classList.toggle('is-open'); }
+  env.addEventListener('click', toggle);
+  env.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+  });
+});
+
+/* ── cuenta regresiva + progreso ── */
 function pad(n) { return String(n).padStart(2, '0'); }
 
 function updateCountdown() {
@@ -614,8 +1056,15 @@ function updateCountdown() {
   document.getElementById('cd-min').textContent   = pad(minutes);
   document.getElementById('cd-sec').textContent   = pad(seconds);
 
+  const total = MEETING_TIME - START_TIME;
+  let pct = total > 0 ? ((total - diff) / total) * 100 : 100;
+  pct = Math.max(0, Math.min(100, pct));
+  document.getElementById('progress-fill').style.width = pct.toFixed(1) + '%';
+  document.getElementById('progress-pct').textContent  = pct.toFixed(1) + '%';
+
   if (diff === 0) {
-    document.getElementById('quote').textContent = "Hoy es el día. Por fin te voy a ver.";
+    quoteEl.textContent = "Hoy es el día. Por fin te voy a ver.";
+    document.getElementById('progress-pct').textContent = '100%';
     clearInterval(countdownInterval);
   }
 }
