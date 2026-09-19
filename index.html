@@ -287,7 +287,7 @@ body::before {
 
 /* ============================================================
    CAJITA ESPECIAL — DÍA 26: AMOR Y AMISTAD
-   Se abre el 19 de septiembre a las 12:00 m. (hora Colombia).
+   Se abre el 19 de septiembre de 2026, 12:00 a.m. (hora Colombia).
    Se diferencia con su propia franja tricolor amarillo/azul/rojo.
    ============================================================ */
 .box.dia26 {
@@ -299,6 +299,11 @@ body::before {
 .box.dia26 .box-label { color: #1b4f9c; }
 .box.dia26:hover .box-day,
 .box.dia26:hover .box-label { color: #c6362f; }
+.box.dia26 .flag-co { display: inline-block; animation: wave26 2.2s ease-in-out infinite; transform-origin: 30% 60%; }
+@keyframes wave26 {
+  0%, 100% { transform: rotate(-6deg); }
+  50% { transform: rotate(6deg); }
+}
 .dia26-badge {
   position: absolute;
   top: 0; right: 0;
@@ -522,14 +527,14 @@ const START_DAY   = 1;
 
 // ============================================================
 // FECHA DE APERTURA DEL DÍA 26 (amor y amistad)
-// Se abre el 19 de septiembre de 2026 a las 12:00 m., hora Colombia.
+// Se abre el 19 de septiembre de 2026, 12:00 a.m. (medianoche), hora Colombia.
 // Para revisarla tú antes de tiempo, activa TEST_MODE arriba,
 // o simplemente entra directo a dia26.html (no queda escondida
 // del todo, pero al menos no se abre sola desde el calendario).
 // ============================================================
-const DIA26_APERTURA = new Date('2026-09-19T12:00:00-05:00').getTime();
+const DIA26_APERTURA = new Date('2026-09-19T00:00:00-05:00').getTime();
 const DIA26_MENSAJES = [
-  { title: "Todavía no, mi amor",     msg: "Esta se abre el 19 de septiembre a las 12:00 del mediodía." },
+  { title: "Todavía no, mi amor",     msg: "Esta se abre el 19 de septiembre." },
   { title: "Un poquito más",          msg: "Falta menos de lo que crees." },
   { title: "Aguanta, preciosa",       msg: "Esto lo hice con muchas ganas de que lo veas." },
   { title: "No, todavía no",          msg: "Pero ya casi llega el 19." },
@@ -538,7 +543,8 @@ const DIA26_MENSAJES = [
 
 // ============================================================
 // FECHA DE APERTURA DEL DÍA 27 (flores amarillas)
-// Se abre el 21 de septiembre de 2026, medianoche hora Colombia.
+// Se abre el 21 de septiembre de 2026, medianoche hora Colombia
+// (la noche entre el 20 y el 21).
 // ============================================================
 const DIA27_APERTURA = new Date('2026-09-21T00:00:00-05:00').getTime();
 const DIA27_MENSAJES = [
@@ -642,7 +648,7 @@ for (let d = 1; d <= 27; d++) {
         const m = DIA26_MENSAJES[Math.floor(Math.random() * DIA26_MENSAJES.length)];
         document.getElementById('modal-title').textContent = m.title;
         document.getElementById('modal-msg').textContent   = m.msg;
-        document.getElementById('modal-date').textContent  = 'se abre el 19 de septiembre, 12:00 m.';
+        document.getElementById('modal-date').textContent  = 'se abre el 19 de septiembre de 2026, 12:00 a.m.';
         document.getElementById('modal').classList.add('show');
       });
     }
@@ -650,7 +656,7 @@ for (let d = 1; d <= 27; d++) {
     a26.innerHTML = `
       <div class="box-day">26</div>
       ${unlocked26
-        ? `<div class="box-emoji">✿</div><div class="box-label">día 26</div>`
+        ? `<div class="box-emoji"><svg class="flag-co" width="30" height="20" viewBox="0 0 30 20" xmlns="http://www.w3.org/2000/svg"><rect width="30" height="20" rx="2" fill="#FCD116"/><rect y="10" width="30" height="5" fill="#003893"/><rect y="15" width="30" height="5" fill="#CE1126"/></svg></div><div class="box-label">día 26</div>`
         : `<div class="lock-icon">🔒</div>`
       }
     `;
@@ -675,7 +681,7 @@ for (let d = 1; d <= 27; d++) {
         const m = DIA27_MENSAJES[Math.floor(Math.random() * DIA27_MENSAJES.length)];
         document.getElementById('modal-title').textContent = m.title;
         document.getElementById('modal-msg').textContent   = m.msg;
-        document.getElementById('modal-date').textContent  = 'se abre el 21 de septiembre';
+        document.getElementById('modal-date').textContent  = 'se abre el 21 de septiembre de 2026, 12:00 a.m.';
         document.getElementById('modal').classList.add('show');
       });
     }
